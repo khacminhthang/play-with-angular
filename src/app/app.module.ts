@@ -12,6 +12,7 @@ import { MaterialExampleModule } from './material/material.module';
 import { MatNativeDateModule } from '@angular/material/core';
 import { AceEditorModule } from 'ng2-ace-editor';
 import { FooterComponent } from './components/layouts/footer/footer.component';
+import { StructureDirectiveComponent } from './components/structure-directive/structure-directive.component';
 
 @NgModule({
   declarations: [
@@ -19,6 +20,7 @@ import { FooterComponent } from './components/layouts/footer/footer.component';
     DataBindingComponent,
     SidenavComponent,
     FooterComponent,
+    StructureDirectiveComponent,
   ],
   imports: [
     AppRoutingModule,

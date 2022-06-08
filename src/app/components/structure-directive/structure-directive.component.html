@@ -1,0 +1,46 @@
+<div>
+  <h1 style="font-size: 3rem;">ANGULAR STRUCTURE DIRECTIVE</h1>
+  <br>
+  <p>Dùng để thêm, xóa, thay đổi structure trên view của Components</p>
+  <br>
+  <!-- CẤU TRÚC IF-ELSE -->
+  <span style="font-size: 2rem;" class="pb-0">CẤU TRÚC IF-ELSE</span>
+  <div class="border-b1"></div>
+  <br>
+  <p>Để hiển thị một phần view (template) theo điều kiện, chúng ta sẽ gắn thêm một property đặc biệt vào một tag</p>
+  <br>
+  <pre>
+      <code>{{text1}}</code>
+  </pre>
+  <p>Hiển thị "Bạn có thể xem nội dung PG-13" nếu chọn tuổi lớn hơn hoặc bằng 13
+    và hiển thị "Bạn không thể xem nội dung PG-13" nếu tuổi bé hơn 13
+  </p>
+  <mat-form-field appearance="fill">
+    <mat-label>Chọn tuổi</mat-label>
+    <mat-select (selectionChange)="changeAge($event)">
+      <mat-option *ngFor="let age of ages" [value]="age.value">
+        {{age.value}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <div *ngIf="user.age >= 13">
+    Bạn có thể xem nội dung PG-13
+  </div>
+  <div *ngIf="user.age < 13">
+    Bạn không thể xem nội dung PG-13
+  </div>
+  <br>
+
+  <!-- NG-TEMPLATE -->
+  <span style="font-size: 2rem;" class="pb-0">NG-TEMPLATE</span>
+  <div class="border-b1"></div>
+  <br>
+  <p>Tag ng-template được cung cấp bởi Angular, nó sẽ lưu trữ một Template được định nghĩa bên trong nó.</p>
+  <p>Những gì được định nghĩa bên trong đó sẽ không được hiển thị ra view, nhưng chúng ta có thể sử dụng Template đó để render bằng code</p>
+  <p>Đoạn code trên tương đương với</p>
+  <br>
+  <pre>
+      <code>{{text2}}</code>
+  </pre>
+  <br>
+</div>
