@@ -1,10 +1,42 @@
 <div>
-    <h1 style="font-size: 3rem;">ANGULAR DATA BINDING</h1>
-    <br>
-    <p>Ràng buộc dữ liệu giữa view và model</p>
-    <p>Thuật toán Change Detecion chịu trách nghiệm giữ sự đồng bộ này</p>
-    <br>
-    <span style="font-size: 2rem;" class="pb-0">INTERPOLATION</span>
-    <div class="border-b1"></div>
-    <br>
+  <h1 style="font-size: 3rem;">ANGULAR DATA BINDING</h1>
+  <br>
+  <p>Ràng buộc dữ liệu giữa view và model</p>
+  <p>Thuật toán Change Detecion chịu trách nghiệm giữ sự đồng bộ này</p>
+  <br>
+
+  <span style="font-size: 2rem;" class="pb-0">INTERPOLATION</span>
+  <div class="border-b1"></div>
+  <br>
+  <p>Hiển thị dữ liệu nào đó với sự kết hợp giữa "interpolation và expression"</p>
+  <br>
+  <pre>
+    <code>{{text1}}</code>
+  </pre>
+  <br>
+
+  <span style="font-size: 2rem;" class="pb-0">PROPERTY BINDING</span>
+  <div class="border-b1"></div>
+  <br>
+  <p>Cần truyền data cho một property nào đó!</p>
+  <p>Đối với DOM(Document Object Model) chúng ta có 2 khái niệm khác nhau là property và attribute.</p>
+  <p>Khi browser load trang web,
+    nó sẽ parse phần HTML và xây dựng nên một cây DOM để biểu diễn phần HTML đang được dựng và
+    cho phép tương tác với phần HTML đó bằng Javascript thông qua DOM.</p>
+  <p>Ví dụ một object(node) thuộc type HTMLInputElement</p>
+  <br>
+  <pre>
+    <code>{{text2}}</code>
+  </pre>
+  <p>Attribute được dùng để chỉ những gì được đặt vào phần opening tag còn lại là property của object.
+    Các attribute sẽ được lưu vào property attribute của node tương ứng.
+    Có những attribute sẽ được map sang thành property tương ứng, ví dụ như type và value(như trên),
+    có những attribute không được map sang ví dụ: class sẽ thành className, chúng không có quan hệ 1-1 với nhau.
+  </p>
+  <p>Trong Angular chẳng hạn chúng ta muốn thay đổi data ở cùng 1 template lúc hiển thị:
+  </p>
+  <pre>
+    <code>{{text3}}</code>
+  </pre>
+  <br>
 </div>

@@ -10,12 +10,15 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { MaterialExampleModule } from './material/material.module';
 import { MatNativeDateModule } from '@angular/material/core';
+import { AceEditorModule } from 'ng2-ace-editor';
+import { FooterComponent } from './components/layouts/footer/footer.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     DataBindingComponent,
     SidenavComponent,
+    FooterComponent,
   ],
   imports: [
     AppRoutingModule,
@@ -26,6 +29,7 @@ import { MatNativeDateModule } from '@angular/material/core';
     MatNativeDateModule,
     MaterialExampleModule,
     ReactiveFormsModule,
+    AceEditorModule
   ],
   providers: [],
   bootstrap: [AppComponent]
