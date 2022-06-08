@@ -7,9 +7,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class DataBindingComponent implements OnInit {
 
+  name: string = "Minh Thang";
+  name2way: string = "Minh Thang";
   text1: any;
   text2: any;
   text3: any;
+  text4: any;
+  text5: any;
+  listName = ["Nam", "Quỳnh", "Hòa", "Tuấn Anh", "Dũng"];
   constructor() { }
 
   ngOnInit(): void {
@@ -33,8 +38,37 @@ export class DataBindingComponent implements OnInit {
       // … các thuộc tính, method khác
   }
     `;
+
     this.text3 = `
-    <input type="text" [value]="user.name" />`;
+    <input type="text" [value]="name" />`;
+
+    this.text4 = `
+    Template:
+    <h2>Hello there!</h2>
+    <button (click)="showInfo()">Click me!</button>
+    
+    TS:
+    showInfo() {
+      alert("Inside Angular Component method");
+    }
+    `;
+
+    this.text5 = `
+    Two-way binding:
+    <input type="text" [(ngModel)]="name" />
+    
+    Tương ứng với: 
+    <input type="text" [ngModel]="name" (ngModelChange)="name = $event" />
+    `;
+  }
+
+  randomeName() {
+    let random = Math.floor(Math.random() * 4);
+    this.name = this.listName[random];
+  }
+
+  showInfo() {
+    alert("Bạn vừa bấm vào button Click me!");
   }
 
 }

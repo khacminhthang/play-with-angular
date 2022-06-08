@@ -4,7 +4,7 @@
   <p>Ràng buộc dữ liệu giữa view và model</p>
   <p>Thuật toán Change Detecion chịu trách nghiệm giữ sự đồng bộ này</p>
   <br>
-
+  <!-- INTERPOLATION -->
   <span style="font-size: 2rem;" class="pb-0">INTERPOLATION</span>
   <div class="border-b1"></div>
   <br>
@@ -14,7 +14,7 @@
     <code>{{text1}}</code>
   </pre>
   <br>
-
+  <!-- PROPERTY BINDING -->
   <span style="font-size: 2rem;" class="pb-0">PROPERTY BINDING</span>
   <div class="border-b1"></div>
   <br>
@@ -38,5 +38,47 @@
   <pre>
     <code>{{text3}}</code>
   </pre>
+  <div class="d-flex mb-2">
+    <input type="text" class="form-control w-25" placeholder="Username" aria-label="Username"
+      aria-describedby="basic-addon1" [value]="name">
+    <button type="button" class="btn btn-primary" style="margin-left: 20px;" (click)="randomeName()">Random
+      Name</button>
+  </div>
+  <p><strong>Lưu ý:</strong> ngoài property binding cho các phần tử HTML, chúng ta cũng có thể áp dụng property binding
+    cho các component.</p>
+  <br>
+  <!-- EVENT BINDING -->
+  <span style="font-size: 2rem;" class="pb-0">EVENT BINDING</span>
+  <div class="border-b1"></div>
+  <br>
+  <p>Khi một event xảy ra chúng ta muốn thực hiện một task nào đó.
+    Với Javascript thuần chúng ta sẽ sử dụng addEventListener.
+    Với Angular chúng ta có Event binding để gắn event listener vào một phần tử nào đó trên template với cú pháp như
+    sau:
+  </p>
+  <pre>
+    <code>{{text4}}</code>
+  </pre>
+  <p>Khi bấm vào button "Click me!" chúng ta muốn hiển thị alert cho người dùng thấy
+    <button type="button" class="btn btn-primary" (click)="showInfo()">Click me!</button>
+  </p>
+  <br>
+  <!-- TWO-WAY BINDING -->
+  <span style="font-size: 2rem;" class="pb-0">TWO-WAY BINDING</span>
+  <div class="border-b1"></div>
+  <br>
+  <p>Two-way binding chính là sự kết hợp giữa việc binding dữ liệu từ ts.class ra template thông qua property binding,
+    và từ template vào ts.class thông qua event binding.
+  </p>
+  <p>Cú pháp như sau
+  </p>
+  <pre>
+     <code>{{text5}}</code>
+   </pre>
+  <div class="d-flex mb-2">
+    <input type="text" class="form-control w-25" placeholder="name2way" aria-label="name2way"
+      aria-describedby="basic-addon1" [(ngModel)]="name2way">
+  </div>
+  <p><strong>Tên bạn nhập</strong> {{name2way}}</p>
   <br>
 </div>
