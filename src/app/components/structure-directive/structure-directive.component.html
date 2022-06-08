@@ -3,6 +3,7 @@
   <br>
   <p>Dùng để thêm, xóa, thay đổi structure trên view của Components</p>
   <br>
+
   <!-- CẤU TRÚC IF-ELSE -->
   <span style="font-size: 2rem;" class="pb-0">CẤU TRÚC IF-ELSE</span>
   <div class="border-b1"></div>
@@ -36,11 +37,94 @@
   <div class="border-b1"></div>
   <br>
   <p>Tag ng-template được cung cấp bởi Angular, nó sẽ lưu trữ một Template được định nghĩa bên trong nó.</p>
-  <p>Những gì được định nghĩa bên trong đó sẽ không được hiển thị ra view, nhưng chúng ta có thể sử dụng Template đó để render bằng code</p>
+  <p>Những gì được định nghĩa bên trong đó sẽ không được hiển thị ra view, nhưng chúng ta có thể sử dụng Template đó để
+    render bằng code</p>
   <p>Đoạn code trên tương đương với</p>
   <br>
   <pre>
       <code>{{text2}}</code>
   </pre>
   <br>
+
+  <!-- NGFOROF -->
+  <span style="font-size: 2rem;" class="pb-0">NGFOROF</span>
+  <div class="border-b1"></div>
+  <br>
+  <p>Để hiển thị một danh sách các phần tử ra ngoài template, thực hiện vòng lặp ở template.</p>
+  <p>Giả sử chúng ta có một danh sách các nhân viên như sau.</p>
+  <br>
+  <pre>
+      <code>{{text3}}</code>
+  </pre>
+  <p>Cú pháp sử dụng NgForOf.</p>
+  <br>
+  <pre>
+      <code>{{text4}}</code>
+  </pre>
+  <p>Hiển thị danh sách nhân viên bằng NgForOf
+  </p>
+  <div *ngFor="let e of employees">
+    {{e.id}} - {{e.firstName}} {{e.lastName}}
+  </div>
+  <br>
+
+  <!-- MỘT SỐ LOCAL VARIABLE TRONG MỘT NGFOROF TEMPLATE -->
+  <span style="font-size: 2rem;" class="pb-0">MỘT SỐ LOCAL VARIABLE TRONG MỘT NGFOROF TEMPLATE</span>
+  <div class="border-b1"></div>
+  <br>
+  <p>Khi sử dụng NgForOf, ở mỗi vòng lặp chúng ta sẽ có thể truy xuất đến một số local variable như:</p>
+  <br>
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th>Term</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>$implicit: T</td>
+        <td>Giá trị của phần tử trong danh sách ở lần lặp hiện tại</td>
+      </tr>
+      <tr>
+        <td>index: number</td>
+        <td>index của lần lặp hiện tại</td>
+      </tr>
+      <tr>
+        <td>count: number</td>
+        <td>số lượng phần tử trong danh sách</td>
+      <tr>
+        <td>first: boolean</td>
+        <td>True nếu đây là phần tử đầu tiên trong danh sách</td>
+      <tr>
+        <td>last: boolean</td>
+        <td>True nếu đây là phần tử cuối cùng trong danh sách</td>
+      <tr>
+        <td>even: boolean</td>
+        <td>True nếu đây là phần tử ở index chẵn</td>
+      <tr>
+        <td>odd: boolean</td>
+        <td>True nếu đây là phần tử ở index lẻ</td>
+      </tr>
+    </tbody>
+  </table>
+  <p>Cú pháp sử dụng</p>
+  <br>
+  <pre>
+      <code>{{text5}}</code>
+  </pre>
+  <br>
+
+    <!-- SỬ DỤNG NHIỀU STRUCUTRE DIRECTIVE TRÊN CÙNG MỘT PHẦN TỬ -->
+    <span style="font-size: 2rem;" class="pb-0">SỬ DỤNG NHIỀU STRUCUTRE DIRECTIVE TRÊN CÙNG MỘT PHẦN TỬ</span>
+    <div class="border-b1"></div>
+    <br>
+    <p>Không thể đặt nhiều hơn một structure directive lên một phần tử.</p>
+    <p>Chúng ta có thể tách chúng ra và sử dụng thêm 1 tầng wrapper nữa</p>
+    <br>
+    <pre>
+        <code>{{text6}}</code>
+    </pre>
+    <br>
+  
 </div>
