@@ -13,6 +13,10 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { AceEditorModule } from 'ng2-ace-editor';
 import { FooterComponent } from './components/layouts/footer/footer.component';
 import { StructureDirectiveComponent } from './components/structure-directive/structure-directive.component';
+import { AttributeDirectiveComponent } from './components/attribute-directive/attribute-directive.component';
+import { ComponentInteractionComponent } from './components/component-interaction/component-interaction.component';
+import { ShowNameComponent } from './components/component-interaction/show-name/show-name.component';
+import { ComponentInteractionP2Component } from './components/component-interaction-p2/component-interaction-p2.component';
 
 @NgModule({
   declarations: [
@@ -21,6 +25,10 @@ import { StructureDirectiveComponent } from './components/structure-directive/st
     SidenavComponent,
     FooterComponent,
     StructureDirectiveComponent,
+    AttributeDirectiveComponent,
+    ComponentInteractionComponent,
+    ShowNameComponent,
+    ComponentInteractionP2Component,
   ],
   imports: [
     AppRoutingModule,

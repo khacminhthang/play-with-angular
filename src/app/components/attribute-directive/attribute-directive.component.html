@@ -1,0 +1,107 @@
+<div>
+  <h1 style="font-size: 3rem;">ANGULAR ATTRIBUTE DIRECTIVE</h1>
+  <br>
+  <p>Dùng để thay đổi cách hiển thị (style) hoặc hành vi của một DOM element/Component/Directive khác.</p>
+  <br>
+
+  <!-- CLASS BINDING -->
+  <span style="font-size: 2rem;" class="pb-0">CLASS BINDING</span>
+  <div class="border-b1"></div>
+  <br>
+  <p>Khi chúng ta muốn thay đổi (thêm, xóa) một số class tùy thuộc vào một số điều kiện nào đó.</p>
+  <p>Ví dụ:</p>
+  <br>
+  <pre>
+        <code>{{text1}}</code>
+    </pre>
+  <p>Với giá trị isTabActive là true thì classList của div đó sẽ tồn tại class tab-active, còn nếu là false thì sẽ không
+    tồn tại.
+  </p>
+  <p>Ngoài cú pháp trên chúng ta có thể dùng:</p>
+  <pre>
+    <code>{{text2}}</code>
+  </pre>
+  <p>Với classExpr có thể là string, array string hoặc object - nếu key nào của object là truthy thì sẽ thêm vào, nếu
+    fasly thì sẽ xóa đi.</p>
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Value</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>String</td>
+        <td>"my-class-1 my-class-2 my-class-3"</td>
+      </tr>
+      <tr>
+        <td>Array String</td>
+        <td>['foo', 'bar']</td>
+      </tr>
+      <tr>
+        <td>Object</td>
+        <td>foo: true, bar: false}</td>
+    </tbody>
+  </table>
+  <p>Tương tự class binding chúng ta có thể sử dụng ngClass, nhưng ngClass cũng không có gì khác biệt với
+    [class]="classExpr".Và cách sử dụng Class Binding vẫn được khuyến cáo sử dụng hơn ngClass</p>
+  <p>Ví dụ về class binding: Chúng ta có một div được set backgroup-color phụ thuộc vào điều kiện của biến isRedColor
+    (true hoặc false).
+    Nếu biến isRedColor trả về true thì set background-color của div là red ngược lại set là blue.
+    Chúng ta sẽ tạo thêm 1 button để có thể thay đổi giá trị của biến isRedColor
+  </p>
+  <div class="d-flex">
+    <div style="width: 100px; height: 100px;" [class]="{red: isRedColor, blue: !isRedColor}"></div>
+    <div><button type="button" class="btn btn-primary btn-sm" (click)="isRedColor =!isRedColor">Change BG
+        Color</button></div>
+  </div>
+  <br>
+
+  <!-- STYLE BINDING -->
+  <span style="font-size: 2rem;" class="pb-0">STYLE BINDING</span>
+  <div class="border-b1"></div>
+  <br>
+  <p>Chúng ta có thể binding cho style property (inline style).</p>
+  <p>Cấu trúc của style binding như sau: [style.property]="expression"</p>
+  <p>Với expression sẽ tính toán trả về các kiểu
+    string | undefined | null.</p>
+  <br>
+  <pre>
+        <code>{{text3}}</code>
+    </pre>
+  <p>Tiếp theo là cú pháp kèm theo unit: [style.property.unit]=”expression”</p>
+  <p>Với expression sẽ tính toán trả về các giá trị kiểu number | undifined | null</p>
+  <br>
+  <pre>
+          <code>{{text4}}</code>
+  </pre>
+  <p>Cuối cùng là cú pháp dạng: [style]=”styleExpr”</p>
+  <p>Với styleExpr là một trong các dạng:</p>
+  <br>
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Value</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>String</td>
+        <td>""width: 100%; height: 100%""</td>
+      </tr>
+      <tr>
+        <td>Array String</td>
+        <td>['width', '100px']</td>
+      </tr>
+      <tr>
+        <td>Object</td>
+        <td>[key: string]: string | undefined | null} như width: '100px', height: '100px'}</td>
+    </tbody>
+  </table>
+  <p>Có một directive tương tự là ngStyle với cách dùng gấn giống thế, trong hầu hết các trường hợp, chúng ta được
+    khuyến cáo sử dụng style binding thay thế. Lưu ý rằng, một style property có thể dùng cả kiểu dash-key hoặc
+    camelCase, ví dụ font-size hoặc fontSize đều được.</p>
+  <br>
+</div>

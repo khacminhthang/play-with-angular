@@ -1,0 +1,51 @@
+<div>
+  <h1 style="font-size: 3rem;">PASS DATA FROM PARENT TO CHILD WITH INPUT BINDING</h1>
+  <br>
+  <p>Khi chúng ta muốn truyền properties vào component, component tùy thuộc vào properties để hiển thị, xử lý tương ứng.
+    Component sẽ có tính tái sử dụng cao hơn.</p>
+  <br>
+
+  <!-- @INPUT DECORATOR -->
+  <span style="font-size: 2rem;" class="pb-0">@INPUT DECORATOR</span>
+  <div class="border-b1"></div>
+  <br>
+  <p>Ví dụ chúng ta sẽ tạo 1 component để show ra tên tùy thuộc vào prooerty name được truyền vào</p>
+  <br>
+  <pre>
+          <code>{{text1}}</code>
+      </pre>
+  <p>Show name with input property name: Thắng</p>
+  <app-show-name [name]="'Thắng'"></app-show-name>
+  <p>Show name with input property name: Lisa</p>
+  <app-show-name [name]="'Lisa'"></app-show-name>
+  <p>Với giá trị isTabActive là true thì classList của div đó sẽ tồn tại class tab-active, còn nếu là false thì sẽ không
+    tồn tại.
+  </p>
+  <br>
+
+  <!-- NGONINIT VS CONSTRUCTOR -->
+  <span style="font-size: 2rem;" class="pb-0">NGONINIT VS CONSTRUCTOR</span>
+  <div class="border-b1"></div>
+  <br>
+  <p>Constructor là hàm tạo của class, nó là một function đặc biệt mà khi bạn khởi tạo một instance của class thì nó sẽ
+    được tự động chạy, và chỉ chạy duy nhất 1 lần.</p>
+  <p>ngOninit là một life-cycle method, nó được Angular tự động gọi khi component được khởi tạo, sau khi constructor
+    chạy và sau khi các input đã được binding. Do đó nếu binding cho một property ở template của component cha, thì ở
+    contructor của component con bạn sẽ chưa nhận được giá trị đã binding, nhưng ở ngOninit thì có thể nhận được.</p>
+  <p>Nên hạn chế code ở contructor dùng ngOninit để lo tiếp việc còn lại</p>
+  <br>
+
+  <!-- THAY ĐỔI GIÁ TRỊ CỦA INPUT. -->
+  <span style="font-size: 2rem;" class="pb-0">THAY ĐỔI GIÁ TRỊ CỦA INPUT.</span>
+  <div class="border-b1"></div>
+  <br>
+  <p>Trong trường hợp chúng ta muốn validate dữ liệu input được binding xem có hợp lệ không?</p>
+  <p>Chúng ta có thể validate ở ngOninit được nhưng hàm này chỉ chạy 1 lần và sẽ ko chạy lại, sẽ không catch được các
+    thay đổi tiếp theo. Ở đây chúng ta nên sử dụng 1 life cycle tiếp theo là ngOnChanges</p>
+  <p>ngOnChanges sẽ chạy lại mỗi khi một input nào đó bị thay đổi.
+  </p>
+  <pre>
+    <code>{{text2}}</code>
+</pre>
+  <br>
+</div>
