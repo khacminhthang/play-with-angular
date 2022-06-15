@@ -17,6 +17,7 @@ import { AttributeDirectiveComponent } from './components/attribute-directive/at
 import { ComponentInteractionComponent } from './components/component-interaction/component-interaction.component';
 import { ShowNameComponent } from './components/component-interaction/show-name/show-name.component';
 import { ComponentInteractionP2Component } from './components/component-interaction-p2/component-interaction-p2.component';
+import { TemplateVariableComponent } from './components/template-variable/template-variable.component';
 
 @NgModule({
   declarations: [
@@ -29,6 +30,7 @@ import { ComponentInteractionP2Component } from './components/component-interact
     ComponentInteractionComponent,
     ShowNameComponent,
     ComponentInteractionP2Component,
+    TemplateVariableComponent,
   ],
   imports: [
     AppRoutingModule,

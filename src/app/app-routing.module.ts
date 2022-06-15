@@ -5,6 +5,7 @@ import { ComponentInteractionP2Component } from './components/component-interact
 import { ComponentInteractionComponent } from './components/component-interaction/component-interaction.component';
 import { DataBindingComponent } from './components/data-binding/data-binding.component';
 import { StructureDirectiveComponent } from './components/structure-directive/structure-directive.component';
+import { TemplateVariableComponent } from './components/template-variable/template-variable.component';
 
 const routes: Routes = [
   {
@@ -30,6 +31,10 @@ const routes: Routes = [
   {
     path: 'component-interaction-p2',
     component: ComponentInteractionP2Component
+  },
+  {
+    path: 'template-variable',
+    component: TemplateVariableComponent
   },
 ];
 

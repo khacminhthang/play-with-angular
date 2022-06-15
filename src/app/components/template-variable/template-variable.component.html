@@ -1,0 +1,26 @@
+<div>
+  <h1 style="font-size: 3rem;">TEMPLATE VARIABLE AND VIEWCHILD/VIEWCHILDREN</h1>
+  <br>
+  <p>Chúng ta có 1 component cha(user-list) chứa danh sách users và nó sẽ truyền từng user cho component con
+    (user-detail) để hiển thị. User-detail sẽ cho phép truyền vào input là thông tin của 1 user</p>
+  <p>User-list Component</p>
+  <pre>
+        <code>{{text1}}</code>
+    </pre>
+  <p>User-detail Component</p>
+  <pre>
+        <code>{{text2}}</code>
+    </pre>
+  <p>Chúng ta muốn xóa user trong user-detail component? Vì dữ liệu users không nằm trong compomemt này nên thực tế nó
+    sẽ không được phép edit/update/delete, chúng ta sẽ gửi 1 event cho component cha (user-list) để báo rằng chúng ta
+    muốn xóa user này</p>
+  <p>Để làm được điều này chúng ta sẽ cần dùng đến EvenEmitter và @Output decorator</p>
+  <pre>
+      <code>{{text3}}</code>
+  </pre>
+  <p>Giờ đây ở parent component có thể listen vào event trên và tương tác được với nó.</p>
+  <pre>
+      <code>{{text4}}</code>
+  </pre>
+  <br>
+</div>
