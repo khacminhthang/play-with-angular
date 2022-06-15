@@ -1,26 +1,60 @@
 <div>
   <h1 style="font-size: 3rem;">TEMPLATE VARIABLE AND VIEWCHILD/VIEWCHILDREN</h1>
   <br>
-  <p>Chúng ta có 1 component cha(user-list) chứa danh sách users và nó sẽ truyền từng user cho component con
-    (user-detail) để hiển thị. User-detail sẽ cho phép truyền vào input là thông tin của 1 user</p>
-  <p>User-list Component</p>
+  <p>Khi cần trỏ đến một phần tử (HTMLElement, component, directive) ở trong template và thao tác trực tiếp lên nó.</p>
+  <p>Tạo ra một "variable" ở trong template và sử dụng nó.</p>
+  <br>
+
+  <!-- Parent interacts with child via local variable -->
+  <span style="font-size: 2rem;" class="pb-0">Parent interacts with child via local variable</span>
+  <div class="border-b1"></div>
+  <br>
+  <p>Giả sử chúng ta có một ToggleComponent được đặt trong AppComponent</p>
+  <p>Thay vì click vào ToggleComponent để thay đổi trạng thái của nó thì chúng ta sẽ dùng 1 button ở parent
+    (Appcomponent):</p>
+  <br>
   <pre>
-        <code>{{text1}}</code>
-    </pre>
-  <p>User-detail Component</p>
+     <code>{{text1}}</code>
+   </pre>
+  <br>
+  <p>Làm thế nào để chúng ta có thể gọi được method toggle() của ToggleComponent?</p>
+  <p>Chúng ta có thể sử dụng Template variable với cú pháp</p>
+  <br>
   <pre>
-        <code>{{text2}}</code>
-    </pre>
-  <p>Chúng ta muốn xóa user trong user-detail component? Vì dữ liệu users không nằm trong compomemt này nên thực tế nó
-    sẽ không được phép edit/update/delete, chúng ta sẽ gửi 1 event cho component cha (user-list) để báo rằng chúng ta
-    muốn xóa user này</p>
-  <p>Để làm được điều này chúng ta sẽ cần dùng đến EvenEmitter và @Output decorator</p>
+     <code>{{text2}}</code>
+   </pre>
+  <br>
+  <p>Cú pháp của Template variable chính là sử dụng #varName và bạn có thể tạo nhiều variable trong template.</p>
+  <button type="button" class="btn btn-primary" (click)="toggleComp.toggle()">Toggle</button>
+  <app-toggle #toggleComp></app-toggle>
+  <br>
+
+  <!-- Template variable sẽ là instance của class nào? -->
+  <span style="font-size: 2rem;" class="pb-0">Template variable sẽ là instance của class nào?</span>
+  <div class="border-b1"></div>
+  <br>
+  <p>Thông thường, một element trong template của một component sẽ có thể là một HTMLElement, hoặc một Component. Nhưng
+    có những trường hợp sẽ có nhiều Directives cùng được đặt vào một element, vậy Template variable sẽ cho chúng ta một
+    object thuộc kiểu nào?</p>
+  <p>Mặc định Template variable mà không có expression #varName sẽ cố gắng lấy về một object, trong đó đối với
+    HTMLElement thì object đó chính là HTMLElement, còn với Component thì chính là instance của Component đó</p>
+  <p>Trong một số trường hợp bạn cần lấy chính xác một instance của một directive/component nào đó thì bạn sẽ cần sử
+    dụng cú pháp #varName="exportAsOfDirectiveOrComponent", ví dụ như khi làm việc với FormsModule và ngModel, bạn có
+    thể nhìn thấy cú pháp sau:</p>
+  <br>
   <pre>
       <code>{{text3}}</code>
-  </pre>
-  <p>Giờ đây ở parent component có thể listen vào event trên và tương tác được với nó.</p>
+    </pre>
+  <br>
+  <p>Làm thế nào để chúng ta có thể gọi được method toggle() của ToggleComponent?</p>
+  <p>Chúng ta có thể sử dụng Template variable với cú pháp</p>
+  <br>
   <pre>
-      <code>{{text4}}</code>
-  </pre>
+      <code>{{text2}}</code>
+    </pre>
+  <br>
+  <p>Cú pháp của Template variable chính là sử dụng #varName và bạn có thể tạo nhiều variable trong template.</p>
+  <button type="button" class="btn btn-primary" (click)="toggleComp.toggle()">Toggle</button>
+  <app-toggle #toggleComp></app-toggle>
   <br>
 </div>

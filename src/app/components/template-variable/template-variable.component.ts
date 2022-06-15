@@ -57,44 +57,28 @@ export class TemplateVariableComponent implements OnInit {
 
   ngOnInit(): void {
     this.text1 = `
-  VIEW: 
-    <app-user-detail
-    *ngFor="let user of users"
-    [user]="user"
-  ></app-user-detail>
+    <button (click)="doSomething">Toggle</button>
 
-  TS class
-  export class userListComponent implements OnInit {
-    users = users;
-    constructor() {}
-    ngOnInit() {}
-  }
+    <br>
+    
+    <app-toggle></app-toggle>
     `;
     this.text2 = `
-    VIEW: 
-    <div *ngIf="user">
-      <strong>{{ user.firstName }} {{ user.lastName }}</strong>
-      <button (click)="handleDelete()">x</button>
-    </div>
+    <button (click)="toggleComp.toggle()">Toggle</button>
 
-  TS class
-  export class UserDetailComponent implements OnInit {
-    @Input() user: user;
-    constructor() {}
-    ngOnInit() {}
-    handleDelete() {}
-  }
+    <br>
+
+    <app-toggle #toggleComp></app-toggle>
     `;
     this.text3 = `
-    export class UserDetailComponent implements OnInit {
-      @Input() user: user;
-      @Output() deleteuser = new EventEmitter<user>();
-      constructor() {}
-      ngOnInit() {}
-      handleDelete() {
-        this.deleteuser.emit(this.user);
-      }
-    }
+  <form #nameForm="ngForm">
+    <input
+      type="text" class="form-control"
+      required
+      [(ngModel)]="model.name" name="name"
+      #name="ngModel">
+    <button>Submit</button>
+  </form>
       `;
     this.text4 = `
     VIEW: 
