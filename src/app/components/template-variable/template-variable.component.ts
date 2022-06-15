@@ -13,6 +13,7 @@ export class TemplateVariableComponent implements OnInit {
   text4: any;
   text5: any;
   text6: any;
+  text7: any;
 
   isRedColor: boolean = true;
 
@@ -82,34 +83,44 @@ export class TemplateVariableComponent implements OnInit {
       `;
     this.text4 = `
     VIEW: 
-  <app-user-detail
-    *ngFor="let user of users"
-    [user]="user"
-    (deleteuser)="handleDelete($event)"
-  >
-  </app-user-detail>
+    <button (click)="toggleInside()">Toggle inside class</button>
+    <br>
+    <br>
+    
+    <app-toggle #toggleComp></app-toggle>
 
   TS class
-  export class UserListComponent implements OnInit {
-    users = users;
-    constructor() {}
-    ngOnInit() {}
-    handleDelete(user: user) {
-      this.users = this.users.filter((item) => item.id !== user.id);
+  export class AppComponent  {
+    @ViewChild('toggleComp') toggleComp: ToggleComponent;
+    toggleInside() {
+      this.toggleComp.toggle();
     }
+  }
       `;
     this.text5 = `
-  <div *ngFor="let employee of employees; index as idx; count as total">
-  ({{idx}})/({{total}}): {{employee.id}} - {{employee.firstName}}
-  {{employee.lastName}}
-  </div>
+    <div #chartContainer></div>
+
+    export class AppComponent  {
+      @ViewChild('chartContainer') container: ElementRef<HTMLDivElement>;
+    }
       `;
     this.text6 = `
-  <div *ngFor="”let" item of list”>
-    <div *ngIf="”somethingGoood”">
-      More code
-    </div>
-  </div>
+    // View queries are set before the ngAfterViewInit callback is called.
+    ViewChild(selector: string | Function | Type<any>, opts?: {
+      read?: any;
+      static?: boolean;
+    })
+      `;
+    this.text7 = `
+    <app-toggle></app-toggle>
+    <br>
+    <app-toggle></app-toggle>
+
+    @ViewChildren(ToggleComponent) toggleList: QueryList<ToggleComponent>;
+
+    ngAfterViewInit() {
+      console.log(this.toggleList);
+    }
       `;
   }
 

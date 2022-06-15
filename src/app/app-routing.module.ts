@@ -6,6 +6,8 @@ import { ComponentInteractionComponent } from './components/component-interactio
 import { DataBindingComponent } from './components/data-binding/data-binding.component';
 import { StructureDirectiveComponent } from './components/structure-directive/structure-directive.component';
 import { TemplateVariableComponent } from './components/template-variable/template-variable.component';
+import { TypescriptAdvTypeComponent } from './components/typescript-adv-type/typescript-adv-type.component';
+import { TypescriptDataTypeComponent } from './components/typescript-data-type/typescript-data-type.component';
 
 const routes: Routes = [
   {
@@ -35,6 +37,14 @@ const routes: Routes = [
   {
     path: 'template-variable',
     component: TemplateVariableComponent
+  },
+  {
+    path: 'typescript-data-type',
+    component: TypescriptDataTypeComponent
+  },
+  {
+    path: 'typescript-adv-type',
+    component: TypescriptAdvTypeComponent
   },
 ];
 

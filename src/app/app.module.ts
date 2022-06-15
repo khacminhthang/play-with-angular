@@ -18,6 +18,9 @@ import { ComponentInteractionComponent } from './components/component-interactio
 import { ShowNameComponent } from './components/component-interaction/show-name/show-name.component';
 import { ComponentInteractionP2Component } from './components/component-interaction-p2/component-interaction-p2.component';
 import { TemplateVariableComponent } from './components/template-variable/template-variable.component';
+import { ToggleComponent } from './components/template-variable/toggle/toggle.component';
+import { TypescriptDataTypeComponent } from './components/typescript-data-type/typescript-data-type.component';
+import { TypescriptAdvTypeComponent } from './components/typescript-adv-type/typescript-adv-type.component';
 
 @NgModule({
   declarations: [
@@ -31,6 +34,9 @@ import { TemplateVariableComponent } from './components/template-variable/templa
     ShowNameComponent,
     ComponentInteractionP2Component,
     TemplateVariableComponent,
+    ToggleComponent,
+    TypescriptDataTypeComponent,
+    TypescriptAdvTypeComponent
   ],
   imports: [
     AppRoutingModule,
@@ -42,6 +48,9 @@ import { TemplateVariableComponent } from './components/template-variable/templa
     MaterialExampleModule,
     ReactiveFormsModule,
     AceEditorModule
+  ],
+  entryComponents:[
+    ToggleComponent
   ],
   providers: [],
   bootstrap: [AppComponent]

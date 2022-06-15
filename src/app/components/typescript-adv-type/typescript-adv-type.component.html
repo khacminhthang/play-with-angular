@@ -1,0 +1,76 @@
+<div>
+  <h1 style="font-size: 3rem;">TYPESCRIPT ADVANCED TYPE</h1>
+  <br>
+
+  <!-- Union Type -->
+  <span style="font-size: 2rem;" class="pb-0">Union Type</span>
+  <div class="border-b1"></div>
+  <br>
+  <p>Union Type là những types mang tính chất: EITHER OR(Hoặc cái này hoặc cái kia). Để viết Union type chúng ta dùng
+    Pipe Symbol ( | )</p>
+  <p>Ví dụ chúng ta có một hàm listen() như sau:</p>
+  <br>
+  <pre>
+        <code>{{text1}}</code>
+      </pre>
+  <br>
+
+  <p><strong>typeof</strong></p>
+  <p>Trả về kiểu dữ liệu của biến</p>
+  <br>
+  <pre>
+          <code>{{text2}}</code>
+        </pre>
+  <br>
+  <p>Quay trở lại hàm listen(), hàm listen() nhận vào 1 tham số port có type là unknown, nghĩa là chúng ta truyền vào 1
+    tham số với type nào đó mà chúng ta chưa biết (unknown) tại thời điểm viết code. Nói cách khác, hàm listen() trên có
+    thể nhận: string, number, boolean, array, object, và function (kể cả undefined và null).</p>
+  <p>Vậy là chúng ta đã biết unknown là type như thế nào: bất cứ giá trị nào cũng có thể gán được cho unknown. Điều này
+    thật sự không hay tí nào, vì implementation của hàm listen() chỉ xử lý 2 types là string và number mà thôi. Giờ xử
+    lý như thế nào? Cách tốt nhất là dùng Union Type. Chúng ta sẽ viết lại hàm listen() như sau:</p>
+  <br>
+  <pre>
+    <code>{{text3}}</code>
+  </pre>
+  <br>
+  <p>TS sẽ báo (Compilation Time Error) ngay nếu như truyền vào 1 boolean (không phải string HOẶC number) hoặc không
+    truyền vào gì khi gọi hàm listen().</p>
+  <br>
+  <p>Tương tự như tạo Union Type cho tham số, các bạn cũng có thể tạo Union Type cho giá trị trả về của hàm nhé.</p>
+  <br>
+  <pre>
+          <code>{{text5}}</code>
+        </pre>
+  <br>
+  <p>Để tái sử dụng (reuse) 1 Union Type bất kỳ, các bạn có thể tạo Type Alias cho Union Type đó.</p>
+  <br>
+  <pre>
+          <code>{{text6}}</code>
+        </pre>
+  <br>
+
+  <!-- Intersection Type-->
+  <span style="font-size: 2rem;" class="pb-0">Intersection Type</span>
+  <div class="border-b1"></div>
+  <br>
+  <p>Ngược với Union Type, Intersection Type là type mà kết hợp nhiều type lại với nhau. Nói cách khác, Intersection
+    Type là type có tính chất: AND (dịch nôm na là và).</p>
+  <br>
+  <pre>
+          <code>{{text7}}</code>
+        </pre>
+  <br>
+  <p>Hàm merge( foo: 'bar' }, bar: 'foo' }) này sẽ có giá trị trả về là foo: string } & bar: string }.</p>
+  <p>Ngoài những cách sử dụng thông thường trong function hoặc trong những đoạn code mà khái niệm OOP thông thường không
+    áp dụng được thì Intersection Type được dùng rất nhiều trong việc thiết kế hệ thống type cho những thư viện UI
+    Components. Ví dụ:</p>
+  <br>
+  <pre>
+            <code>{{text8}}</code>
+          </pre>
+  <br>
+  <p>Những Component này có những type Style khác nhau, nhưng cũng có những type cơ bản giống nhau. Ví dụ như Text sẽ có
+    thêm fontSize, fontWeight còn Button sẽ có onClick. Tác giả của những thư viện UI này sẽ sử dụng Intersection Type
+    để viết thư viện UI của họ mà không phải lặp đi lặp lại nhiều 1 số type giống nhau. Cách dùng Intersection Type này
+    còn có tên gọi khác là Type Composition.</p>
+</div>

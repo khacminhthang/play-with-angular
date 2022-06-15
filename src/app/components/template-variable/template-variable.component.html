@@ -57,4 +57,50 @@
   <button type="button" class="btn btn-primary" (click)="toggleComp.toggle()">Toggle</button>
   <app-toggle #toggleComp></app-toggle>
   <br>
+
+  <!-- Parent class with ViewChild -->
+  <span style="font-size: 2rem;" class="pb-0">Parent class with ViewChild</span>
+  <div class="border-b1"></div>
+  <br>
+  <p>Khi chúng ta muốn gọi đến Template variable ở trong class của một component thì sao?</p>
+  <p>Lúc này chúng ta có thể query một Template variable ở trong Component như sau:</p>
+  <br>
+  <pre>
+       <code>{{text4}}</code>
+     </pre>
+  <br>
+  <p>Nếu sử dụng ViewChild cho một HTMLElement thì chúng ta sẽ nhận được một ElementRef thay vì một HTMLElement như sử
+    dung ở trong template</p>
+  <br>
+  <pre>
+       <code>{{text5}}</code>
+     </pre>
+  <br>
+  <p><strong>Lưu ý</strong> Ngoài những thiết lập mặc định ở trên cho ViewChild, chúng ta còn có thể truyền vào config
+    cho nó với các thông số chi tiết trong link sau:</p>
+  <a href="https://angular.io/api/core/ViewChild">https://angular.io/api/core/ViewChild</a>
+  <p>Cú pháp có thể sử dụng như sau</p>
+  <br>
+  <pre>
+       <code>{{text6}}</code>
+     </pre>
+  <p>opts.static nếu selector không nằm trong if/else hay trong một structure directive nào thì chúng ta có thể gọi nó
+    là static: false, tức là nó không thay đổi trong suốt thời gian sống của component.Lúc này Angular sẽ chạy phần
+    resolve query result trước khi chạy Change Detection nên chúng ta có thể truy cập nó ngOnInit như ở trên. nêu
+    static:false (giá trị mặc định) thì tiến trình trên sẽ chạy sau khi chạy Change Detection nên bạn không thể dùng nó
+    ở ngOnInit mà phải chạy ở ngAfterViewInit</p>
+  <br>
+
+  <!-- Parent class with ViewChildren -->
+  <span style="font-size: 2rem;" class="pb-0">Parent class with ViewChildren</span>
+  <div class="border-b1"></div>
+  <br>
+  <p>Khi muốn query danh sách các element thì có thể dùng VirewChildren.</p>
+  <p>ViewChildren sẽ trả về một QueryList trước khi ngAfterViewInit được chạy. Nó sẽ chứa một số property/method để
+    chúng ta có thể listen vào một số event (Observable)</p>
+  <br>
+  <pre>
+      <code>{{text7}}</code>
+    </pre>
+  <br>
 </div>

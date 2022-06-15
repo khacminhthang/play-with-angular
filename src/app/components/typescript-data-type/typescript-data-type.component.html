@@ -1,0 +1,97 @@
+<div>
+  <h1 style="font-size: 3rem;">TYPESCRIPT DATA TYPE</h1>
+  <br>
+
+  <!-- TypeScript là gì? -->
+  <span style="font-size: 2rem;" class="pb-0">TypeScript là gì?</span>
+  <div class="border-b1"></div>
+  <br>
+  <p>TS là một superset của Javascript(JS). Khi các bạn cài đặt TS vào hệ thống của mình, các bạn sẽ có quyền truy xuất
+    đến được 1 Command Line Interface(CLI) gọi là TypeScipt Complier(tsc). Nhiệm vụ của tsc chính là complie code TS về
+    JS để trình duyệt (hoặc runtime environment như NodeJS) có thể hiểu và xử lý được.</p>
+  <br>
+
+  <!-- TypeScript minus (-) "something else" -->
+  <span style="font-size: 2rem;" class="pb-0">TypeScript minus (-) "something else"</span>
+  <div class="border-b1"></div>
+  <br>
+  <p>Đầu tiên và quan trọng nhất là TS cung cấp Static Types. JS là một ngôn ngữ mang tính Dynamic và vì thế nên JS rất
+    thoải mái</p>
+  <br>
+  <pre>
+        <code>{{text1}}</code>
+      </pre>
+  <br>
+  <p>Biến joh được khởi tạo là 1 chuỗi "John" và sau đó lại được gán cho 1 số 123. Điều này hoàn toàn hợp lệ trong JS.
+  </p>
+  <p>Cùng đoạn code trên nhưng trong TS trước tiên chúng ta phải khai báo type cho biến john là string. Khi giá trị 123
+    được gán cho biến john thì TS sẽ bắt lỗi tại thời điểm code được complie (Complie Time Error) vì 123 là type number
+    không thể gán cho 1 biến có type là string</p>
+  <p><strong>Default type</strong> trong TS</p>
+  <br>
+  <pre>
+        <code>{{text2}}</code>
+      </pre>
+  <br>
+
+  <p><strong>Interface/Type</strong></p>
+  <p>TS cung cấp interface và Type để chúng ta có thể định nghĩa được type cho một đối tượng</p>
+  <br>
+  <pre>
+        <code>{{text3}}</code>
+      </pre>
+  <br>
+  <p>Việc sử dụng interface sẽ giúp cho trình soạn thảo (text editor) gợi ý cho object của các bạn có những properties
+    gì trên object đó. Khi type john., text edior sẽ gợi ý được : firstName, lastName, age, và job cho các bạn lựa chọn
+    khi truy xuất. Điều này giảm thiểu việc sai lỗi chính tả khi các bạn viết code.</p>
+  <br>
+
+  <p><strong>Class</strong></p>
+  <p>Class là cú pháp xuất hiện trong ES2015 hay ES6. Trong JS class thực chất chỉ là syntactic sugar cho Prototypal
+    Inheritance</p>
+  <p>TS mang lại support hàng đầu cho class với hệ thống typing khá mạnh mẽ. ví dụ:</p>
+  <br>
+  <pre>
+        <code>{{text4}}</code>
+      </pre>
+  <br>
+  <p>TS cũng hỗ trợ Access Modifier cho class với các keywords như: public, private, và protected. Kết hợp với các
+    Access Modifer, các bạn có thể khai báo class User với cú pháp ngắn gọn sau:</p>
+  <br>
+  <pre>
+    <code>{{text5}}</code>
+  </pre>
+  <br>
+
+  <p><strong>Generics</strong></p>
+  <p>Generics là một trong những tính năng cực tốt mà TS mang lại.Generics sẽ giúp các bạn viết code theo hướng
+    Abstraction dễ dàng hơn, theo sát hơn SOLID Principles (SOLID)</p>
+  <br>
+  <pre>
+        <code>{{text6}}</code>
+      </pre>
+  <br>
+  <p>TS cũng hỗ trợ Access Modifier cho class với các keywords như: public, private, và protected. Kết hợp với các
+    Access Modifer, các bạn có thể khai báo class User với cú pháp ngắn gọn sau:</p>
+  <br>
+  <pre>
+    <code>{{text5}}</code>
+  </pre>
+  <br>
+  <!-- Tại sao lại là TypeScript? -->
+  <span style="font-size: 2rem;" class="pb-0">Tại sao lại là TypeScript?</span>
+  <div class="border-b1"></div>
+  <br>
+  <p><strong>Pros</strong></p>
+  <p>Như những gì đã nhắc đến ở trên, TS giúp developers phát triển phần mềm một cách tường minh hơn với những type
+    definition mà TS cũng như các thư viện dùng cho TS cung cấp. Với khả năng áp dụng tính thừa kế với những syntax quen
+    thuộc trong OOP như: abstract, class, và type parameter T, TS giúp developers có thể phát triển ứng dụng một cách
+    nhanh, tường minh, chính xác, dễ bảo trì và mở rộng hơn.</p>
+  <br>
+  <p>code nhiều hơn vì những định nghĩa types (type definition)
+
+    conditional check nghiêm khắc hơn gây khó khăn và các thư viện bên ngoài phải có type defs (d.ts file) để hỗ trợ TS, nếu không thì cũng như không….
+    
+    TypeScript Tax.</p>
+  <br>
+</div>
