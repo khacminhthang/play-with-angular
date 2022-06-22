@@ -1,0 +1,102 @@
+<div>
+  <h1 style="font-size: 3rem;">CONTENT PROJECTION TRONG ANGULAR</h1>
+  <br>
+  <p>Có những khi trong quá trình phát triển ứng dụng với Angular chúng ta có thể sẽ gặp một số dạng component giống
+    nhau về phần layout chẳng hạn, điểm khác biệt chỉ là một số label, content bên trong nó. Lúc này rất dễ để các bạn
+    có thể tạo một component có nhận vào các Input, và render dựa vào các Input đó.
+  </p>
+  <p>Nhưng có bao giờ bạn tự hỏi, những gì chúng ta đặt vào giữa cặp mở/đóng tag sẽ đi về đâu chưa? Liệu có cách nào để
+    tạo component mà việc cần làm chỉ là thêm một số template vào giữa cặp tag đó thì sẽ có những thứ chúng ta mong muốn
+    không.</p>
+  <br>
+  <!-- ng-content và những câu hỏi -->
+  <span style="font-size: 2rem;" class="pb-0">ng-content và những câu hỏi</span>
+  <div class="border-b1"></div>
+  <br>
+  <span style="font-size: 1.5rem;" class="pb-0">Làm thế nào để sử dụng ng-content?</span>
+  <br>
+  <br>
+  <p>Giả sử trong ứng dụng của chúng ta sẽ sử dụng lại component Toggle từ những buổi học trước để làm phần khảo sát
+    khách hàng. Các câu hỏi sẽ ở dạng Yes/No, và nội dung label sẽ khác nhau cho từng câu hỏi. Vậy làm thế nào để chúng
+    ta biến component Toggle trở nên linh động hơn mà không cần thêm Input nào. Có thể sử dụng ngay content được truyền
+    vào (project) ở giữa cặp thẻ mở/đóng được không?</p>
+  <p>Đó là một perfect use-case cho ng-content có thể được sử dụng. Bạn chỉ cần đặt ng-content vào bất kỳ đâu trong
+    template của component là được.</p>
+  <br>
+  <strong>toggle.component.html</strong>
+  <pre>
+    <code>{{text1}}</code>
+  </pre>
+  <br>
+  <strong>app.component.html</strong>
+  <pre>
+    <code>{{text2}}</code>
+  </pre>
+  <br>
+
+  <span style="font-size: 1.5rem;" class="pb-0">Sử dụng multiple ng-content được không?</span>
+  <br>
+  <br>
+  <p>Bạn có thể nghĩ rằng nếu mình đặt ng-content hai lần ở trên template thì sẽ thế nào? liệu nó có hiển thị gấp đôi số
+    phần tử hay không?Bạn có thể nghĩ rằng nếu mình đặt ng-content hai lần ở trên template thì sẽ thế nào? liệu nó có
+    hiển thị gấp đôi số phần tử hay không?</p>
+  <br>
+  <strong>toggle.component.html</strong>
+  <pre>
+    <code>{{text3}}</code>
+  </pre>
+  <p>Khi nhìn vào kết quả render, chúng ta sẽ thấy chỉ có content 2 là được hiển thị với label mà chúng ta truyền vào.
+    Như vậy nếu sử dụng nhiều lần ng-content sẽ dẫn đến kết quả có thể không như chúng ta mong muốn. Điều này là hoàn
+    toàn bình thường, giống như bao thẻ html khác như header, chúng ta chỉ có duy nhất 1 slot để hiển thị. Vậy nên đối
+    với ng-content ở dạng trên, chúng ta chỉ nên có một tag duy nhất.</p>
+  <br>
+
+  <span style="font-size: 1.5rem;" class="pb-0">ng-content và selector</span>
+  <br>
+  <br>
+  <p>Khi để ý thẻ table của html các bạn sẽ thấy rằng, dù thead, tbody, tfoot có đặt ở bất kỳ thứ tự nào trong thẻ
+    table, nó đều được đưa về đúng thứ tự là thead rồi đến tbody, sau cùng là tfoot. Điều này các bạn cũng có thể làm
+    tương tự với ng-content kết hợp selector. Ngoài việc project có thứ tự ra, nó còn cho phép chúng ta dùng nhiều
+    ng-content.</p>
+  <br>
+  <strong>toggle.component.html</strong>
+  <pre>
+    <code>{{text4}}</code>
+  </pre>
+  <strong>app.component.html
+  </strong>
+  <pre>
+    <code>{{text5}}</code>
+  </pre>
+  <br>
+
+  <span style="font-size: 1.5rem;" class="pb-0">ng-content và ngProjectAs</span>
+  <br>
+  <br>
+  <p>Giả sử Toggle component mong muốn nhận vào một component có selector là app-label, và chúng ta sẽ cung cấp một
+    component app-label với nhiều tính năng rất xịn xò.</p>
+  <p>Nhưng người khác khi sử dụng Toggle component lại muốn sử dụng một component label khác, hay đơn giản chỉ là dùng
+    tag label của HTML, hoặc component app-label không phải là con trực tiếp của app-toggle mà nó bị wrap bởi một thẻ
+    div chẳng hạn.</p>
+  <p>Lúc này, selector kia của chúng ta sẽ không thể nhận dạng được. Vậy có cách nào để báo cho Angular biết rằng chúng
+    ta đang mong muốn project content này hay không?</p>
+  <p>Cứu cánh chính là ngProjectAs, nó là một cách khai báo tường minh để Angular biết lối mà xử lý.</p>
+  <br>
+  <strong>app.component.html</strong>
+  <pre>
+    <code>{{text6}}</code>
+  </pre>
+  <br>
+
+  <app-content-projection-child [(checked)]="questions.question1">
+    <h3 class="toogle-header">Header 1</h3>
+    <label ngProjectAs="app-label">Question 1</label>
+    <span>Some paragraph</span>
+  </app-content-projection-child>
+
+  <app-content-projection-child [(checked)]="questions.question2">
+    <h3 class="toogle-header">Header 2</h3>
+    <span ngProjectAs="app-label">Some paragraph 2</span>
+    <label>Question 2</label>
+  </app-content-projection-child>
+</div>

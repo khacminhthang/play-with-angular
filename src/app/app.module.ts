@@ -21,6 +21,9 @@ import { TemplateVariableComponent } from './components/template-variable/templa
 import { ToggleComponent } from './components/template-variable/toggle/toggle.component';
 import { TypescriptDataTypeComponent } from './components/typescript-data-type/typescript-data-type.component';
 import { TypescriptAdvTypeComponent } from './components/typescript-adv-type/typescript-adv-type.component';
+import { ContentProjectionComponent } from './components/content-projection/content-projection.component';
+import { ContentProjectionChildComponent } from './components/content-projection/content-projection-child/content-projection-child.component';
+import { NgTemplateComponent } from './components/ng-template/ng-template.component';
 
 @NgModule({
   declarations: [
@@ -36,7 +39,10 @@ import { TypescriptAdvTypeComponent } from './components/typescript-adv-type/typ
     TemplateVariableComponent,
     ToggleComponent,
     TypescriptDataTypeComponent,
-    TypescriptAdvTypeComponent
+    TypescriptAdvTypeComponent,
+    ContentProjectionComponent,
+    ContentProjectionChildComponent,
+    NgTemplateComponent
   ],
   imports: [
     AppRoutingModule,

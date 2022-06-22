@@ -1,0 +1,87 @@
+<div>
+  <h1 style="font-size: 3rem;">ng-template, ngTemplateOutlet và ng-container</h1>
+  <!-- ng-template -->
+  <span style="font-size: 2rem;" class="pb-0">ng-template</span>
+  <div class="border-b1"></div>
+  <br>
+  <p>Khi code HTML của bạn dc bao quanh bởi ng-template, phần HTML đó sẽ không dc render lên UI ngay lập tức. Mà chỉ
+    dc render trong một số trường hợp, ví dụ như khi *ngIf else tmpl hoặc thông qua ngTemplateOutlet mà chúng ta sẽ đề
+    cập đến ở phần sau của bài viết.</p>
+  <p>Tên gọi của ng-template cũng phần nào nói lên đc ý nghĩa của nó. Template hiểu nôm na là mẫu, dạng. Dịch ra tiếng
+    Việt hơi khó, tuy nhiên khi kết hợp nhiều template với nhau thì chúng ta có thể có một UI đầy đủ.</p>
+  <p>Từ những điểm trên, có thể định nghĩa ng-template là một thành phần của Angular để render HTML code. Và phần HTML
+    code nằm trong ng-template không bao giờ được hiển thị trực tiếp ở nơi nó được định nghĩa</p>
+  <br>
+  <span style="font-size: 1.5rem;" class="pb-0">Khi nào thì nên dùng ng-template?</span>
+  <br>
+  <br>
+  <strong>1. Dùng kết hợp với các Structure Directive của Angular, ví dụ như *ngIf</strong>
+  <br>
+  <strong>2. Khi một số UI element trong một component bị lặp lại trong chính component đó, nhưng phần code đó quá nhỏ
+    để tách ra làm một component riêng.</strong>
+  <p>Ví dụ như bạn có một component có chứa biến một biển tên là counter. Phần UI của counter này sẽ đc lặp lại ở
+    trong component của bạn vài lần với UI giống nhau.</p>
+  <p>Đây là cách bình thường chúng ta hay làm. Copy and paste code.</p>
+  <pre>
+        <code>{{text1}}</code>
+    </pre>
+  Và đây là cách chúng ta có thể viết lại bằng cách dùng ng-template và ngTemplateOutlet.
+  <pre>
+      <code>{{text2}}</code>
+  </pre>
+  <div class="card">
+    <div class="card-header">
+      You have selected <ng-container [ngTemplateOutlet]="counterTmpl"></ng-container>.
+    </div>
+    <div class="card-body">
+      There are <ng-container [ngTemplateOutlet]="counterTmpl"></ng-container> was selected.
+    </div>
+    <div class="card-footer">
+      You have selected <ng-container [ngTemplateOutlet]="counterTmpl"></ng-container>.
+    </div>
+  </div>
+
+  <ng-template #counterTmpl>
+    <span class="badge badge-primary">{{ counter }}</span> items
+  </ng-template>
+
+  <p>Khi viết lại code dùng ng-template, ưu điểm dễ nhận thấy đó là:</p>
+  <p>Nếu cần sửa lại UI cho counter. Thay vì phải sửa ở 3 nơi, bây giờ ta chỉ cần sửa ở một vị trí đó là ng-template của
+    counter thôi. Tránh những lỗi typo hay find and replace bị thiếu.</p>
+  <p>Vì phần template này chỉ gói gọn trong đúng một dòng code nên dùng ng-template tiện hơn hẳn là phải tách phần
+    counter ra một component mới.</p>
+  <br>
+  <strong>3. Dùng ng-template để pass vào component khác. Hỗ trợ override template có sẵn trong component.</strong>
+  <br>
+  <p>Ví dụ mình có component tab-container, mặc định sẽ render tab với template default là defaultTabButtonsTmpl.</p>
+  <br>
+  <pre>
+        <code>{{text3}}</code>
+    </pre>
+  <p>Tuy nhiên, khi dùng tab-container bạn hoàn toàn có thể pass vào template mới để override lại default UI ở parent
+    component..</p>
+  <br>
+  <pre>
+        <code>{{text4}}</code>
+    </pre>
+  <br>
+
+  <!-- ngTemplateOutlet -->
+  <span style="font-size: 2rem;" class="pb-0">ngTemplateOutlet</span>
+  <div class="border-b1"></div>
+  <br>
+  <p>Qua ví dụ trên thì có thể thấy ngay ngTemplateOutlet là cách dùng để render một template được tạo ra bởi
+    ng-template lên UI. Cú pháp như sau</p>
+  <p>* ngTemplateOutlet="templateRef"(chú ý dấu sao * nhé, không có là không chạy đâu đấy)</p>
+  <p>['ngTemplateOutlet]="templateRef"</p>
+  <br>
+
+  <!-- ng-container -->
+  <span style="font-size: 2rem;" class="pb-0">ng-container</span>
+  <div class="border-b1"></div>
+  <br>
+  <p>ng-container là một custom html tag để khi render trên UI sẽ không có extra tag để tránh ảnh hưởng đến style mình
+    viết. Như ở ví dụ trên, bạn hoàn toàn có thể viết lại thành.</p>
+  <p>Nếu bạn có style CSS chặt chẽ theo kiểu parent > child. Thì khi thừa một thẻ div, chắc chắn UI sẽ bị ảnh hưởng.</p>
+  <br>
+</div>
