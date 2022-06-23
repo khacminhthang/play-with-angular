@@ -1,0 +1,122 @@
+<div>
+  <h1 style="font-size: 3rem;">Introduction to Dependency Injection in Angular</h1>
+  <br>
+  <p>Dependency Injection (DI) là một pattern rất quan trọng trong lập trình, có thể nghe qua qua những Spring Framework
+    của java hay ASP.NET có support DI, vậy với Frontend developer có thật sự cần thiết</p>
+  <br>
+
+  <!-- DI là gì? -->
+  <span style="font-size: 2rem;" class="pb-0">DI là gì?</span>
+  <div class="border-b1"></div>
+  <br>
+  <p>Giả sử chúng ta đang làm ứng dụng giỏ hàng của một trang thương mại điện tử, thông thường chúng ta có thể tách
+    những phần xử lý business ra thành một class để giảm responsibility của component, cũng như tăng tính reuseable của
+    phần business logic đó.</p>
+  <p>Lúc này chúng ta có thể có các thành phần như sau:</p>
+  <br>
+  <pre>
+        <code>{{text1}}</code>
+    </pre>
+  <p>Các bạn có thể thấy rằng, class ProductComponent của chúng ta bị phụ thuộc vào (depend on) class CartService. Khi
+    ProductComponent cần call các method của CartService chúng ta cần khởi tạo hoặc yêu cầu để lấy về một instance của
+    service đó.
+  </p>
+  <br>
+
+  <!-- Khởi tạo bên trong ProductComponent -->
+  <span style="font-size: 2rem;" class="pb-0">Khởi tạo bên trong ProductComponent</span>
+  <div class="border-b1"></div>
+  <br>
+  <p>Để khởi tạo instance của một class bên trong một class khác, chúng ta có thể chỉ cần new là được.</p>
+  <br>
+  <pre>
+        <code>{{text2}}</code>
+    </pre>
+  <p>Nếu trong trường hợp như trên, rõ ràng chúng ta bị ràng buộc chặt chẽ giữa hai class (Tight Coupling), nếu bạn muốn
+    thay đổi implementation khác của CartService thì bắt buộc phải sửa code của ProductComponent, và sẽ kéo theo phải
+    test lại cả hai class.</p>
+  <br>
+
+  <!-- Injection (Request để lấy về instance) -->
+  <span style="font-size: 2rem;" class="pb-0">Injection (Request để lấy về instance)</span>
+  <div class="border-b1"></div>
+  <br>
+  <p>Nếu bằng một cách nào đó, chúng ta gửi một request rồi từ một container nào đó sẽ cung cấp instance cho chúng ta
+    thì sao</p>
+  <br>
+  <pre>
+        <code>{{text3}}</code>
+    </pre>
+  <p>Và chúng ta sẽ có một container có thể biết cách khởi tạo và provide cho các request của các class như sau:</p>
+  <br>
+  <pre>
+        <code>{{text4}}</code>
+    </pre>
+  <p>Lúc này bạn có thể thấy class ProductComponent không hề biết gì về các khởi tạo CartService như thế nào. Nó gửi
+    request cho Inversion of Control (đảo ngược sự điều khiển hay đảo ngược sự phụ thuộc, viết tắt là IoC) container, từ
+    đó nó có thể lấy được instance mà nó mong muốn.
+  </p>
+  <p>Trong trường hợp bạn muốn đổi implementation cũng rất dễ dàng và hoàn toàn không cần viết lại class
+    ProductComponent.</p>
+  <p>Các bạn có thể đoán được mẫu thiết kế trên chính là Dependency Injection, chi tiết hơn đó là constructor injection.
+  </p>
+  <br>
+
+  <!-- DI trong Angular -->
+  <span style="font-size: 2rem;" class="pb-0">DI trong Angular</span>
+  <div class="border-b1"></div>
+  <br>
+  <p>Trong Angular, DI bao gồm ba thành phần sau đây:</p>
+  <ul>
+    <li>Injector: là một object có chứa các API để chúng ta có thể lấy về các instances đã tạo hoặc tạo các instances
+      của các phụ thuộc.</li>
+    <li>Provider: giống như một công thức để Injector có thể biết làm thế nào để tạo một instance của một phụ thuộc.
+    </li>
+    <li>Dependency: là một object (có thể là function, một value thông thường) của một kiểu dữ liệu cần phải khởi tạo.
+    </li>
+  </ul>
+  <p>Bạn có thể cung cấp injectors với providers ở nhiều levels khác nhau trong app, bằng một trong ba cách sau:</p>
+  <ul>
+    <li>Trong @Injectable() decorator cho service đó.</li>
+    <li>Trong @NgModule() decorator (providers array) đối với NgModule.
+    </li>
+    <li>Trong @Component() decorator (providers array) đối với component hoặc directive (Chúng ta sẽ tìm hiểu chi tiết
+      về Directive sau).
+    </li>
+  </ul>
+  <p>Ví dụ về cách provide CartService:</p>
+  <br>
+  <pre>
+        <code>{{text5}}</code>
+    </pre>
+  <pre>
+        <code>{{text6}}</code>
+    </pre>
+  <p>Với @Injectable decorator, chúng ta đã thêm metadata để Angular biết được cách để tạo instance của CartService khi
+    có một class nào đó request như ProductComponent. Và thông tin providedIn: 'root' sẽ chỉ cách cho Angular biết rằng
+    chúng ta mong muốn service này sẽ có một instance (singleton) cho suốt toàn bộ app.</p>
+  <br>
+
+  <!-- Override Provider -->
+  <span style="font-size: 2rem;" class="pb-0">Override Provider</span>
+  <div class="border-b1"></div>
+  <br>
+  <p>Giờ đây nếu hệ thống yêu cầu chúng ta thay vì lưu trữ tính toán thông tin giỏ hàng ở client, thì sẽ call đến một
+    external datasource (API chẳng hạn) để thao tác như Thêm vào giỏ hàng, Tính tổng tiền. Lúc này về mặt coding, chúng
+    ta sẽ tuân thủ theo đúng những gì class CartService đang có (public APIs của CartService), chỉ khác về mặt
+    implementation như sau:</p>
+  <br>
+  <pre>
+          <code>{{text7}}</code>
+      </pre>
+  <p>Bạn chỉ cần có thế và có thể tiến hành override, mà không cần sửa đổi lại code của ProductComponent như sau:</p>
+  <pre>
+          <code>{{text8}}</code>
+      </pre>
+  <p>Hoặc có thể override vào @Injectable của service</p>
+  <pre>
+          <code>{{text9}}</code>
+      </pre>
+  <br>
+
+</div>

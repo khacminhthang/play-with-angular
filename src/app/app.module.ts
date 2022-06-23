@@ -24,6 +24,7 @@ import { TypescriptAdvTypeComponent } from './components/typescript-adv-type/typ
 import { ContentProjectionComponent } from './components/content-projection/content-projection.component';
 import { ContentProjectionChildComponent } from './components/content-projection/content-projection-child/content-projection-child.component';
 import { NgTemplateComponent } from './components/ng-template/ng-template.component';
+import { IntroDependenceInjectionComponent } from './components/intro-dependence-injection/intro-dependence-injection.component';
 
 @NgModule({
   declarations: [
@@ -42,7 +43,8 @@ import { NgTemplateComponent } from './components/ng-template/ng-template.compon
     TypescriptAdvTypeComponent,
     ContentProjectionComponent,
     ContentProjectionChildComponent,
-    NgTemplateComponent
+    NgTemplateComponent,
+    IntroDependenceInjectionComponent
   ],
   imports: [
     AppRoutingModule,

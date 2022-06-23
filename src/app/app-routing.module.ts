@@ -5,6 +5,7 @@ import { ComponentInteractionP2Component } from './components/component-interact
 import { ComponentInteractionComponent } from './components/component-interaction/component-interaction.component';
 import { ContentProjectionComponent } from './components/content-projection/content-projection.component';
 import { DataBindingComponent } from './components/data-binding/data-binding.component';
+import { IntroDependenceInjectionComponent } from './components/intro-dependence-injection/intro-dependence-injection.component';
 import { NgTemplateComponent } from './components/ng-template/ng-template.component';
 import { StructureDirectiveComponent } from './components/structure-directive/structure-directive.component';
 import { TemplateVariableComponent } from './components/template-variable/template-variable.component';
@@ -55,6 +56,10 @@ const routes: Routes = [
   {
     path: 'ng-template',
     component: NgTemplateComponent
+  },
+  {
+    path: 'intro-dependency-injection',
+    component: IntroDependenceInjectionComponent
   },
 ];
 
