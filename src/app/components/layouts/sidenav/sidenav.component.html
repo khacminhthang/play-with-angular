@@ -49,6 +49,9 @@
       <div class="submenu" [ngClass]="{'expanded' : showSubmenu}" *ngIf="isShowing || isExpanded">
         <a mat-list-item routerLink="dependency-injection">Dependency Injection</a>
       </div>
+      <div class="submenu" [ngClass]="{'expanded' : showSubmenu}" *ngIf="isShowing || isExpanded">
+        <a mat-list-item routerLink="content-child">ContentChild and ContentChildren</a>
+      </div>
     </mat-nav-list>
     <mat-nav-list>
     </mat-nav-list>

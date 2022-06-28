@@ -26,6 +26,7 @@ import { ContentProjectionChildComponent } from './components/content-projection
 import { NgTemplateComponent } from './components/ng-template/ng-template.component';
 import { IntroDependenceInjectionComponent } from './components/intro-dependence-injection/intro-dependence-injection.component';
 import { DependenceInjectionComponent } from './components/dependence-injection/dependence-injection.component';
+import { ContentChildComponent } from './components/content-child/content-child.component';
 
 @NgModule({
   declarations: [
@@ -46,7 +47,8 @@ import { DependenceInjectionComponent } from './components/dependence-injection/
     ContentProjectionChildComponent,
     NgTemplateComponent,
     IntroDependenceInjectionComponent,
-    DependenceInjectionComponent
+    DependenceInjectionComponent,
+    ContentChildComponent
   ],
   imports: [
     AppRoutingModule,
