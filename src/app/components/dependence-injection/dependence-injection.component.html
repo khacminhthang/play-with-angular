@@ -1,0 +1,136 @@
+<div>
+  <h1 style="font-size: 3rem;">Dependency Injection in Angular</h1>
+  <br>
+  <p>Ngoài để tạo ra các service để inject thông qua constructor thì Dependence Injection còn được dùng ở đâu nữa?</p>
+  <br>
+
+  <!-- Inject parent component to child component -->
+  <span style="font-size: 2rem;" class="pb-0">Inject parent component to child component</span>
+  <div class="border-b1"></div>
+  <br>
+  <p>Angular application là một component tree.</p>
+  <p>Do Angular support DI đến tận level của từng Component, nên chúng ta có thể inject parent component vào child
+    component.</p>
+  <p>Giả sử chúng ta đang xây dựng Tabs Component để thao tác với các tab. Chúng ta sẽ có hai component bao gồm
+    TabGroupComponent để quản lý các tab panel và TabPanelComponent tương ứng với mỗi panel.</p>
+  <br>
+  <pre>
+          <code>{{text1}}</code>
+      </pre>
+  <p>Các bạn có thể thấy rằng, class ProductComponent của chúng ta bị phụ thuộc vào (depend on) class CartService. Khi
+    ProductComponent cần call các method của CartService chúng ta cần khởi tạo hoặc yêu cầu để lấy về một instance của
+    service đó.
+  </p>
+  <p>Lúc này mỗi khi có một tab panel được thêm vào hay xóa đi thì tab group phải biết được để có thể xử lý tương ứng
+    như: hiển thị các tab title, handle event khi select tab nào đó từ tab title.</p>
+  <p>
+    Và trong mỗi component của Angular chúng ta sẽ được cung cấp sẵn hai lifecycle method quan trọng để biết khi nào một
+    component được tạo ra và sắp bị destroy đó là OnInit và OnDestroy. Đây chính là những thời điểm thích hợp để
+    TabPanelComponent có thể tương tác lại với TabGroupComponent.
+  </p>
+  <p>Đến thời điểm hiện tại, bạn hoàn toàn có thể sử dụng EventEmitter để notify cho parent component biết được các thời
+    điểm tương ứng. Nhưng cũng có một cách khác, đó chính là inject parent component vào child component và thực hiện
+    các hành động tương ứng.</p>
+  <p>Giả sử bạn cài đặt tab-group.component.ts như sau:</p>
+  <br>
+  <pre>
+          <code>{{text2}}</code>
+      </pre>
+  <p>Và đây là phần UI cho tab-group.component.html::</p>
+  <br>
+  <pre>
+          <code>{{text3}}</code>
+      </pre>
+  <p>Việc của chúng ta bây giờ chỉ là inject và call các method để register và remove:</p>
+  <br>
+  <pre>
+          <code>{{text4}}</code>
+      </pre>
+  <br>
+
+  <!--Provide một tab group khác có cùng APIs -->
+  <span style="font-size: 2rem;" class="pb-0">Provide một tab group khác có cùng APIst</span>
+  <div class="border-b1"></div>
+  <br>
+  <p>Như bạn có thể thấy, tab group của chúng ta ở trên có UI cực kỳ đơn giản, hoặc trong trường hợp bạn muốn có UI
+    riêng, đúng như design system (bootstrap, ant design, etc) đang dùng trong application thì sao? Chả lẽ chúng ta
+    không reuse được gì ở trên.</p>
+  <p>Đây là nơi tỏa sáng của DI. Bạn chỉ cần đơn giản là provide một provider để override là được.</p>
+  <p>bs-tab-group.component.ts</p>
+  <br>
+  <pre>
+          <code>{{text5}}</code>
+      </pre>
+  <p>bs-tab-group.component.html</p>
+  <br>
+  <pre>
+          <code>{{text6}}</code>
+      </pre>
+  <p>Template khi sử dụng:</p>
+  <br>
+  <pre>
+          <code>{{text7}}</code>
+      </pre>
+  <br>
+
+  <!-- Forward Reference -->
+  <span style="font-size: 2rem;" class="pb-0">Forward Reference</span>
+  <div class="border-b1"></div>
+  <br>
+  <p>Trong những phần code của Form ở trên bạn thấy người ta sử dụng thêm forwardRef vậy khi nào cần sử dụng nó.</p>
+  <p>Như các bạn cũng biết, một class ở trong ES2015/TypeScript chỉ có thể refer đến nó khi nó đã được khai báo. Nếu
+    chúng ta refer đến nó trước khi được khai báo thì sẽ trả về error (hoặc undefined khi code transpile sang ES5 với
+    var keyword).</p>
+  <p>Bây giờ giả sử bạn tách phần provider ở decorator ra một variable đặt ở trước khi khai báo class.</p>
+  <br>
+  <pre>
+          <code>{{text8}}</code>
+      </pre>
+  <p>Bạn sẽ nhận được một Error như sau:</p>
+  <p>Error in src/app/bs-tab-group/bs-tab-group.component.ts
+    Class 'BsTabGroupComponent' used before its declaration.</p>
+  <p>Do đó chúng ta cần dùng đến closure, đó là tạo một function nó sẽ được call sau khi chúng ta tạo xong class, và nó
+    sẽ có thể refer đến class đó ở thời điểm được gọi.</p>
+  <br>
+  <pre>
+          <code>{{text9}}</code>
+      </pre>
+  <p>Bạn có thể thắc mắc là tại sao sử dụng trực tiếp trong decorator thì lại không lỗi? Câu trả lời là vì bản thân
+    Class Decorator sẽ được call sau khi mà bạn đã tạo xong class.
+  </p>
+  <br>
+
+  <!-- DI trong Angular -->
+  <span style="font-size: 2rem;" class="pb-0">DI trong Angular</span>
+  <div class="border-b1"></div>
+  <br>
+  <p>Như chúng ta đã tìm hiểu qua thì chúng ta có các cách provide một provider với các dạng như sau:</p>
+  <p>Ví dụ về cách provide CartService:</p>
+  <br>
+  <p>useClass:</p>
+  <pre>
+          <code>{{text10}}</code>
+      </pre>
+  <br>
+  <p>Tương đương với cú pháp:</p>
+  <pre>
+          <code>{{text11}}</code>
+      </pre>
+  <br>
+  <p>useExisting:</p>
+  <pre>
+          <code>{{text12}}</code>
+      </pre>
+  <br>
+  <p>useFactory:</p>
+  <pre>
+          <code>{{text13}}</code>
+      </pre>
+  <br>
+  <p>useValue:</p>
+  <pre>
+          <code>{{text14}}</code>
+      </pre>
+  <br>
+
+</div>
