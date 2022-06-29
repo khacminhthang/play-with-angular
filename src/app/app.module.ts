@@ -27,6 +27,7 @@ import { NgTemplateComponent } from './components/ng-template/ng-template.compon
 import { IntroDependenceInjectionComponent } from './components/intro-dependence-injection/intro-dependence-injection.component';
 import { DependenceInjectionComponent } from './components/dependence-injection/dependence-injection.component';
 import { ContentChildComponent } from './components/content-child/content-child.component';
+import { PipeComponent } from './components/pipe/pipe.component';
 
 @NgModule({
   declarations: [
@@ -48,7 +49,8 @@ import { ContentChildComponent } from './components/content-child/content-child.
     NgTemplateComponent,
     IntroDependenceInjectionComponent,
     DependenceInjectionComponent,
-    ContentChildComponent
+    ContentChildComponent,
+    PipeComponent
   ],
   imports: [
     AppRoutingModule,

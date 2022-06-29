@@ -9,6 +9,7 @@ import { DataBindingComponent } from './components/data-binding/data-binding.com
 import { DependenceInjectionComponent } from './components/dependence-injection/dependence-injection.component';
 import { IntroDependenceInjectionComponent } from './components/intro-dependence-injection/intro-dependence-injection.component';
 import { NgTemplateComponent } from './components/ng-template/ng-template.component';
+import { PipeComponent } from './components/pipe/pipe.component';
 import { StructureDirectiveComponent } from './components/structure-directive/structure-directive.component';
 import { TemplateVariableComponent } from './components/template-variable/template-variable.component';
 import { TypescriptAdvTypeComponent } from './components/typescript-adv-type/typescript-adv-type.component';
@@ -70,6 +71,10 @@ const routes: Routes = [
   {
     path: 'content-child',
     component: ContentChildComponent
+  },
+  {
+    path: 'pipe',
+    component: PipeComponent
   },
 ];
 

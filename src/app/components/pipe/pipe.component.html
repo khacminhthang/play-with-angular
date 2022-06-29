@@ -1,0 +1,291 @@
+<div>
+  <h1 style="font-size: 3rem;">Transform data with Angular Pipes</h1>
+  <br>
+  <p>Các ứng dụng thông thường đều bao gồm các tác vụ khá đơn giản:
+  </p>
+  <p>1.Lấy dữ liệu từ server. Đơn giản là gọi API call lên server, phức tạp thì listen tới một websocket để nhận được dữ
+    liệu theo thời gian thực.</p>
+  <p>2.Transform the data, ví dụ như bạn nhận được giá trị là 2020-06-24T09:00:00.000Z dưới định dạng ISO. Nhưng trên UI
+    mình phải show ở format dễ đọc cho user Jun 24, 2020.</p>
+  <p>3.Và hiển thị dữ liệu lên UI cho người dùng.</p>
+  <p>Pipes sẽ lo phần thứ 2, transform data trước khi show cho người dùng.</p>
+  <br>
+
+  <!-- Pipes là gì? -->
+  <span style="font-size: 2rem;" class="pb-0">Pipes là gì?</span>
+  <div class="border-b1"></div>
+  <br>
+  <p>Hiểu đơn giản, pipe là một function nhận input mà chúng ta truyền vào, và output ra giá trị mình mong muốn.</p>
+  <p>Ví dụ giữa client và server khi trao đổi thông tin liên quan đến thời gian, thường dùng ISO format
+    "2020-06-24T09:00:00.000Z", tương đương với ngày 24 tháng 6, 5h chiều (giờ Singapore).</p>
+  <p>Tuy nhiên khi hiển thị, mình ko thể hiển trị trực tiếp ISO string cho người dùng vì chắc chắn là ko phải ai cũng là
+    developer để hiểu được đó là gì. Vậy nên chúng ta cần transform ISO string ở trên dưới dạng mà người dùng có thể
+    hiểu được, ví dụ Jun 24, 2020, 5:00:00 PM</p>
+  <p>Để làm được việc này bạn có khá nhiều lựa chọn, nhưng thường thì có hai lựa chọn trong Angular:</p>
+  <p>1.Viết một function, nhận date input và return output.</p>
+  <p>2.Viêt một pipe, cũng nhận input và return output.</p>
+  <p>Điểm lợi thế của Pipe là dễ tái sử dụng. Vì thông thường sẽ có khá nhiều page cần hiển thị date time, việc dùng
+    Pipe sẽ đem lại nhiều ưu điểm hơn là function.</p>
+  <br>
+
+  <!-- Dùng pipe như thế nào? -->
+  <span style="font-size: 2rem;" class="pb-0">Dùng pipe như thế nào?</span>
+  <div class="border-b1"></div>
+  <br>
+  <p>Angular có cung cấp sẵn một số pipes thường dùng trong package @angular/common. Tuy nhiên số lượng pipe có sẵn đó
+    cũng không thể nào đáp ứng được hết các nhu cầu trong các ứng dụng khác nhau, nên chúng ta cũng hoàn toàn có thể
+    viết các custom pipe theo nhu cầu thực tế.</p>
+  <p>Như đã nói, pipe sẽ nhận vào input và output ra một giá trị mình mong muốn.</p>
+  <p>Mình có một biến tên là now ở trong component.</p>
+  <br>
+  <pre>
+              <code>{{text1}}</code>
+          </pre>
+  <p>Và đây là cách mình hiển thị với built in pipe Date trong Angular
+  </p>
+  <br>
+  <pre>
+              <code>{{text2}}</code>
+          </pre>
+  <p>Chú ý phần giữa hai dấu ngoặc nhọn, ngoài việc truyền vào variable bạn muốn hiển thì thì có thêm dấu xổ dọc
+    |. Đó là pipe operator, sau đó là tên của pipe bạn đã định nghĩa. Tất cả pipe đều hoạt động theo cách này.</p>
+  <br>
+  <pre>
+              <code>{{text3}}</code>
+          </pre>
+
+  <!--Pipe and parameters-->
+  <span style="font-size: 2rem;" class="pb-0">Pipe and parameters</span>
+  <div class="border-b1"></div>
+  <br>
+  <p>Pipe cho phép truyền thêm các parameters, ví dụ date ở trên mình có thể truyền thêm format medium phân tách nhau
+    bằng dấu hai chấm :. Đó cũng là cú pháp để pass parameter cho pipe.</p>
+  <p>Đây chính là lúc mà bạn có thể sử dụng đến ContentChildren.</p>
+  <br>
+  <pre>
+              <code>{{text4}}</code>
+          </pre>
+  <p>Bạn có thể truyền vào số lượng parameter không giới hạn.</p>
+  <br>
+
+  <!-- Chaining pipe -->
+  <span style="font-size: 2rem;" class="pb-0">Chaining pipe</span>
+  <div class="border-b1"></div>
+  <br>
+  <p>Pipes cho phép chúng ta dùng nhiều pipe để transform một value, cú pháp có dạng như sau.</p>
+  <br>
+  <pre>
+              <code>{{text5}}</code>
+          </pre>
+  <p>Sau khi có output pipe_name_1, thì output này sẽ được xử lý qua pipe_name_2 rồi tương tự đến pipe_name_n để ra
+    output cuối cùng hiển thị lên UI. Vẫn ví dụ với date ở trên, mình sẽ thêm pipe uppercase để chuyển hết text thành
+    chữ hoa. Sau khi biến now được xử lý bằng date pipe sẽ có value Jun 24, 2020, 5:00:00 PM, sau đó uppercase sẽ
+    transform thành JUN 24, 2020, 5:00:00 PM.</p>
+  <p>Thứ tự thực hiện sẽ là từ trái qua phải. Sau khi pipe_name_1 chạy xong có value thì pipe_name_2 sẽ nhận vào output
+    từ pipe_name_1..</p>
+  <br>
+
+  <!-- Các pipe có sẵn đi kèm với Angular (built-in pipe) -->
+  <span style="font-size: 2rem;" class="pb-0">Các pipe có sẵn đi kèm với Angular (built-in pipe)</span>
+  <div class="border-b1"></div>
+  <br>
+  <p>Angular cung cấp sẵn khá nhiều pipes để có thể sử dụng được khi import CommonModule từ package @angular/common.
+    Dưới đây là một số pipe mình hay dùng:</p>
+  <table>
+    <tr>
+      <th>Pipe</th>
+      <th>Mô tả</th>
+    </tr>
+    <tr>
+      <td>DatePipe</td>
+      <td>Formats a date.</td>
+    </tr>
+    <tr>
+      <td>UpperCasePipe</td>
+      <td>Convert text sang chữ hoa.</td>
+    </tr>
+    <tr>
+      <td>LowerCasePipe</td>
+      <td>Convert text sang chữ thường.</td>
+    </tr>
+    <tr>
+      <td>CurrencyPipe</td>
+      <td>Hiển thị giá trị tiền tệ.</td>
+    </tr>
+    <tr>
+      <td>DecimalPipe</td>
+      <td>Hiển thị số thập phân</td>
+    </tr>
+    <tr>
+      <td>PercentPipe</td>
+      <td>Hiển thị phần trăm %</td>
+    </tr>
+    <tr>
+      <td>JsonPipe</td>
+      <td>Hiển thị json</td>
+    </tr>
+    <tr>
+      <td>AsyncPipe</td>
+      <td>Hiển thị value của observable và tự động unsubscribe khi view được destroy</td>
+    </tr>
+  </table>
+  <br>
+  <!-- Viết custom pipe -->
+  <span style="font-size: 2rem;" class="pb-0">Viết custom pipe</span>
+  <div class="border-b1"></div>
+  <br>
+  <p>Ví dụ này lấy từ chính application đang chạy của mình. Use case đơn giản là bọn mình cần code rất nhiều form CRUD.
+    Vì thường form dành cho add item và form dành cho edit item sẽ được reuse cùng code HTML. Nếu bạn click Add item,
+    form add sẽ được hiển thị và title của form lúc đó sẽ là Add Item, tương tự cho edit.</p>
+  <p>Khi mở form Edit, trong router có truyền itemId lên URL nên bọn mình biết được đây là form Edit. Còn form Add thì
+    sẽ không có itemId.</p>
+  <p>Thông thường bọn mình có thể viết đi viết lại một cái logic trong từng component.</p>
+  <br>
+  <pre>
+                <code>{{text6}}</code>
+            </pre>
+  <br>
+  <p>Cho đến một ngày một dev mắc một lỗi typo ngớ ngẩn là thay vì Add, bạn ấy type thành Adđ (Vì có bật Unikey :)))</p>
+  <p>Thế là mình quyết định viết một pipe đơn giản là nhận vào một string, nếu string này có value, show Edit, còn không
+    thì show Add. Tránh được lỗi typo như ở trên về sau.</p>
+  <p>Để viết một pipe dành riêng cho nhu cầu của từng dự án, cần follow hai bước sau.</p>
+
+  <strong>1. Trước tiên chúng ta cần tạo một class có implement interface PipeTransform.</strong>
+  <p>Interface này chỉ bao gồm một method duy nhất tên là transform.</p>
+  <p>Đây là interface PipeTransform cần implement</p>
+  <pre>
+    <code>{{text7}}</code>
+</pre>
+  <br>
+  <p>Đây là ví dụ một class sau khi đã implement PipeTransform</p>
+  <pre>
+    <code>{{text8}}</code>
+</pre>
+  <br>
+  <p>Đại khái là method transform ở đây rất đơn giản. Nếu resourceId là truthy thì return Edit, nếu ko thì return lại
+    Add.</p>
+
+  <strong>Thêm Pipe decorator cho class đã implement PipeTransform</strong>
+  <p>Giống như component có decorator @Component. Pipe cũng có decorator @Pipe..</p>
+  <pre>
+    <code>{{text9}}</code>
+</pre>
+  <br>
+  <p>Khi thêm Pipe decorator thì có một property là required, đó chính là tên của pipe. Mình đặt là appTitle.</p>
+  <p>Nhớ là phải đặt AppTitlePipe trong mảng declarations ở module tương ứng mà bạn muốn sử dụng. Nếu không Angular sẽ
+    báo lỗi.</p>
+  <p>Xong rồi đây, giờ mình có thể dùng appTitle như bình thường.</p>
+  <pre>
+    <code>{{text10}}</code>
+</pre>
+  <br>
+  <p>Chú ý cách đặt tên cho pipe và class:</p>
+  <ul>
+    <li>Class name follow UpperCamelCase, tức là viết hoa các chữ cái đầu của từng từ</li>
+    <li>name của pipe sẽ follow theo camelCase, tức là chữ cái đầu của từ đầu tiên viết thường. Các chữ cái đầu của các
+      từ tiếp theo viết hoa.</li>
+    <li>Không được dùng dấu gạch ngang - cho name</li>
+  </ul>
+
+  <strong>Custom pipe parameters</strong>
+  <p>Vẫn là ví dụ trên, nhưng ở một vài page có yêu cầu là khi mở form Add, sẽ không hiện title là Add nữa, mà đổi lại
+    thành Set. Ví dụ Set Item. Còn form Edit thì đổi lại thành Change.</p>
+  <p>Mình hoàn toàn có thể truyền vào hai parameters tương ứng với hai text này. Và nếu mặc định không truyền mình sẽ
+    set lại Add và Edit tương ứng.</p>
+  <p>Code của mình có thể được viết lại như sau:</p>
+  <pre>
+    <code>{{text11}}</code>
+</pre>
+  <br>
+  <p>Và dùng trên UI</p>
+  <pre>
+    <code>{{text12}}</code>
+</pre>
+  <br>
+  <p>Method transform sẽ nhận vào nhiều argument. Trong đó:</p>
+  <ul>
+    <li>Argument đầu tiên chính là value của variable khi mình dùng pipe. Ví dụ userId | appTitle thì
+      transform(resourceId: string). resourceId chính là value của userId được truyền vào.</li>
+    <li>Khi truyền các parameter khác bằng dấu hai chấm : thì argument tương ứng trong method transform sẽ là từ
+      argument thứ 2 trở đi. Ví dụ như userId | appTitle:"Set":"Change" thì "Set" sẽ là value của addText: string
+      và "Change" sẽ tương ứng với editText: string</li>
+    <li>Không được dùng dấu gạch ngang - cho name</li>
+  </ul>
+  <br>
+
+  <!-- Detecting changes with data binding in pipes -->
+  <span style="font-size: 2rem;" class="pb-0">Detecting changes with data binding in pipes</span>
+  <div class="border-b1"></div>
+  <br>
+  <strong>Primitive type</strong>
+  <p>Với pipe appTitle ở trên, vì mình truyền vào giá trị string cho argument resourceId. Nên khi value của resourceId
+    thay đổi, pipe nhận biết được là có sự thay đổi và update UI tương ứng. Ví dụ:</p>
+  <br>
+  <pre>
+              <code>{{text13}}</code>
+          </pre>
+  <br>
+  <pre>
+              <code>{{text14}}</code>
+          </pre>
+  <br>
+  <p>Vậy đối với primitive type như string, boolean, number. Angular detech changes khá là straight forward. Mỗi khi
+    value thay đổi thì pipe cũng sẽ update theo. Còn đối với các reference type như object hay array thì sao nhỉ?</p>
+
+  <strong>Reference type</strong>
+  <p>Ví dụ như có một mảng của users như sau.</p>
+  <br>
+  <pre>
+              <code>{{text15}}</code>
+          </pre>
+  <br>
+  <p>Mình có một pipe tên là isAdult, để filter ra những user lớn hơn 18 tuổi.</p>
+  <br>
+  <pre>
+    <code>{{text16}}</code>
+</pre>
+  <br>
+  <p>Và mình render cả 2 list lên màn hình</p>
+  <br>
+  <pre>
+    <code>{{text17}}</code>
+</pre>
+  <br>
+  <p>Như các bạn thấy list những người trưởng thành hiện không có user Tuan Anh dc render, chứng tỏ pipe đã hoạt động
+    như ý mình muốn</p>
+  <p>Bây giờ mình add thêm 2 textbox để điền user và tuổi, cùng với một button để add thêm user vào mảng users. Tuy
+    nhiên khi add thêm một user với tuổi lớn 18 vào mảng users. Phần render list người lớn bên phải ko tự update.</p>
+  <br>
+  <pre>
+    <code>{{text18}}</code>
+</pre>
+  <br>
+  <p>Mình push thêm phần tử mới vào mảng khi click add. Tức là mutate giá trị của mảng trực tiếp, chứ không gán một
+    reference mới cho mảng. Điều này dẫn đến một đặc điểm quan trọng của Pipe.</p>
+  <p>Mặc định pipe luôn pure (tinh khiết), tức là pipe chỉ trigger lại khi giá trị của input đầu vào, tức là thay đổi
+    value với primitive type và thay đổi reference đối với object. Nên khi mình push trực tiếp phần tử vào mảng,
+    reference của mảng không thay đổi. Dẫn đến pipe ko được execute lại và ko update lên UI.</p>
+  <p>Việc check reference thay đổi nhanh hơn rất nhiều so với việc phải check từng phần trong array hay từng property
+    trong object xem có thay đổi hay không. Nên khuyến cáo luôn dùng pure Pipe khi có thể.</p>
+  <p>Để fix, có hai cách</p>
+  <strong>1. Update the variable reference</strong>
+  <p>Tức là thay vì mình push một item vô mảng users. Thì mình sẽ gán mảng users bằng một mảng mới với tất cả items cũ
+    và item mới được add. Đoạn code ở trên sẽ được sửa lại thành.</p>
+  <br>
+  <pre>
+    <code>{{text19}}</code>
+</pre>
+  <br>
+  <strong>2. Set impure Pipe</strong>
+  <p>Nếu bạn muốn trigger pipe khi có thay đổi value của một phần tử trong array, hay khi một property của object bị
+    thay đổi. Bạn có thể cấu hình pipe của bạn với thuộc tính pure với giá trị false trong decorator. Mặc định, pure
+    luôn có giá trị true.</p>
+  <br>
+  <pre>
+    <code>{{text20}}</code>
+</pre>
+  <p>Tuy nhiên khi sử dụng impure pipe phải hết sức cẩn thận vì như đã đề cập ở trên. Việc check từng phần trong array
+    hay từng property trong object xem có thay đổi hay không rất tốn performance. Nên khi tập dữ liệu của bạn đủ lớn,
+    chắc chắn app sẽ chậm đi trông thấy.</p>
+  <br>
+</div>
