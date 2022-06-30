@@ -1,0 +1,225 @@
+<div>
+  <h1 style="font-size: 3rem;">Reactive Programming, RxJS và Observable</h1>
+  <br>
+  <p>Khi bạn tìm hiểu về Angular, bạn sẽ thấy rằng nó có phụ thuộc vào một library là RxJS. Có khá nhiều concept trong
+    Angular sử dụng đến RxJS như là Forms, HttpClient, hay như là QueryList, EventEmitter, etc.</p>
+  <p>Đây vừa là một điểm mạnh, cũng vừa là điểm yếu của Angular. Vì RxJS xử lý asynchronous rất mạnh, nhưng bù lại bạn
+    sẽ phải học thêm một số các concept khác xoay quanh stream. Thinking in streams.</p>
+  <br>
+
+  <!-- Observable -->
+  <span style="font-size: 2rem;" class="pb-0">Observable</span>
+  <div class="border-b1"></div>
+  <br>
+  <p>Trong lập trình đồng bộ thông thường, chúng ta có một kiểu dữ liệu có thể lưu trữ nhiều phần tử đó chính là Array.
+  </p>
+  <p>Riêng đối với JavaScript các bạn thấy rằng, chúng ta có thể chaining một số array method như map, filter, hay các
+    method phụ trợ khá như reduce, every, some, etc. Những gì mà JS cung cấp sẽ giúp chúng ta thao tác với Array dễ dàng
+    hơn.</p>
+  <p>Trong thực tế, JS còn có một topic nâng cao nữa là lập trình bất đồng bộ, những thứ như Event, Promise, những thứ
+    mà có thể xảy ra ở bất kỳ thời điểm nào ở trong tương lai mà chúng ta không biết trước. Chúng ta chỉ có thể gửi cho
+    nó một lời nhắc và khi có sự kiện phát sinh thì chương trình sẽ gọi lại lời nhắc đó cho chúng ta (callback).</p>
+  <p>Callback là một phương pháp để chúng ta thực hiện tương tác lại các task bất đồng bộ. Kể cả Promise bạn sẽ vẫn dùng
+    callback để handle onFulfilled và onRejected.</p>
+  <p>Nhưng hạn chế của Promise là nó chỉ delivery một value duy nhất, nên nó không thể dùng chung cho những thứ có thể
+    delivery nhiều value (ví dụ như DOM event).</p>
+  <p>Observable tỏa sáng không chỉ bởi vì nó có thể handle nhiều value asynchronous, mà còn vì mặt kiến trúc của nó khi
+    coi mọi thứ là các streams, do đó data sẽ được chảy qua các luồng xử lý để có thể biến đổi thành các dạng mà bạn
+    mong muốn ở đầu cuối của stream.</p>
+  <p>Observable có thể coi là một Array của các value theo thời gian:</p>
+  <p>Hiện tại Observable chưa chính thức tồn tại trong JS, nhưng bạn có thể sử dụng RxJS để có thể có những thành phần
+    chính như Observable, Observer, Subject, etc. Và một loạt các operators đi kèm để xử lý stream được dễ dàng hơn.</p>
+  <br>
+
+  <!--Use-case throttle-->
+  <span style="font-size: 2rem;" class="pb-0">Use-case throttle</span>
+  <div class="border-b1"></div>
+  <br>
+  <p>Thông thường để xử lý một số event xảy ra quá nhanh và nhiều, trong khi chúng ta có thể bỏ qua một số value ở trung
+    gian. Chẳng hạn bạn tạo một ứng dụng, ứng dụng đó có một button và bạn không muốn người dùng click vào button đấy
+    nhanh quá (e.g: 500ms), nếu họ click quá nhanh thì bỏ qua và chỉ tương tác khi lần click gần nhất đã cách đó hơn
+    khoảng thời gian quy định ở trên.</p>
+  <p>Bây giờ chúng ta thử implement giải pháp thông thường và giải pháp với RxJS xem sao. Các bạn hãy khoan đi vào chi
+    tiết những phần code RxJS dưới đây:</p>
+  <br>
+  <pre>
+            <code>{{text1}}</code>
+        </pre>
+  <p>Với cách sử dụng RxJS cho bài toán trên quả không tệ, và nếu cần transform thêm nữa thì chúng ta hoàn toàn có thể
+    handle được</p>
+  <br>
+
+  <!-- RxJS core concepts -->
+  <span style="font-size: 2rem;" class="pb-0">RxJS core concepts</span>
+  <div class="border-b1"></div>
+  <br>
+  <strong>Observable</strong>
+  <ul>
+    <li>Observable: đại diện cho ý tưởng về một tập hợp các giá trị hoặc các sự kiện trong tương lai. Khi các giá trị
+      hoặc sự kiện phát sinh trong tương lai, Observable sẽ điều phối nó đến Observer.</li>
+    <li>Observable chỉ là một function (class) mà nó có một số yêu cầu đặc biệt. Nó nhận đầu vào là một Function, mà
+      Function này nhận đầu vào là một Observer và trả về một function để có thể thực hiện việc cancel quá trình xử lý.
+      Thông thường (RxJS 5 trở lên) chúng ta đặt tên function đó là unsubscribe.</li>
+  </ul>
+
+  <strong>Observer</strong>
+  <ul>
+    <li>Observer là một tập hợp các callbacks tương ứng cho việc lắng nghe các giá trị (next, error, hay complete) được
+      gửi đến bởi Observable.</li>
+  </ul>
+
+  <strong>Subscription</strong>
+  <ul>
+    <li>Subscription là kết quả có được sau khi thực hiện một Observable, nó thường dùng cho việc hủy việc tiếp tục xử
+      lý.</li>
+  </ul>
+
+  <strong>Operators</strong>
+  <ul>
+    <li>Operators là các pure functions cho phép lập trình functional với Observable.</li>
+  </ul>
+
+  <strong>Subject</strong>
+  <ul>
+    <li>Subject để thực hiện việc gửi dữ liệu đến nhiều Observers (multicasting).</li>
+  </ul>
+
+  <strong>Schedulers</strong>
+  <ul>
+    <li>Một scheduler sẽ điều khiển khi nào một subscription bắt đầu thực thi, và khi nào sẽ gửi tín hiệu đi.</li>
+  </ul>
+  <br>
+
+  <!-- Working with Observables -->
+  <span style="font-size: 2rem;" class="pb-0">Working with Observables</span>
+  <div class="border-b1"></div>
+  <br>
+
+  <strong>Creating Observables</strong>
+  <p>Để create một Observable chúng ta chỉ cần gọi constructor và truyền vào một function (gọi là subscribe), trong đó
+    subscribe function sẽ nhận đầu vào là một Observer.</p>
+  <pre>
+            <code>{{text2}}</code>
+        </pre>
+  <br>
+  <p>Để có thể clean up chúng ta sẽ return về một function trong subscribe function như sau:</p>
+  <pre>
+            <code>{{text3}}</code>
+        </pre>
+  <br>
+
+  <strong>Invoking Observable</strong>
+  <p>Các Observable hầu hết sẽ giống như một function, tức là nếu bạn có một Observable thì nó chỉ như khai báo một
+    function, do đó những gì bên trong function sẽ không được chạy cho đến khi bạn invoke function đó (lazy
+    computation).</p>
+  <p>Để invoke một Observable bạn chỉ cần subscribe vào nó là được. Và sau khi subscribe thì nó sẽ trả về một
+    Subscription.</p>
+
+  <pre>
+            <code>{{text4}}</code>
+        </pre>
+  <br>
+  <p>Ở trong ví dụ trên chúng ta đã cung cấp đầy đủ 3 hàm callback cho một Observer, bạn hoàn toàn có thể không cung cấp
+    một callback nào hoặc cung cấp một vài callback cũng được.</p>
+  <br>
+
+  <strong>Executing Observables</strong>
+  <p>Phần code khi chúng ta khởi tạo Observable new Observable(function subscribe(observer) ...) chính là “Observable
+    execution”.</p>
+  <p>Sau khi chúng ta invoke một Observable thì nó bắt đầu chạy, và khi có một signal nào (next, error, complete) gửi đi
+    thì những gì chúng ta cung cấp cho Observer phía trên sẽ được gọi để tương tác lại tín hiệu đó.</p>
+  <p>Có ba kiểu giá trị mà một Observable Execution có thể gửi đi:</p>
+  <ul>
+    <li>“Next” notification: gửi đi một giá trị, có thể là bất kỳ kiểu dữ liệu nào như Number, a String, an Object, etc.
+    </li>
+    <li>Error” notification: gửi đi một JavaScript Error hoặc exception.</li>
+    <li>“Complete” notification: không gửi đi một giá trị nào, nhưng nó gửi đi một tín hiệu để báo rằng stream này đã
+      completed, mục đích để Observer có thể thực hiện một hành động nào đó khi stream completed.</li>
+  </ul>
+  <p>Next notifications thường được sử dụng rộng rãi, nó cực kỳ quan trọng, vì nó gửi đi dữ liệu cần thiết cho một
+    Observer.</p>
+  <p>Error và Complete notifications có thể chỉ xảy ra duy nhất một lần trong một Observable Execution.</p>
+  <p>Lưu ý rằng, chỉ có 1 trong 2 loại tín hiệu trên được gửi đi, nếu đã complete thì không có error, nếu có error thì
+    không có complete. (Chúng không thuộc về nhau :D). Và nếu đã gửi đi complete, hoặc error signal, thì sau đó không có
+    dữ liệu nào được gửi đi nữa. Tức là stream đã close.</p>
+  <br>
+
+  <strong>Disposing Observable Executions</strong>
+  <p>Bởi vì quá trình thực thi Observable có thể lặp vô hạn, hoặc trong trường hợp nào đó bạn muốn thực hiện hủy việc
+    thực thi vì việc này không còn cần thiết nữa - dữ liệu đã lỗi thời, có dữ liệu khác thay thế. Các bạn có thể liên
+    tưởng tới việc close websocket stream, removeEvenListener cho một element nào đó đã bị loại bỏ khỏi DOM chẳng hạn..
+  </p>
+  <p>Observable có cơ chế tương ứng, cho phép chúng ta hủy việc thực thi. Đó là khi subscribe được gọi, một Observer sẽ
+    bị gắn với một Observable execution mới được tạo, sau đó nó sẽ trả về một object thuộc type Subscription. Kiểu dữ
+    liệu này có một method unsubscribe khi chúng ta gọi đến, nó sẽ thực hiện cơ chế để hủy việc thực thi.</p>
+  <p>Lưu ý: nếu bạn tự tạo Observable (bằng new Observable chẳng hạn) thì bạn phải tự thiết lập cơ chế để hủy.</p>
+
+  <pre>
+            <code>{{text5}}</code>
+        </pre>
+  <br>
+  <p>Ở trong ví dụ trên chúng ta đã cung cấp đầy đủ 3 hàm callback cho một Observer, bạn hoàn toàn có thể không cung cấp
+    một callback nào hoặc cung cấp một vài callback cũng được.</p>
+  <br>
+
+  <!--Observers-->
+  <span style="font-size: 2rem;" class="pb-0">Observers</span>
+  <div class="border-b1"></div>
+  <br>
+  <p>Observer là một Consumer những dữ liệu được gửi bởi Observable. Observer là một object chứa một tập 3 callbacks
+    tương ứng cho mỗi loại notification được gửi từ Observable: next, error, complete.</p>
+  <p>Một Observer có dạng như sau:</p>
+  <br>
+  <pre>
+          <code>{{text6}}</code>
+      </pre>
+  <br>
+  <p>Observer được cung cấp là tham số đầu vào của subscribe để kích hoạt Observable execution.</p>
+  <br>
+  <pre>
+          <code>{{text7}}</code>
+      </pre>
+  <br>
+  <p>Observe có thể chỉ có một số callbacks trong bộ 3 callbacks kể trên (có thể là một object không có callback nào
+    trong bộ kể trên, trường hợp này ít dùng đến).</p>
+  <p>Ngoài cách dùng như trên, observable.subscribe sẽ chuẩn hóa các callbacks thành Observer object tương ứng, bạn có
+    thể truyền vào các hàm rời rạc nhau, nhưng cần lưu ý truyền đúng thứ tự callback.</p>
+  <p>Cách dùng này hiện tại không khuyến cáo sử dụng, chỉ dùng cách truyền function nếu bạn có một hàm để handle Next
+    notification.</p>
+  <br>
+  <pre>
+          <code>{{text8}}</code>
+      </pre>
+  <br>
+  <p>Lưu ý: Nếu bạn không muốn truyền error handler function vào, hãy truyền null/undefined:</p>
+  <br>
+  <pre>
+          <code>{{text9}}</code>
+      </pre>
+  <br>
+
+  <!--Subscription-->
+  <span style="font-size: 2rem;" class="pb-0">Subscription</span>
+  <div class="border-b1"></div>
+  <br>
+  <p>Subscription là một object đại diện cho một nguồn tài nguyên có khả năng hủy được, thông thường trong Rxjs là hủy
+    Observable execution. Subscription có chứa một method quan trọng unsubscribe (từ Rxjs 5 trở lên), khi method này
+    được gọi, execution sẽ bị hủy.</p>
+  <p>Ví dụ: chúng ta có một đồng hồ đếm thời gian, mỗi giây sẽ gửi đi một giá trị, giả sử sau khi chạy 5s chúng ta cần
+    hủy phần thực thi này.</p>
+  <br>
+  <pre>
+          <code>{{text10}}</code>
+      </pre>
+  <br>
+  <p>Một Subscription có thể chứa trong nó nhiều Subscriptions con, khi Subscription unsubscribe, các Subscriptions con
+    cũng sẽ unsubscribe.</p>
+  <p>Ở Subscription cha, chúng ta có thể gọi method add để thêm các Subscriptions con mà phụ thuộc Subscription cha
+    này.</p>
+  <br>
+  <pre>
+          <code>{{text11}}</code>
+      </pre>
+  <br>
+  <br>
+</div>

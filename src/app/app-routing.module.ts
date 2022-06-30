@@ -8,6 +8,7 @@ import { ContentProjectionComponent } from './components/content-projection/cont
 import { DataBindingComponent } from './components/data-binding/data-binding.component';
 import { DependenceInjectionComponent } from './components/dependence-injection/dependence-injection.component';
 import { IntroDependenceInjectionComponent } from './components/intro-dependence-injection/intro-dependence-injection.component';
+import { IntroRxjsObservableComponent } from './components/intro-rxjs-observable/intro-rxjs-observable.component';
 import { NgTemplateComponent } from './components/ng-template/ng-template.component';
 import { PipeComponent } from './components/pipe/pipe.component';
 import { StructureDirectiveComponent } from './components/structure-directive/structure-directive.component';
@@ -75,6 +76,10 @@ const routes: Routes = [
   {
     path: 'pipe',
     component: PipeComponent
+  },
+  {
+    path: 'intro-rxjs-observable',
+    component: IntroRxjsObservableComponent
   },
 ];
 

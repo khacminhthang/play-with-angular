@@ -28,6 +28,7 @@ import { IntroDependenceInjectionComponent } from './components/intro-dependence
 import { DependenceInjectionComponent } from './components/dependence-injection/dependence-injection.component';
 import { ContentChildComponent } from './components/content-child/content-child.component';
 import { PipeComponent } from './components/pipe/pipe.component';
+import { IntroRxjsObservableComponent } from './components/intro-rxjs-observable/intro-rxjs-observable.component';
 
 @NgModule({
   declarations: [
@@ -50,7 +51,8 @@ import { PipeComponent } from './components/pipe/pipe.component';
     IntroDependenceInjectionComponent,
     DependenceInjectionComponent,
     ContentChildComponent,
-    PipeComponent
+    PipeComponent,
+    IntroRxjsObservableComponent
   ],
   imports: [
     AppRoutingModule,
