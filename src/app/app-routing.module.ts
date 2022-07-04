@@ -11,6 +11,7 @@ import { IntroDependenceInjectionComponent } from './components/intro-dependence
 import { IntroRxjsObservableComponent } from './components/intro-rxjs-observable/intro-rxjs-observable.component';
 import { NgTemplateComponent } from './components/ng-template/ng-template.component';
 import { PipeComponent } from './components/pipe/pipe.component';
+import { RxjsCreationOperatorsComponent } from './components/rxjs-creation-operators/rxjs-creation-operators.component';
 import { StructureDirectiveComponent } from './components/structure-directive/structure-directive.component';
 import { TemplateVariableComponent } from './components/template-variable/template-variable.component';
 import { TypescriptAdvTypeComponent } from './components/typescript-adv-type/typescript-adv-type.component';
@@ -80,6 +81,10 @@ const routes: Routes = [
   {
     path: 'intro-rxjs-observable',
     component: IntroRxjsObservableComponent
+  },
+  {
+    path: 'rxjs-creation-operators',
+    component: RxjsCreationOperatorsComponent
   },
 ];
 
