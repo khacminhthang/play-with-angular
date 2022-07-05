@@ -14,6 +14,7 @@ import { PipeComponent } from './components/pipe/pipe.component';
 import { RxjsCreationOperatorsComponent } from './components/rxjs-creation-operators/rxjs-creation-operators.component';
 import { StructureDirectiveComponent } from './components/structure-directive/structure-directive.component';
 import { TemplateVariableComponent } from './components/template-variable/template-variable.component';
+import { TransformationOperatorsComponent } from './components/transformation-operators/transformation-operators.component';
 import { TypescriptAdvTypeComponent } from './components/typescript-adv-type/typescript-adv-type.component';
 import { TypescriptDataTypeComponent } from './components/typescript-data-type/typescript-data-type.component';
 
@@ -85,6 +86,10 @@ const routes: Routes = [
   {
     path: 'rxjs-creation-operators',
     component: RxjsCreationOperatorsComponent
+  },
+  {
+    path: 'transformation-operators',
+    component: TransformationOperatorsComponent
   },
 ];
 

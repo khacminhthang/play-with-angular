@@ -30,6 +30,7 @@ import { ContentChildComponent } from './components/content-child/content-child.
 import { PipeComponent } from './components/pipe/pipe.component';
 import { IntroRxjsObservableComponent } from './components/intro-rxjs-observable/intro-rxjs-observable.component';
 import { RxjsCreationOperatorsComponent } from './components/rxjs-creation-operators/rxjs-creation-operators.component';
+import { TransformationOperatorsComponent } from './components/transformation-operators/transformation-operators.component';
 
 @NgModule({
   declarations: [
@@ -54,7 +55,8 @@ import { RxjsCreationOperatorsComponent } from './components/rxjs-creation-opera
     ContentChildComponent,
     PipeComponent,
     IntroRxjsObservableComponent,
-    RxjsCreationOperatorsComponent
+    RxjsCreationOperatorsComponent,
+    TransformationOperatorsComponent
   ],
   imports: [
     AppRoutingModule,

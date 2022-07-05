@@ -1,0 +1,160 @@
+<div>
+  <h1 style="font-size: 3rem;">RxJS Transformation Operators</h1>
+  <br>
+  <p>Trong Day 20 chúng ta đã biết về một số Creation Operators, chúng là những operators có thể call như call một
+    function thông thường. Day 21 này, chúng ta sẽ bắt đầu đi vào tìm hiểu Pipeable Operators, thay vì được call độc lập
+    thì nó sẽ được call ở trong pipe() method của một Observable instance.</p>
+  <br>
+
+  <!-- Pipeable Operators -->
+  <span style="font-size: 2rem;" class="pb-0">Pipeable Operators</span>
+  <div class="border-b1"></div>
+  <br>
+  <p>Một Pipeable Operator là một function nó nhận đầu vào là một Observable và returns một Observable khác. Chúng là
+    pure operation: Observable truyền vào sẽ không bị thay đổi gì.
+  </p>
+  <br>
+  <pre>
+      <code>{{text1}}</code>
+  </pre>
+  <p>Với cú pháp trên thì observableInstance có pipe bao nhiêu operator đi nữa thì nó vẫn không đổi, và cuối cùng chúng
+    ta sẽ nhận lại một Observable nên để có thể sử dụng thì chúng ta cần gán lại, hoặc thực hiện subscribe ngay sau khi
+    pipe:</p>
+  <br>
+  <pre>
+        <code>{{text2}}</code>
+    </pre>
+
+  <p>Pipeable Operators có thể chia thành nhiều category khác nhau, trong ngày hôm nay chúng ta sẽ tìm hiểu về
+    Transformation Operators.</p>
+  <br>
+
+  <!--Transformation Operators-->
+  <span style="font-size: 2rem;" class="pb-0">Transformation Operators</span>
+  <div class="border-b1"></div>
+  <br>
+  <p>Chắc hẳn các bạn đã quá quen với làm việc cùng Array trong JS, chúng ta có thể lặp qua từng phần tử trong mảng, sau
+    đó apply một function lên mỗi phần tử, kết quả trả về sẽ được đưa vào một mảng mới có kích thước giống như mảng ban
+    đầu như sau:</p>
+  <br>
+  <pre>
+                <code>{{text3}}</code>
+            </pre>
+  <p>Kết quả có được sẽ có dạng như sau:</p>
+  <br>
+  <pre>
+                <code>{{text4}}</code>
+            </pre>
+  <p>Như vậy qua một lần biến đổi, chúng ta sẽ có được dữ liệu như ý muốn.</p>
+  <p>Vậy với Observable thì sao. Giả sử chúng ta đang có một hệ thống tracking xem những ai đăng nhập vào hệ thống. Do
+    đó ở một số thời điểm sẽ có một/một vài người đăng nhập, và mỗi lần như thế hệ thống sẽ gửi cho chúng ta một event
+    để biết. Bây giờ chúng ta cũng làm nhiệm vụ tương tự như map ở trên thì sao.</p>
+  <br>
+  <pre>
+                <code>{{text5}}</code>
+            </pre>
+  <p>Khi chạy chương trình bạn sẽ thấy rằng, sau 1 giây thì sẽ emit ra user đầu tiên, và sau đó 2 giây thì sẽ emit ra
+    user thứ hai kèm theo complete signal.</p>
+  <br>
+
+  <strong>map</strong>
+  <p>mapT, R>(project: (value: T, index: number) => R, thisArg?: any): OperatorFunctionT, R></p>
+  <p>Giả sử bạn cần hiển thị thông tin fullname của user trong next thì bạn sẽ có thể dùng cách nào.</p>
+  <p>Cách đơn giản nhất là bạn sẽ vào hàm next để thực hiện tính toán. Nhưng chúng ta có thể transform stream data trước
+    khi nó đi đến với điểm cuối.</p>
+  <p>Đây chính là lúc bạn có thể sử dụng đến Operator như map của RxJS.</p>
+  <br>
+  <pre>
+                <code>{{text6}}</code>
+            </pre>
+  <p>Hoặc giả sử yêu cầu của chúng ta giờ đây thay đổi, chỉ cần trả về id của user mỗi khi được emit.
+  </p>
+  <br>
+  <pre>
+                <code>{{text7}}</code>
+            </pre>
+  <p>Cách dùng map này khá giống cách dùng map của array ở trên phải không???
+  </p>
+  <br>
+
+  <strong>pluck</strong>
+  <p>pluckT, R>(...properties: string[]): OperatorFunctionT, R></p>
+  <p>Đối với yêu cầu map ra một property trong một object như vừa rồi, bạn có thể sử dụng một cách khác là pluck:</p>
+  <pre>
+                <code>{{text8}}</code>
+            </pre>
+  <br>
+
+  <strong>mapTo</strong>
+  <p>mapToT, R>(value: R): OperatorFunctionT, R></p>
+  <p>Sẽ thế nào nếu bạn muốn bất cứ khi nào stream emit một giá trị thì bạn luôn trả về một giá trị fixed không?</p>
+  <p>Giả sử bạn đang làm chức năng để lắng nghe mouse hover. Như bạn cũng có thể biết chúng ta sẽ cần kết hợp giữa
+    mouseover và mouseleave event chẳng hạn.</p>
+  <p>Khi mouseover chúng ta luôn trả về true, và khi mouseleave chúng ta luôn trả về false.</p>
+  <p>Trong đoạn code dưới đây các bạn tạm thời hiểu rằng merge sẽ gộp 2 streams lại thành một, chúng ta sẽ học về
+    combine streams những ngày sau.</p>
+  <br>
+  <pre>
+                <code>{{text9}}</code>
+            </pre>
+  <p>Giờ đây chúng ta đã có một stream hover$ để biết được khi nào chúng ta in/out ở một element.</p>
+  <br>
+
+  <strong>scan</strong>
+  <p>scanT, R>(accumulator: (acc: R, value: T, index: number) => R, seed?: T | R): OperatorFunctionT, R></p>
+  <p>Bây giờ mỗi lần stream emit một value, bạn muốn apply một function lên value đó nhưng có sử dụng kèm theo kết quả
+    lưu trữ trước đó (accumulator). Các bạn có thể liên tưởng ngay đến hàm reduce của Array.</p>
+  <p>Ví dụ: Count số lần người dùng đã click vào một button (giống như bài đầu tiên về RxJS).</p>
+  <br>
+  <pre>
+                <code>{{text10}}</code>
+            </pre>
+  <p>Count số bài đăng của những người dùng đăng nhập theo thời gian:</p>
+  <pre>
+    <code>{{text11}}</code>
+</pre>
+  <br>
+
+  <strong>reduce</strong>
+  <p>reduceT, R>(accumulator: (acc: T | R, value: T, index?: number) => T | R, seed?: T | R): OperatorFunctionT, T | R>
+  </p>
+  <p>Operator này khá giống scan là nó sẽ reduce value overtime, nhưng nó sẽ đợi đến khi source complete rồi thì nó mới
+    emit một giá trị cuối cùng và gửi đi complete.</p>
+  <br>
+  <pre>
+                <code>{{text12}}</code>
+            </pre>
+  <p>Một ví dụ khác nếu chúng ta cần biết được ví trị con trỏ trên element được click.</p>
+  <br>
+
+  <strong>toArray</strong>
+  <p>toArrayT>(): OperatorFunctionT, T[]></p>
+  <p>Giả sử bạn cần collect toàn bộ các value emit bởi stream rồi lưu trữ thành một array, sau đó đợi đến khi stream
+    complete thì emit một array và complete. Lúc này bạn hoàn toàn có thể sử dụng reduce:</p>
+  <pre>
+                  <code>{{text13}}</code>
+              </pre>
+  <p>Nhưng có một cách viết khác ngắn gọn hơn đó là dùng toArray.</p>
+  <pre>
+    <code>{{text14}}</code>
+  </pre>
+  <br>
+
+  <strong>buffer</strong>
+  <p>buffer T>(closingNotifier: Observable any>): OperatorFunction T, T[]></p>
+  <p>Lưu trữ giá trị được emit ra và đợi đến khi closingNotifier emit thì emit những giá trị đó thành 1 array.</p>
+  <br>
+  <pre>
+      <code>{{text15}}</code>
+    </pre>
+  <br>
+
+  <strong>bufferTime</strong>
+  <p>bufferTime T>(bufferTimeSpan: number): OperatorFunction T, T[]></p>
+  <p>Tương tự như buffer, nhưng emit values mỗi khoảng thời gian bufferTimeSpan ms.</p>
+  <br>
+  <pre>
+      <code>{{text16}}</code>
+    </pre>
+  <br>
+</div>
