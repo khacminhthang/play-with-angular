@@ -25,7 +25,7 @@ module.exports = function (config) {
       suppressAll: true // removes the duplicated traces
     },
     coverageReporter: {
-      dir: require('path').join(__dirname, './coverage/play-with-angular'),
+      dir: require('path').join(__dirname, './coverage/dynamic-nested-sidemwnu'),
       subdir: '.',
       reporters: [
         { type: 'html' },

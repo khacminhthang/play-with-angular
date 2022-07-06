@@ -1,0 +1,176 @@
+<div>
+  <h1 style="font-size: 3rem;">RxJS Creation Operators</h1>
+  <br>
+  <p>Ở ngày 19, chúng ta đã tìm hiểu qua về Observable và chúng ta đã biết cách tạo 1 Observable bằng tay như sau:</p>
+  <br>
+  <pre>
+      <code>{{text1}}</code>
+  </pre>
+  <p>Chắc sẽ có một số bạn tự hỏi "Vậy chẳng lẽ lúc nào cũng phải nhớ cú pháp này để tạo Observable sao? Nào là next,
+    rồi complete, rồi cả unsubscribe". Để trả lời câu hỏi này thì ở ngày hôm nay, chúng ta sẽ tìm về các Operators dùng
+    để khởi tạo Observable mà RxJS cung cấp nhé.</p>
+  <p>Operators là các pure functions cho phép lập trình functional với Observable. (day 19)</p>
+  <br>
+
+  <!-- Intro -->
+  <span style="font-size: 2rem;" class="pb-0">Intro</span>
+  <div class="border-b1"></div>
+  <br>
+  <p>Đây sẽ là observer để dùng chung ở trong bài viết này. Nếu như ví dụ nào có observer riêng thì mình sẽ viết riêng
+    nhé.
+  </p>
+  <br>
+  <pre>
+      <code>{{text2}}</code>
+  </pre>
+  <br>
+
+  <!--Common Creation Operators-->
+  <span style="font-size: 2rem;" class="pb-0">Common Creation Operators</span>
+  <div class="border-b1"></div>
+  <br>
+  <strong>of()</strong>
+  <p>of() là operator dùng để tạo 1 Observable từ bất cứ giá trị gì: primitives, Array, Object, Function v.v... of() sẽ
+    nhận vào các giá trị và sẽ complete ngay sau khi tất cả các giá trị truyền vào được emit.</p>
+  <p>1. Primitive value</p>
+  <br>
+  <pre>
+                <code>{{text3}}</code>
+            </pre>
+  <p>2. Object/Array</p>
+  <br>
+  <pre>
+                <code>{{text4}}</code>
+            </pre>
+  <p>3. Dãy giá trị (sequence of values)</p>
+  <br>
+  <pre>
+                <code>{{text5}}</code>
+            </pre>
+  <br>
+
+  <strong>from()</strong>
+  <p>from() cũng gần giống với of(), cũng được sử dụng để tạo Observable từ 1 giá trị. Tuy nhiên, điểm khác biệt đối với
+    of() là from() chỉ nhận vào giá trị là một Iterable hoặc là một Promise.</p>
+  <p>Iterable là những giá trị có thể iterate qua được, ví dụ: array, map, set, hoặc string. Khi bạn loop qua 1 string,
+    thì các bạn sẽ nhận đc 1 dãy các ký tự trong string.</p>
+  <p>1. Array</p>
+  <br>
+  <pre>
+                <code>{{text6}}</code>
+            </pre>
+  <p>Khi nhận vào 1 Array, from() sẽ emit các giá trị trong array theo sequence. Điều này tương đương với of(1, 2, 3).
+  </p>
+  <p>2. String</p>
+  <br>
+  <pre>
+                <code>{{text7}}</code>
+            </pre>
+  <p>3. Map/Set</p>
+  <br>
+  <pre>
+                <code>{{text8}}</code>
+            </pre>
+  <p>4. Promise</p>
+  <br>
+  <pre>
+                <code>{{text9}}</code>
+            </pre>
+  <p>Các bạn có thể thấy là from() sẽ unwrap và return được giá trị resolved của Promise. Đây là cách chuyển đổi Promise
+    thành Observable.</p>
+  <br>
+
+  <strong>fromEvent()</strong>
+  <p>fromEvent() được dùng để chuyển đổi 1 sự kiện (Event) sang Observable. Ví dụ chúng ta có DOM Event như mouse click
+    hoặc input.</p>
+  <br>
+  <pre>
+                <code>{{text10}}</code>
+            </pre>
+  <p>Các bạn chú ý là fromEvent() sẽ tạo 1 Observable không tự complete. Việc này hoàn toàn hợp lý vì chúng ta muốn lắng
+    nghe các sự kiện như click và keydown cho đến khi nào chính chúng ta không cần lắng nghe nữa thì thôi. fromEvent()
+    không thể quyết định được lúc nào chúng ta không cần những sự kiện này nữa. Điều này cũng đồng nghĩa với việc các
+    bạn phải chủ động unsubscribe các Observable tạo từ fromEvent() này nếu không muốn bị tràn bộ nhớ (memory leak).</p>
+  <br>
+
+  <strong>fromEventPattern()</strong>
+  <p>fromEventPattern() là 1 dạng nâng cao của fromEvent(). Nói về concept thì fromEventPattern() cũng giống với
+    fromEvent() là tạo Observable từ sự kiện. Tuy nhiên, fromEventPattern() rất khác với fromEvent() về cách dùng, cũng
+    như loại sự kiện để xử lý. Để hiểu rõ hơn, chúng ta cùng tham khảo ví dụ sau</p>
+  <br>
+  <pre>
+                <code>{{text11}}</code>
+            </pre>
+  <p>Một ví dụ khác nếu chúng ta cần biết được ví trị con trỏ trên element được click.</p>
+  <br>
+  <pre>
+                <code>{{text12}}</code>
+            </pre>
+  <p>Như các ví dụ trên, fromEventPattern() nhận vào 3 giá trị: addHandler, removeHandler, và projectFunction với
+    projectFunction là optional. fromEventPattern() không khác gì fromEvent() nhưng fromEventPattern() cung cấp cho các
+    bạn 1 API để có thể chuyển đổi các sự kiện từ API gốc của sự kiện. Ví dụ như trên thì chúng ta sử dụng trực tiếp API
+    như addEventListener và removeEventListener từ DOM để chuyển đổi sang Observable chứ không giống như fromEvent().
+    Với kiến thức này, các bạn hoàn toàn có thể dùng fromEventPattern() để chuyển đổi các sự kiện có API phức tạp hơn
+    thành Observable, ví dụ như SignalR Hub</p>
+  <br>
+  <pre>
+                  <code>{{text13}}</code>
+              </pre>
+
+  <strong>interval()</strong>
+  <p>interval() là hàm để tạo Observable mà sẽ emit giá trị số nguyên từ số 0 theo 1 chu kỳ nhất định. Hàm này giống với
+    setInterval.</p>
+  <br>
+  <pre>
+      <code>{{text14}}</code>
+    </pre>
+  <p>Giống như fromEvent(), interval() không tự động complete cho nên các bạn phải xử lý việc unsubscribe.</p>
+  <br>
+
+  <strong>timer()</strong>
+  <p>timer() có 2 cách sử dụng:</p>
+  <ul>
+    <li>Tạo Observable mà sẽ emit giá trị sau khi delay 1 khoảng thời gian nhất định. Cách dùng này sẽ tự complete nhé.
+    </li>
+    <li>Tạo Observable mà sẽ emit giá trị sau khi delay 1 khoảng thời gian và sẽ emit giá trị sau mỗi chu kỳ sau đó.
+      Cách dùng này tương tự với interval() nhưng timer() hỗ trợ delay trước khi emit. Vì cách dùng này giống với
+      interval() nên sẽ không tự complete.</li>
+  </ul>
+  <br>
+  <pre>
+      <code>{{text15}}</code>
+    </pre>
+  <br>
+
+  <strong>throwError()</strong>
+  <p>throwError() sẽ dùng để tạo Observable mà thay vì emit giá trị, Observable này sẽ throw 1 error ngay lập tức sau
+    khi subscribe.</p>
+  <br>
+  <pre>
+      <code>{{text16}}</code>
+    </pre>
+  <p>throwError() thường dùng trong việc xử lý lỗi của 1 Observable, sau khi xử lý lỗi, chúng ta muốn throw tiếp error
+    cho ErrorHandler tiếp theo, chúng ta sẽ dùng throwError. Khi làm việc với Observable, có 1 số operators yêu cầu các
+    bạn phải cung cấp 1 Observable (ví dụ như switchMap, catchError) thì việc throwError trả về 1 Observable là rất
+    thích hợp.</p>
+  <br>
+
+  <strong>defer()</strong>
+  <p>Cuối cùng, chúng ta sẽ tìm hiểu 1 operator rất hay ho đó là defer(). defer() nhận vào 1 ObservableFactory và sẽ trả
+    về Observable này. Điểm đặc biệt của defer() là ở việc defer() sẽ dùng ObservableFactory này để tạo 1 Observable mới
+    cho mỗi Subscriber. Chúng ta cùng tham khảo ví dụ sau:</p>
+  <br>
+  <pre>
+      <code>{{text17}}</code>
+    </pre>
+  <p>Các bạn có thể thấy of() sẽ trả về cùng giá trị Math.random() cho cả 3. Bây giờ chúng ta thử đổi sang defer() nhé.
+  </p>
+  <br>
+  <pre>
+      <code>{{text18}}</code>
+    </pre>
+  <p>Với defer(), chúng ta đã có 3 giá trị khác nhau cho mỗi lần subscribe. Điều này giúp ích ở điểm nào? Ví dụ trường
+    hợp chúng ta cần retry 1 Observable nào đó mà cần so sánh với 1 giá trị random để quyết định xem có chạy tiếp hay
+    không, thì defer() (kết hợp với retry) là 1 giải pháp cực kỳ hiệu quả.</p>
+  <br>
+</div>

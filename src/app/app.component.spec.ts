@@ -20,16 +20,16 @@ describe('AppComponent', () => {
     expect(app).toBeTruthy();
   });
 
-  it(`should have as title 'play-with-angular'`, () => {
+  it(`should have as title 'dynamic-nested-sidemwnu'`, () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
-    expect(app.title).toEqual('play-with-angular');
+    expect(app.title).toEqual('dynamic-nested-sidemwnu');
   });
 
   it('should render title', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('.content span')?.textContent).toContain('play-with-angular app is running!');
+    expect(compiled.querySelector('.content span')?.textContent).toContain('dynamic-nested-sidemwnu app is running!');
   });
 });

@@ -1,17 +1,11 @@
 {
   "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
-  "cli": {
-    "analytics": "ce248b4f-957e-492e-8ec0-345da1bdbaa4"
-  },
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "play-with-angular": {
+    "dynamic-nested-sidemwnu": {
       "projectType": "application",
       "schematics": {
-        "@schematics/angular:component": {
-          "style": "scss"
-        },
         "@schematics/angular:application": {
           "strict": true
         }
@@ -23,23 +17,20 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/play-with-angular",
+            "outputPath": "dist/dynamic-nested-sidemwnu",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
             "tsConfig": "tsconfig.app.json",
-            "inlineStyleLanguage": "scss",
             "assets": [
               "src/favicon.ico",
               "src/assets"
             ],
             "styles": [
-              "src/styles.scss",
-              "node_modules/bootstrap/dist/css/bootstrap.css"
+              "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
+              "src/styles.css"
             ],
-            "scripts": [
-              "node_modules/bootstrap/dist/js/bootstrap.js"
-            ]
+            "scripts": []
           },
           "configurations": {
             "production": {
@@ -78,10 +69,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "play-with-angular:build:production"
+              "browserTarget": "dynamic-nested-sidemwnu:build:production"
             },
             "development": {
-              "browserTarget": "play-with-angular:build:development"
+              "browserTarget": "dynamic-nested-sidemwnu:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -89,7 +80,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "play-with-angular:build"
+            "browserTarget": "dynamic-nested-sidemwnu:build"
           }
         },
         "test": {
@@ -99,22 +90,19 @@
             "polyfills": "src/polyfills.ts",
             "tsConfig": "tsconfig.spec.json",
             "karmaConfig": "karma.conf.js",
-            "inlineStyleLanguage": "scss",
             "assets": [
               "src/favicon.ico",
               "src/assets"
             ],
             "styles": [
-              "src/styles.scss",
-              "node_modules/bootstrap/dist/css/bootstrap.css"
+              "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
+              "src/styles.css"
             ],
-            "scripts": [
-              "node_modules/bootstrap/dist/js/bootstrap.js"
-            ]
+            "scripts": []
           }
         }
       }
     }
   },
-  "defaultProject": "play-with-angular"
+  "defaultProject": "dynamic-nested-sidemwnu"
 }

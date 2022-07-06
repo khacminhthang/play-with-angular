@@ -3,15 +3,15 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { DataBindingComponent } from './components/data-binding/data-binding.component';
-import { SidenavComponent } from './components/layouts/sidenav/sidenav.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MaterialModule } from './material.module';
+import { RouterModule } from '@angular/router';
+import { HomeComponent } from './components/home/home.component';
+
+import { DataBindingComponent } from './components/data-binding/data-binding.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
-import { MaterialExampleModule } from './material/material.module';
 import { MatNativeDateModule } from '@angular/material/core';
-import { AceEditorModule } from 'ng2-ace-editor';
-import { FooterComponent } from './components/layouts/footer/footer.component';
 import { StructureDirectiveComponent } from './components/structure-directive/structure-directive.component';
 import { AttributeDirectiveComponent } from './components/attribute-directive/attribute-directive.component';
 import { ComponentInteractionComponent } from './components/component-interaction/component-interaction.component';
@@ -31,24 +31,25 @@ import { PipeComponent } from './components/pipe/pipe.component';
 import { IntroRxjsObservableComponent } from './components/intro-rxjs-observable/intro-rxjs-observable.component';
 import { RxjsCreationOperatorsComponent } from './components/rxjs-creation-operators/rxjs-creation-operators.component';
 import { TransformationOperatorsComponent } from './components/transformation-operators/transformation-operators.component';
+import { RxjsFilteringOperatorsComponent } from './components/rxjs-filtering-operators/rxjs-filtering-operators.component';
+import { FragmentsModule } from './layout/fragments/fragments.module';
 
 @NgModule({
   declarations: [
     AppComponent,
+    HomeComponent,
     DataBindingComponent,
-    SidenavComponent,
-    FooterComponent,
     StructureDirectiveComponent,
     AttributeDirectiveComponent,
     ComponentInteractionComponent,
     ShowNameComponent,
     ComponentInteractionP2Component,
+    ContentProjectionChildComponent,
     TemplateVariableComponent,
     ToggleComponent,
     TypescriptDataTypeComponent,
     TypescriptAdvTypeComponent,
     ContentProjectionComponent,
-    ContentProjectionChildComponent,
     NgTemplateComponent,
     IntroDependenceInjectionComponent,
     DependenceInjectionComponent,
@@ -56,18 +57,20 @@ import { TransformationOperatorsComponent } from './components/transformation-op
     PipeComponent,
     IntroRxjsObservableComponent,
     RxjsCreationOperatorsComponent,
-    TransformationOperatorsComponent
+    TransformationOperatorsComponent,
+    RxjsFilteringOperatorsComponent
   ],
   imports: [
-    AppRoutingModule,
-    BrowserAnimationsModule,
     BrowserModule,
+    AppRoutingModule,
+    FragmentsModule,
+    RouterModule,
+    BrowserAnimationsModule,
     FormsModule,
     HttpClientModule,
     MatNativeDateModule,
-    MaterialExampleModule,
     ReactiveFormsModule,
-    AceEditorModule
+    MaterialModule
   ],
   entryComponents:[
     ToggleComponent
