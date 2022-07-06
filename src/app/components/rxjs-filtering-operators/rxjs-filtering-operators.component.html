@@ -1,176 +1,356 @@
 <div>
-  <h1 style="font-size: 3rem;">RxJS Creation Operators</h1>
+  <h1 style="font-size: 3rem;">RxJS Filtering Operators</h1>
   <br>
-  <p>Ở ngày 19, chúng ta đã tìm hiểu qua về Observable và chúng ta đã biết cách tạo 1 Observable bằng tay như sau:</p>
+  <p>Hôm nay chúng ta sẽ tiếp tục tìm hiểu về thêm về RxJS Operators, điển hình là Filtering Operators. Đúng với tên gọi
+    của chúng, các operators này được dùng để lược/lọc các giá trị được emit từ Observable gốc, giống như bạn lược/lọc
+    qua phần tử của 1 Array vậy.</p>
   <br>
+
+  <!-- filter() -->
+  <span style="font-size: 2rem;" class="pb-0">filter()</span>
+  <div class="border-b1"></div>
+  <br>
+  <p>filter T>(predicate: (value: T, index: number) => boolean, thisArg?: any): MonoTypeOperatorFunction T>
+  </p>
+  <p>Như signature trên thì filter() sẽ nhận vào 1 predicate là 1 function mà function này phải trả về giá trị truthy
+    hoặc falsy. Nếu như truthy thì filter() sẽ emit giá trị của Observable tại thời điểm đó. Ngược lại nếu như falsy,
+    thì filter() sẽ không emit giá trị đó. Cách hoạt động giống như Array.prototype.filter() vậy.</p>
   <pre>
       <code>{{text1}}</code>
   </pre>
-  <p>Chắc sẽ có một số bạn tự hỏi "Vậy chẳng lẽ lúc nào cũng phải nhớ cú pháp này để tạo Observable sao? Nào là next,
-    rồi complete, rồi cả unsubscribe". Để trả lời câu hỏi này thì ở ngày hôm nay, chúng ta sẽ tìm về các Operators dùng
-    để khởi tạo Observable mà RxJS cung cấp nhé.</p>
-  <p>Operators là các pure functions cho phép lập trình functional với Observable. (day 19)</p>
   <br>
 
-  <!-- Intro -->
-  <span style="font-size: 2rem;" class="pb-0">Intro</span>
+  <!-- first() -->
+  <span style="font-size: 2rem;" class="pb-0">first()</span>
   <div class="border-b1"></div>
   <br>
-  <p>Đây sẽ là observer để dùng chung ở trong bài viết này. Nếu như ví dụ nào có observer riêng thì mình sẽ viết riêng
-    nhé.
+  <p>first T, D>(predicate?: (value: T, index: number, source: Observable T>) => boolean, defaultValue?: D):
+    OperatorFunction T, T | D>
+  </p>
+  <p>Giống như cái tên, first() sẽ emit giá trị đầu tiên của 1 Observable rồi complete. first() sẽ throw EmptyError nếu
+    như Observable tự complete trước khi emit 1 giá trị nào (ví dụ như EMPTY chẳng hạn, là 1 Observable rỗng. Hoặc of()
+    mà không nhận vào giá trị nào).
   </p>
   <br>
   <pre>
       <code>{{text2}}</code>
   </pre>
-  <br>
-
-  <!--Common Creation Operators-->
-  <span style="font-size: 2rem;" class="pb-0">Common Creation Operators</span>
-  <div class="border-b1"></div>
-  <br>
-  <strong>of()</strong>
-  <p>of() là operator dùng để tạo 1 Observable từ bất cứ giá trị gì: primitives, Array, Object, Function v.v... of() sẽ
-    nhận vào các giá trị và sẽ complete ngay sau khi tất cả các giá trị truyền vào được emit.</p>
-  <p>1. Primitive value</p>
+  <p>Ngoài ra, first() còn có thể nhận vào 2 tham số optional: predicate và defaultValue. Nếu như bạn truyền vào
+    predicate thì first() sẽ throw Error nếu như Observable đã complete mà chưa có giá trị nào thoả được điều kiện của
+    predicate. Nếu như bạn truyền vào predicate và không muốn có Error thì hãy truyền thêm vào defaultValue.</p>
+  <p>Nếu bạn nào từng làm qua .NET LINQ thì first(predicate, defaultValue) hoạt động tương tự FirstOrDefault</p>
   <br>
   <pre>
-                <code>{{text3}}</code>
-            </pre>
-  <p>2. Object/Array</p>
+                  <code>{{text3}}</code>
+              </pre>
+  <br>
+
+  <!--last()-->
+  <span style="font-size: 2rem;" class="pb-0">last()</span>
+  <div class="border-b1"></div>
+  <br>
+  <p>last T, D>(predicate?: (value: T, index: number, source: Observable T>) => boolean, defaultValue?: D):
+    OperatorFunction T, T | D></p>
+  <p>Hoàn toàn ngược lại với first(), last() sẽ emit giá trị cuối cùng của Observable trước khi Observable này complete.
+    Tất các behaviors mà first() có thì last() cũng có. Nghĩa là</p>
+  <ul>
+    <li>Throw EmptyError nếu như Observable tự complete trước khi emit bất kỳ 1 giá trị nào.</li>
+    <li>Cũng nhận vào 2 tham số optional: predicate và defaultValue.</li>
+    <li>Throw Error nếu như chỉ có predicate và không có giá trị nào thoả điều kiện.</li>
+    <li>Emit defaultValue nếu như có predicate và defaultValue và không có giá trị nào thoả điều kiện.</li>
+  </ul>
   <br>
   <pre>
                 <code>{{text4}}</code>
             </pre>
-  <p>3. Dãy giá trị (sequence of values)</p>
   <br>
+
+  <!--find()-->
+  <span style="font-size: 2rem;" class="pb-0">find()</span>
+  <div class="border-b1"></div>
+  <br>
+  <p>find T>(predicate: (value: T, index: number, source: Observable T>) => boolean, thisArg?: any): OperatorFunction T,
+    T | undefined></p>
+  <p>Lại là một operator có signature khác quen thuộc. Giống như Array.prototype.find(), find() sẽ emit giá trị đầu tiên
+    mà thoả mãn được điều kiện từ predicate rồi complete. Khác với first(), find() phải có predicate và find() sẽ không
+    emit Error nếu như không có giá trị nào thoả mãn điều kiện.</p>
   <pre>
                 <code>{{text5}}</code>
             </pre>
   <br>
 
-  <strong>from()</strong>
-  <p>from() cũng gần giống với of(), cũng được sử dụng để tạo Observable từ 1 giá trị. Tuy nhiên, điểm khác biệt đối với
-    of() là from() chỉ nhận vào giá trị là một Iterable hoặc là một Promise.</p>
-  <p>Iterable là những giá trị có thể iterate qua được, ví dụ: array, map, set, hoặc string. Khi bạn loop qua 1 string,
-    thì các bạn sẽ nhận đc 1 dãy các ký tự trong string.</p>
-  <p>1. Array</p>
+  <!--single()-->
+  <span style="font-size: 2rem;" class="pb-0">single()</span>
+  <div class="border-b1"></div>
   <br>
+  <p>single T>(predicate?: (value: T, index: number, source: Observable T>) => boolean): MonoTypeOperatorFunction T></p>
+  <p>Hoạt động tương tự như first() nhưng nghiêm ngặt hơn first() ở điểm single() sẽ throw Error nếu như có NHIỀU HƠN 1
+    giá trị thoả điều kiện. single() không nhận vào defautlValue và sẽ emit undefined nếu như không có giá trị nào thoả
+    điều kiện khi truyền vào tham số predicate. Phần lớn single() chỉ nên sử dụng khi bạn có điều kiện predicate cần
+    phải thoả mãn. Nếu dùng single() lên 1 Observable emit nhiều hơn 1 giá trị, single() sẽ throw Error.</p>
   <pre>
                 <code>{{text6}}</code>
             </pre>
-  <p>Khi nhận vào 1 Array, from() sẽ emit các giá trị trong array theo sequence. Điều này tương đương với of(1, 2, 3).
-  </p>
-  <p>2. String</p>
+
+  <br>
+
+  <!--take()-->
+  <span style="font-size: 2rem;" class="pb-0">take()</span>
+  <div class="border-b1"></div>
+  <br>
+  <p>take T>(count: number): MonoTypeOperatorFunction T></p>
+  <p>take() nhận vào 1 tham số count để dùng cho số lần lấy giá trị được emit từ Observable sau đó sẽ complete.</p>
   <br>
   <pre>
                 <code>{{text7}}</code>
             </pre>
-  <p>3. Map/Set</p>
+  <strong>3Special case: take(1)</strong>
+  <br>
+  <p>Như các bạn cũng đã nhận ra là không có gì ngăn cản chúng ta truyền vào số 1 cho take() để có take(1). Thoạt nhìn
+    thì đây có vẻ là 1 cách khác của first(). Tuy nhiên, take(1) khác first() ở chỗ take(1) sẽ không throw bất cứ error
+    nào nếu như Observable tự complete mà không emit giá trị nào.</p>
+  <p>take(1) nên dùng khi các bạn cần:</p>
+  <ul>
+    <li>Báo cáo user click ở đâu khi vào page đầu tiên?</li>
+    <li>Snapshot của data tại 1 thời điểm</li>
+    <li>Route Guard mà return Observable.</li>
+  </ul>
+  <br>
+
+  <!--takeLast()-->
+  <span style="font-size: 2rem;" class="pb-0">takeLast()</span>
+  <div class="border-b1"></div>
+  <br>
+  <p>takeLast T>(count: number): MonoTypeOperatorFunction T></p>
+  <p>takeLast() hoạt động giống như take() nhưng ngược lại với take() là takeLast() sẽ lấy n giá trị cuối cùng được emit
+    từ Observable. Các bạn chú ý là takeLast() chỉ emit khi nào Observable gốc complete, nếu như Observable gốc là 1
+    long-live Observable (ví dụ: interval()) thì takeLast() sẽ không bao giờ emit.</p>
   <br>
   <pre>
                 <code>{{text8}}</code>
             </pre>
-  <p>4. Promise</p>
+  <br>
+
+  <!--takeUntil()-->
+  <span style="font-size: 2rem;" class="pb-0">takeUntil()</span>
+  <div class="border-b1"></div>
+  <br>
+  <p>takeUntil T>(notifier: Observable any>): MonoTypeOperatorFunction T></p>
+  <p>takeUntil() nhận vào 1 tham số là 1 Observable như là 1 notifier (người báo hiệu) và takeUntil() sẽ emit giá trị
+    của Observable gốc CHO TỚI KHI notifier emit.</p>
   <br>
   <pre>
                 <code>{{text9}}</code>
             </pre>
-  <p>Các bạn có thể thấy là from() sẽ unwrap và return được giá trị resolved của Promise. Đây là cách chuyển đổi Promise
-    thành Observable.</p>
+  <strong>Use-case trong Angular:</strong>
+  <p>takeUntil() được dùng để unsubscribe Observable trong ngOnDestroy() là rất phổ biến. Các bạn suy nghĩ mình có 1
+    destroySubject: Subject void> tượng trưng cho notifier. Khi ngOnDestroy() thực thi, chúng ta sẽ cho
+    destroySubject.next() (emit) và sử dụng takeUntil(this.destroySubject) thì Observable trong Component sẽ được
+    unsubscribe khi ngOnDestroy() thực thi -> khi Component unmount.</p>
   <br>
 
-  <strong>fromEvent()</strong>
-  <p>fromEvent() được dùng để chuyển đổi 1 sự kiện (Event) sang Observable. Ví dụ chúng ta có DOM Event như mouse click
-    hoặc input.</p>
+  <!--takeWhile()-->
+  <span style="font-size: 2rem;" class="pb-0">takeWhile()</span>
+  <div class="border-b1"></div>
+  <br>
+  <p>takeWhile T>(predicate: (value: T, index: number) => boolean, inclusive: boolean = false): MonoTypeOperatorFunction
+    T></p>
+  <p>takeWhile() hoạt động tương tự takeUntil() nhưng thay vì nhận vào 1 notifier thì takeWhile() nhận vào 1 predicate.
+    Nhiều người sẽ sử dụng takeWhile() và takeUntil() thay đổi qua lại nhưng takeWhile() hoạt động rất khác với
+    takeUntil(). Các bạn xem qua 2 bài post trên group về vấn đề này nhé: post 1 và post 2</p>
   <br>
   <pre>
                 <code>{{text10}}</code>
             </pre>
-  <p>Các bạn chú ý là fromEvent() sẽ tạo 1 Observable không tự complete. Việc này hoàn toàn hợp lý vì chúng ta muốn lắng
-    nghe các sự kiện như click và keydown cho đến khi nào chính chúng ta không cần lắng nghe nữa thì thôi. fromEvent()
-    không thể quyết định được lúc nào chúng ta không cần những sự kiện này nữa. Điều này cũng đồng nghĩa với việc các
-    bạn phải chủ động unsubscribe các Observable tạo từ fromEvent() này nếu không muốn bị tràn bộ nhớ (memory leak).</p>
+  <p>takeWhile() hoạt động hiệu quả nhất khi bạn muốn unsusbcribe từ chính giá trị mà Observable emit (internal). Giống
+    như ví dụ trên, mình lấy chính giá trị của interval để kiểm tra điều kiện. takeUntil() hoạt động hiệu quả khi bạn có
+    notifier từ bên ngoài (external).</p>
   <br>
 
-  <strong>fromEventPattern()</strong>
-  <p>fromEventPattern() là 1 dạng nâng cao của fromEvent(). Nói về concept thì fromEventPattern() cũng giống với
-    fromEvent() là tạo Observable từ sự kiện. Tuy nhiên, fromEventPattern() rất khác với fromEvent() về cách dùng, cũng
-    như loại sự kiện để xử lý. Để hiểu rõ hơn, chúng ta cùng tham khảo ví dụ sau</p>
+  <!--skip()-->
+  <span style="font-size: 2rem;" class="pb-0">skip()</span>
+  <div class="border-b1"></div>
+  <br>
+  <p>skip T>(count: number): MonoTypeOperatorFunction T></p>
+  <p>skip() hoạt động tương tự như take() nhưng mang tính chất ngược lại so với take(). Như take() là mình sẽ emit n giá
+    trị ban đầu, còn skip() là mình sẽ bỏ qua n giá trị ban đầu.</p>
   <br>
   <pre>
                 <code>{{text11}}</code>
             </pre>
-  <p>Một ví dụ khác nếu chúng ta cần biết được ví trị con trỏ trên element được click.</p>
+  <br>
+
+  <!--skipUntil()-->
+  <span style="font-size: 2rem;" class="pb-0">skipUntil()</span>
+  <div class="border-b1"></div>
+  <br>
+  <p>skipUntil T>(notifier: Observable any>): MonoTypeOperatorFunction T></p>
+  <p>skipUntil() hoạt động tương tự takeUntil() và mang tính chất giống với skip().</p>
   <br>
   <pre>
                 <code>{{text12}}</code>
             </pre>
-  <p>Như các ví dụ trên, fromEventPattern() nhận vào 3 giá trị: addHandler, removeHandler, và projectFunction với
-    projectFunction là optional. fromEventPattern() không khác gì fromEvent() nhưng fromEventPattern() cung cấp cho các
-    bạn 1 API để có thể chuyển đổi các sự kiện từ API gốc của sự kiện. Ví dụ như trên thì chúng ta sử dụng trực tiếp API
-    như addEventListener và removeEventListener từ DOM để chuyển đổi sang Observable chứ không giống như fromEvent().
-    Với kiến thức này, các bạn hoàn toàn có thể dùng fromEventPattern() để chuyển đổi các sự kiện có API phức tạp hơn
-    thành Observable, ví dụ như SignalR Hub</p>
+  <br>
+
+  <!--skipWhile()-->
+  <span style="font-size: 2rem;" class="pb-0">skipWhile()</span>
+  <div class="border-b1"></div>
+  <br>
+  <p>skipWhile T>(predicate: (value: T, index: number) => boolean): MonoTypeOperatorFunction T></p>
+  <p>skipWhile() hoạt động tương tự takeWhile() và mang tính chất giống với skip()</p>
   <br>
   <pre>
                   <code>{{text13}}</code>
               </pre>
+  <br>
 
-  <strong>interval()</strong>
-  <p>interval() là hàm để tạo Observable mà sẽ emit giá trị số nguyên từ số 0 theo 1 chu kỳ nhất định. Hàm này giống với
-    setInterval.</p>
+  <!--distinct()-->
+  <span style="font-size: 2rem;" class="pb-0">distinct()</span>
+  <div class="border-b1"></div>
+  <br>
+  <p>distinct T, K>(keySelector?: (value: T) => K, flushes?: Observable any>): MonoTypeOperatorFunction T></p>
+  <p>distinct() sẽ so sánh các giá trị được emit từ Observable và chỉ emit các giá trị chưa được emit qua.</p>
   <br>
   <pre>
       <code>{{text14}}</code>
     </pre>
-  <p>Giống như fromEvent(), interval() không tự động complete cho nên các bạn phải xử lý việc unsubscribe.</p>
-  <br>
-
-  <strong>timer()</strong>
-  <p>timer() có 2 cách sử dụng:</p>
-  <ul>
-    <li>Tạo Observable mà sẽ emit giá trị sau khi delay 1 khoảng thời gian nhất định. Cách dùng này sẽ tự complete nhé.
-    </li>
-    <li>Tạo Observable mà sẽ emit giá trị sau khi delay 1 khoảng thời gian và sẽ emit giá trị sau mỗi chu kỳ sau đó.
-      Cách dùng này tương tự với interval() nhưng timer() hỗ trợ delay trước khi emit. Vì cách dùng này giống với
-      interval() nên sẽ không tự complete.</li>
-  </ul>
+  <p>distinct() có thể nhận vào 1 tham số là hàm keySelector để có thể chọn được property nào cần được so sánh nếu như
+    Observable emit giá trị là 1 complex Object</p>
   <br>
   <pre>
       <code>{{text15}}</code>
     </pre>
   <br>
 
-  <strong>throwError()</strong>
-  <p>throwError() sẽ dùng để tạo Observable mà thay vì emit giá trị, Observable này sẽ throw 1 error ngay lập tức sau
-    khi subscribe.</p>
+  <!--distinctUntilChanged()-->
+  <span style="font-size: 2rem;" class="pb-0">distinctUntilChanged()</span>
+  <div class="border-b1"></div>
+  <br>
+  <p>distinctUntilChanged T, K>(compare?: (x: K, y: K) => boolean, keySelector?: (x: T) => K): MonoTypeOperatorFunction
+    T></p>
+  <p>distinctUntilChanged() có concept tương tự distinct() nhưng khác ở chỗ distinctUntilChanged() chỉ so sánh giá trị
+    sắp được emit với giá trị vừa được emit (giá trị cuối) chứ không so sánh với tất cả giá trị đã được emit.</p>
   <br>
   <pre>
       <code>{{text16}}</code>
     </pre>
-  <p>throwError() thường dùng trong việc xử lý lỗi của 1 Observable, sau khi xử lý lỗi, chúng ta muốn throw tiếp error
-    cho ErrorHandler tiếp theo, chúng ta sẽ dùng throwError. Khi làm việc với Observable, có 1 số operators yêu cầu các
-    bạn phải cung cấp 1 Observable (ví dụ như switchMap, catchError) thì việc throwError trả về 1 Observable là rất
-    thích hợp.</p>
-  <br>
-
-  <strong>defer()</strong>
-  <p>Cuối cùng, chúng ta sẽ tìm hiểu 1 operator rất hay ho đó là defer(). defer() nhận vào 1 ObservableFactory và sẽ trả
-    về Observable này. Điểm đặc biệt của defer() là ở việc defer() sẽ dùng ObservableFactory này để tạo 1 Observable mới
-    cho mỗi Subscriber. Chúng ta cùng tham khảo ví dụ sau:</p>
+  <p>distinctUntilChanged() cũng có thể nhận vào 2 tham số optional: compare function và keySelector function. Tham số
+    keySelector hoạt động giống như tham số keySelector của distinct(). Khi compare function không được truyền vào cho
+    distinctUntilChanged() thì distinctUntilChanged() sẽ dùng === để so sánh 2 giá trị. Để thay đổi behavior này, các
+    bạn truyền vào compare function, nếu compare function trả về truthy thì distinctUntilChanged sẽ bỏ qua giá trị đó.
+  </p>
   <br>
   <pre>
-      <code>{{text17}}</code>
-    </pre>
-  <p>Các bạn có thể thấy of() sẽ trả về cùng giá trị Math.random() cho cả 3. Bây giờ chúng ta thử đổi sang defer() nhé.
-  </p>
+    <code>{{text17}}</code>
+  </pre>
+  <br>
+
+  <!--distinctUntilKeyChanged()-->
+  <span style="font-size: 2rem;" class="pb-0">distinctUntilKeyChanged()</span>
+  <div class="border-b1"></div>
+  <br>
+  <p>distinctUntilKeyChanged T, K extends keyof T>(key: K, compare?: (x: T[K], y: T[K]) => boolean):
+    MonoTypeOperatorFunction T></p>
+  <p>distinctUntilKeyChanged() là short-cut của distinctUntilChanged() + keySelector.</p>
+  <br>
   <br>
   <pre>
       <code>{{text18}}</code>
     </pre>
-  <p>Với defer(), chúng ta đã có 3 giá trị khác nhau cho mỗi lần subscribe. Điều này giúp ích ở điểm nào? Ví dụ trường
-    hợp chúng ta cần retry 1 Observable nào đó mà cần so sánh với 1 giá trị random để quyết định xem có chạy tiếp hay
-    không, thì defer() (kết hợp với retry) là 1 giải pháp cực kỳ hiệu quả.</p>
+  <br>
+  <strong>Note</strong>
+  <p>Chúng ta còn 8 operators nữa. Tuy nhiên, 8 operators này đi theo cặp ví dụ: throttle/throttleTime,
+    debounce/debounceTime ... Mình sẽ chỉ nói về *Time thôi vì cái kia hoạt động tương tự. throttle() nhận vào 1
+    Observable còn throttleTime() nhận vào 1 khoảng thời gian trong millisecond. Phần lớn, các *Time operators dùng
+    nhiều hơn là cái không có *Time trong công việc hàng ngày.</p>
+  <br>
+
+  <!--throttle()/throttleTime()-->
+  <span style="font-size: 2rem;" class="pb-0">throttle()/throttleTime()</span>
+  <div class="border-b1"></div>
+  <br>
+  <p>throttle T>(durationSelector: (value: T) => SubscribableOrPromise any>, config: ThrottleConfig =
+    defaultThrottleConfig): MonoTypeOperatorFunction T> throttleTime T>(duration: number, scheduler: SchedulerLike =
+    async, config: ThrottleConfig = defaultThrottleConfig): MonoTypeOperatorFunction T>
+  </p>
+  <p>throttleTime() nhận vào 1 tham số là duration có đơn vị là millisecond. Khi Observable gốc emit giá trị đầu tiên,
+    throttleTime() sẽ emit giá trị này rồi sẽ chạy timer với duration được truyền vào. Khi timer đang chạy thì mọi giá
+    trị của Observable gốc emit đều được bỏ qua. Khi timer chạy xong, throttleTime() quay lại trạng thái ban đầu và chờ
+    giá trị kế tiếp của Observable gốc.</p>
+  <p>throttle hoạt động giống nhu throttleTime nhưng thay vì truyền vào duration thì throttle nhận vào 1 Observable
+    tượng trưng cho durationSelector. Khi durationSelector này emit (hoặc complete) thì timer sẽ ngưng, và throttle sẽ
+    chờ giá trị tiếp theo của Observable gốc và quá trình này được lặp lại.</p>
+  <br>
+  <pre>
+      <code>{{text19}}</code>
+    </pre>
+  <br>
+  <p>throttleTime() có thể nhận vào tham số ThrottleConfig: leading: boolean, trailing: boolean để xác định xem
+    throttleTime() sẽ emit giá trị đầu hay giá trị cuối khi timer chạy xong. Default là leading: true, trailing:
+    false</p>
+  <p>throttleTime() thường được sử dụng khi bạn có event từ DOM như mousemove để tránh quá nhiều event được emit</p>
+  <br>
+
+  <!--debounce()/debounceTime()-->
+  <span style="font-size: 2rem;" class="pb-0">debounce()/debounceTime()</span>
+  <div class="border-b1"></div>
+  <br>
+  <p>debounce T>(durationSelector: (value: T) => SubscribableOrPromise any>): MonoTypeOperatorFunction T> debounceTime
+    T>(dueTime: number, scheduler: SchedulerLike = async): MonoTypeOperatorFunction T>
+  </p>
+  <p>debounceTime() nhận vào 1 tham số là dueTime có đơn vị là millisecond. Khi Observable gốc emit giá trị,
+    debounceTime() sẽ bỏ qua giá trị này và sẽ chạy timer với khoảng thời gian dueTime. debounceTime() sẽ bỏ qua tất cả
+    giá trị mà Observable gốc emit trong khi timer vẫn đang chạy và sau đó debounceTime() sẽ chạy lại timer. Khi và chỉ
+    khi timer được chạy hoàn chỉnh khoảng thời gian dueTime, debounceTime() sẽ emit giá trị cuối cùng mà Observable gốc
+    đã emit.</p>
+  <p>throttle hoạt động giống nhu throttleTime nhưng thay vì truyền vào duration thì throttle nhận vào 1 Observable
+    tượng trưng cho durationSelector. Khi durationSelector này emit (hoặc complete) thì timer sẽ ngưng, và throttle sẽ
+    chờ giá trị tiếp theo của Observable gốc và quá trình này được lặp lại.</p>
+  <p>debounce() hoạt động giống như debounceTime() nhưng thay vì truyền vào dueTime thì debounce nhận vào 1 Observable
+    tượng trưng cho durationSelector. timer của debounce sẽ hoạt động dựa trên durationSelector này thay vì dueTime</p>
+  <br>
+  <pre>
+      <code>{{text20}}</code>
+    </pre>
+  <br>
+  <p>Vì cách hoạt động như trên, debounceTime() được dùng phổ biến nhất cho 1 input dùng để filter 1 danh sách gì đó.
+  </p>
+  <br>
+
+  <!--audit()/auditTime()-->
+  <span style="font-size: 2rem;" class="pb-0">audit()/auditTime()</span>
+  <div class="border-b1"></div>
+  <br>
+  <p>audit T>(durationSelector: (value: T) => SubscribableOrPromise any>): MonoTypeOperatorFunction T> auditTime T>
+    (duration: number, scheduler: SchedulerLike = async): MonoTypeOperatorFunction T>
+  </p>
+  <p>auditTime() nhận vào 1 tham số duration có đơn vị là milliseconds. auditTime() hoạt động tương tự throttleTime()
+    với trailing: true}. Nghĩa là sau khi timer chạy và chạy xong duration, auditTime() sẽ emit giá trị gần nhất mà
+    Observable gốc emit.</p>
+  <p>throttle hoạt động giống nhu throttleTime nhưng thay vì truyền vào duration thì throttle nhận vào 1 Observable
+    tượng trưng cho durationSelector. Khi durationSelector này emit (hoặc complete) thì timer sẽ ngưng, và throttle sẽ
+    chờ giá trị tiếp theo của Observable gốc và quá trình này được lặp lại.</p>
+  <p>debounce() hoạt động giống như debounceTime() nhưng thay vì truyền vào dueTime thì debounce nhận vào 1 Observable
+    tượng trưng cho durationSelector. timer của debounce sẽ hoạt động dựa trên durationSelector này thay vì dueTime</p>
+  <br>
+  <pre>
+      <code>{{text21}}</code>
+    </pre>
+  <br>
+
+  <!--sample()/sampleTime()-->
+  <span style="font-size: 2rem;" class="pb-0">sample()/sampleTime()</span>
+  <div class="border-b1"></div>
+  <br>
+  <p>sample T>(notifier: Observable any>): MonoTypeOperatorFunction T> sampleTime T>(period: number, scheduler:
+    SchedulerLike = async): MonoTypeOperatorFunction T>
+  </p>
+  <p>sampleTime() nhận vào 1 tham số là period có đơn vị là millisecond. Khi Observable gốc được subscribe, timer của
+    sampleTime() sẽ chạy ngay lập tức và cứ sau mỗi period, sampleTime() sẽ emit giá trị gần nhất của Observable gốc..
+  </p>
+  <br>
+  <pre>
+        <code>{{text22}}</code>
+      </pre>
   <br>
 </div>

@@ -73,187 +73,147 @@ export class RxjsFilteringOperatorsComponent implements OnInit {
 
   ngOnInit(): void {
     this.text1 = `
-    const observable = new Observable(function subscribe(observer) {
-      const id = setTimeout(() => {
-        observer.next('Hello Rxjs');
-        observer.complete();
-      }, 1000);
-      return function unsubscribe() {
-        clearTimeout(id);
-      };
-    });
+    from([1, 2, 3, 4, 5, 6])
+    .pipe(
+      filter((x) => x % 2 === 0) // số chẵn
+    )
+    .subscribe(console.log); // output: 2, 4, 6
     `;
     this.text2 = `
-    const observer = {
-      next: (val) => console.log(val),
-      error: (err) => console.log(err),
-      complete: () => console.log('complete'),
-    };
+    from([1, 2, 3, 4, 5, 6])
+    .pipe(first())
+    .subscribe(console.log, null, () => console.log('complete')); // output: 1 -> complete
+  
+  of() // an empty Observable
+    .pipe(first())
+    .subscribe(null, console.log, null); // Error: EmptyError
     `;
     this.text3 = `
-    // output: 'hello'
-    // complete: 'complete'
-    of('hello').subscribe(observer);
+    from([1, 2, 3, 4, 5, 6])
+    .pipe(first((x) => x > 3))
+    .subscribe(console.log, null, () => console.log('complete')); // output: 4 -> complete
+  
+  from([1, 2, 3, 4, 5, 6])
+    .pipe(first((x) => x > 6)) // without default value
+    .subscribe(null, console.log, null); // Error: Error
+  
+  from([1, 2, 3, 4, 5, 6])
+    .pipe(
+      first((x) => x > 6),
+      'defaultValue'
+    ) // with default value
+    .subscribe(console.log, null, () => console.log('complete')); // output: 'defaultValue' -> complete
       `;
     this.text4 = `
-    // output: [1, 2, 3]
-    // complete: 'complete'
-    of([1, 2, 3]).subscribe(observer);
+    from([1, 2, 3, 4, 5, 6])
+    .pipe(last())
+    .subscribe(console.log, null, () => console.log('complete')); // output: 6 -> complete
+  
+  of() // an empty Observable
+    .pipe(last())
+    .subscribe(null, console.log, null); // Error: EmptyError
       `;
     this.text5 = `
-    // output: 1, 2, 3, 'hello', 'world', {foo: 'bar'}, [4, 5, 6]
-    // complete: 'complete'
-    of(1, 2, 3, 'hello', 'world', { foo: 'bar' }, [4, 5, 6]).subscribe(observer);
+    from([1, 2, 3, 4, 5, 6])
+    .pipe(
+      find((x) => x % 2 === 0) // số chẵn
+    )
+    .subscribe(console.log, null, () => console.log('complete')); // output: 2 -> complete
       `;
     this.text6 = `
-    // output: 1, 2, 3
-    // complete: 'complete'
-    from([1, 2, 3]).subscribe(observer);
+    from([1, 2, 3]).pipe(single()).subscribe(null, console.log, null); // error: Error -> nhiều hơn 1 giá trị được emit từ from() và single() không có điều kiện gì.
+
+    from([1, 2, 3])
+      .pipe(single((x) => x === 2))
+      .subscribe(console.log, null, () => console.log('complete')); // output: 2 -> complete
+    
+    from([1, 2, 3])
+      .pipe(single((x) => x > 1))
+      .subscribe(null, console.log, null); // error: Error -> có nhiều hơn 1 giá trị > 1.
       `;
     this.text7 = `
-    // output: 'h', 'e', 'l', 'l', 'o', ' ', 'w', 'o', 'r', 'l', 'd'
-    // complete: 'complete'
-    from('hello world').subscribe(observer);
+    from([1, 2, 3, 4])
+    .pipe(take(2))
+    .subscribe(console.log, null, () => console.log('complete')); // output: 1, 2 -> complete
       `;
     this.text8 = `
-    const map = new Map();
-    map.set(1, 'hello');
-    map.set(2, 'bye');
-    
-    // output: [1, 'hello'], [2, 'bye']
-    // complete: 'complete'
-    from(map).subscribe(observer);
-    
-    const set = new Set();
-    set.add(1);
-    set.add(2);
-    
-    // output: 1, 2
-    // complete: 'complete'
-    from(set).subscribe(observer);
+    from([1, 2, 3, 4])
+    .pipe(takeLast(2))
+    .subscribe(console.log, null, () => console.log('complete')); // output: 3, 4 -> complete
       `;
     this.text9 = `
-    // output: 'hello world'
-    // complete: 'complete'
-    from(Promise.resolve('hello world')).subscribe(observer);
+    interval(1000)
+    .pipe(takeUntil(fromEvent(document, 'click')))
+    .subscribe(console.log, null, () => console.log('complete')); // output: 0, 1, 2, 3, 4 -- click --> 'complete'
       `;
     this.text10 = `
-    const btn = document.querySelector('#btn');
-    const input = document.querySelector('#input');
-    
-    // output (example): MouseEvent {...}
-    // complete: không có gì log.
-    fromEvent(btn, 'click').subscribe(observer);
-    
-    // output (example): KeyboardEvent {...}
-    // complete: không có gì log.
-    fromEvent(input, 'keydown').subscribe(observer);
+    interval(1000)
+    .pipe(takeWhile((x) => x < 6))
+    .subscribe(console.log, null, () => console.log('complete')); // output: 0, 1, 2, 3, 4, 5 --> complete
       `;
     this.text11 = `
-    // fromEvent() từ ví dụ trên
-    // output: MouseEvent {...}
-    fromEvent(btn, 'click').subscribe(observer);
-    
-    // fromEventPattern
-    // output: MouseEvent {...}
-    fromEventPattern(
-      (handler) => {
-        btn.addEventListener('click', handler);
-      },
-      (handler) => {
-        btn.removeEventListener('click', handler);
-      }
-    ).subscribe(observer);
+    from([1, 2, 3, 4])
+    .pipe(skip(1))
+    .subscribe(console.log, null, () => console.log('complete')); // output: 2, 3, 4 --> complete
       `;
     this.text12 = `
-    // output: 10 10
-    fromEvent(btn, 'click')
-      .pipe(map((ev: MouseEvent) => ev.offsetX + ' ' + ev.offsetY))
-      .subscribe(observer);
-    
-    // fromEventPattern
-    // Ở ví dụ này, chúng ta sẽ tách addHandler và removeHandler ra thành function riêng nhé
-    
-    function addHandler(handler) {
-      btn.addEventListener('click', handler);
-    }
-    
-    function removeHandler(handler) {
-      btn.removeEventListener('click', handler);
-    }
-    
-    // output: 10 10
-    fromEventPattern(
-      addHandler,
-      removeHandler,
-      (ev: MouseEvent) => ev.offsetX + ' ' + ev.offsetY
-    ).subscribe(observer);
+    interval(1000)
+    .pipe(skipUntil(fromEvent(document, 'click')))
+    .subscribe(console.log); // output: click at 5 seconds -> 5, 6, 7, 8, 9....
       `;
     this.text13 = `
-    // _getHub() là hàm trả về Hub.
-    const hub = this._getHub(url);
-    return fromEventPattern(
-      (handler) => {
-        // mở websocket
-        hub.connection.on(methodName, handler);
-    
-        if (hub.refCount === 0) {
-          hub.connection.start();
-        }
-    
-        hub.refCount++;
-      },
-      (handler) => {
-        hub.refCount--;
-        // đóng websocket khi unsubscribe
-        hub.connection.off(methodName, handler);
-        if (hub.refCount === 0) {
-          hub.connection.stop();
-          delete this._hubs[url];
-        }
-      }
-    );
+    interval(1000)
+    .pipe(skipWhile((x) => x < 5))
+    .subscribe(console.log); // output: 6, 7, 8, 9....
       `;
     this.text14 = `
-    @Component({
-      providers: [
-        {
-          provide: SomeToken,
-          useValue: someValue
-        }
-      ]
-    })
+    from([1, 2, 3, 4, 5, 5, 4, 3, 6, 1])
+    .pipe(distinct())
+    .subscribe(console.log, null, () => console.log('complete')); // output: 1, 2, 3, 4, 5, 6 -> complete
       `;
     this.text15 = `
-    // output: sau 1 giây -> 0
-    // complete: 'complete'
-    timer(1000).subscribe(observer);
-    
-    // output: sau 1 giây -> 0, 1, 2, 3, 4, 5 ...
-    timer(1000, 1000).subscribe(observer);
+    of({ age: 4, name: 'Foo' }, { age: 7, name: 'Bar' }, { age: 5, name: 'Foo' })
+    .pipe(distinct((p) => p.name))
+    .subscribe(console.log, null, () => console.log('complete')); // output: { age: 4, name: 'Foo' }, { age: 7, name: 'Bar' } -> complete
       `;
     this.text16 = `
-    // error: 'an error'
-    throwError('an error').subscribe(observer);
+    from([1, 1, 2, 2, 2, 1, 1, 2, 3, 3, 4])
+    .pipe(distinctUntilChanged())
+    .subscribe(console.log, null, () => console.log('complete')); // output: 1, 2, 1, 2, 3, 4 -> complete
       `;
     this.text17 = `
-    // of()
-    const now$ = of(Math.random());
-    // output: 0.4146530439875191
-    now$.subscribe(observer);
-    // output: 0.4146530439875191
-    now$.subscribe(observer);
-    // output: 0.4146530439875191
-    now$.subscribe(observer);
+    of(
+      { age: 4, name: 'Foo' },
+      { age: 6, name: 'Foo' },
+      { age: 7, name: 'Bar' },
+      { age: 5, name: 'Foo' }
+    )
+      .pipe(distinctUntilChanged((a, b) => a.name === b.name))
+      .subscribe(console.log, null, () => console.log('complete')); // output: { age: 4, name: 'Foo' }, { age: 7, name: 'Bar' }, { age: 5, name: 'Foo' } -> complete
       `;
     this.text18 = `
-    const now$ = defer(() => of(Math.random()));
-    // output: 0.27312186273281935
-    now$.subscribe(observer);
-    // output: 0.7180321390218474
-    now$.subscribe(observer);
-    // output: 0.9626312890837065
-    now$.subscribe(observer);
+    of(
+      { age: 4, name: 'Foo' },
+      { age: 6, name: 'Foo' },
+      { age: 7, name: 'Bar' },
+      { age: 5, name: 'Foo' }
+    )
+      .pipe(distinctUntilKeyChanged('name')
+      .subscribe(console.log, null, () => console.log('complete')); // output: { age: 4, name: 'Foo' }, { age: 7, name: 'Bar' }, { age: 5, name: 'Foo' } -> complete
+      `;
+    this.text19 = `
+    fromEvent(document, 'mousemove')
+    .pipe(throttleTime(1000))
+    .subscribe(console.log, null, () => console.log('complete')); // output: MouseEvent {} - wait 1s -> MouseEvent { } - wait 1s -> MouseEvent { }
+      `;
+    this.text20 = `
+    this.filterControl.valueChanges.pipe(debounceTime(500)).subscribe(console.log); // output: type "abcd" rồi dừng 500ms -> 'abcd'
+      `;
+    this.text21 = `
+    fromEvent(document, 'click').pipe(auditTime(1000)).subscribe(console.log); // output: click - wait 1s -> MouseEvent {} -click  wait 1s (trong 1s, click 10 times) -> MouseEvent {} -> click wait 1s -> MouseEvent {}
+      `;
+    this.text22 = `
+    fromEvent(document, 'click').pipe(sampleTime(1000)).subscribe(console.log); // click - wait 1s -> MouseEvent {}
       `;
   }
 
