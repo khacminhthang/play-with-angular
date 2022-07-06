@@ -31,75 +31,75 @@ const routes: Routes = [
         component: HomeComponent
       },
       {
-        path: 'data-binding',
+        path: 'angular/data-binding',
         component: DataBindingComponent
       },
       {
-        path: 'structure-directive',
+        path: 'angular/structure-directive',
         component: StructureDirectiveComponent
       },
       {
-        path: 'attribute-directive',
+        path: 'angular/attribute-directive',
         component: AttributeDirectiveComponent
       },
       {
-        path: 'component-interaction-p1',
+        path: 'angular/component-interaction-p1',
         component: ComponentInteractionComponent
       },
       {
-        path: 'component-interaction-p2',
+        path: 'angular/component-interaction-p2',
         component: ComponentInteractionP2Component
       },
       {
-        path: 'template-variable',
+        path: 'angular/template-variable',
         component: TemplateVariableComponent
       },
       {
-        path: 'typescript-data-type',
+        path: 'angular/typescript-data-type',
         component: TypescriptDataTypeComponent
       },
       {
-        path: 'typescript-adv-type',
+        path: 'angular/typescript-adv-type',
         component: TypescriptAdvTypeComponent
       },
       {
-        path: 'content-projection',
+        path: 'angular/content-projection',
         component: ContentProjectionComponent
       },
       {
-        path: 'ng-template',
+        path: 'angular/ng-template',
         component: NgTemplateComponent
       },
       {
-        path: 'intro-dependency-injection',
+        path: 'angular/intro-dependency-injection',
         component: IntroDependenceInjectionComponent
       },
       {
-        path: 'dependency-injection',
+        path: 'angular/dependency-injection',
         component: DependenceInjectionComponent
       },
       {
-        path: 'content-child',
+        path: 'angular/content-child',
         component: ContentChildComponent
       },
       {
-        path: 'pipe',
+        path: 'angular/pipe',
         component: PipeComponent
       },
       {
-        path: 'intro-rxjs-observable',
+        path: 'angular/intro-rxjs-observable',
         component: IntroRxjsObservableComponent
       },
       {
-        path: 'rxjs-creation-operators',
+        path: 'angular/rxjs-creation-operators',
         component: RxjsCreationOperatorsComponent
       },
       {
-        path: 'transformation-operators',
+        path: 'angular/transformation-operators',
         component: TransformationOperatorsComponent
       },
       {
-        path: 'filtering-operators',
+        path: 'angular/filtering-operators',
         component: RxjsFilteringOperatorsComponent
       },
     ]

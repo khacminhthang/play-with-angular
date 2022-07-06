@@ -11,7 +11,7 @@ export class HeaderComponent implements OnInit {
 
   componentTitle: string;
   constructor(private router: Router, private activatedRoute: ActivatedRoute) {
-   
+
     this.router.events.subscribe(data => {
       if (data instanceof ActivationStart) {
         this.componentTitle = data.snapshot.data['title'];
@@ -19,11 +19,11 @@ export class HeaderComponent implements OnInit {
 
     });
     this.router.events
-   .pipe(
-      filter((event) => event instanceof NavigationEnd),
-      startWith(this.router)
-   )
-    
+      .pipe(
+        filter((event) => event instanceof NavigationEnd),
+        startWith(this.router)
+      )
+
 
   }
 
@@ -32,12 +32,16 @@ export class HeaderComponent implements OnInit {
 
     this.router.events.subscribe(data => {
       if (data instanceof ActivationStart) {
-         console.log(data)
+        console.log(data)
         this.componentTitle = data.snapshot.data['title'];
       }
 
     });
-     
+
+  }
+
+  Angular() {
+    console.log("angular")
   }
 
 }
