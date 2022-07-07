@@ -1,5 +1,5 @@
  
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core'
+import { ChangeDetectorRef, Component, Input, OnInit } from '@angular/core'
  
 @Component({
   selector: 'app-sidebar',
@@ -8,6 +8,8 @@ import { ChangeDetectorRef, Component, OnInit } from '@angular/core'
 })
 export class SidebarComponent implements OnInit {
   mobileQuery: MediaQueryList
+
+  @Input() menuList: any;
   
   ngOnInit() { }
    

@@ -28,8 +28,6 @@ export class HeaderComponent implements OnInit {
   }
 
   ngOnInit() {
-
-
     this.router.events.subscribe(data => {
       if (data instanceof ActivationStart) {
         console.log(data)
@@ -37,11 +35,5 @@ export class HeaderComponent implements OnInit {
       }
 
     });
-
   }
-
-  Angular() {
-    console.log("angular")
-  }
-
 }

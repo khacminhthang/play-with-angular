@@ -26,85 +26,89 @@ const routes: Routes = [
   {
     path: '',
     component: MainShellComponent,
+  },
+  {
+    path: ':slug',
+    component: MainShellComponent,
     children: [
       {
         path: '', pathMatch: 'full',
         component: HomeComponent
       },
       {
-        path: 'angular/data-binding',
+        path: 'data-binding',
         component: DataBindingComponent
       },
       {
-        path: 'angular/structure-directive',
+        path: 'structure-directive',
         component: StructureDirectiveComponent
       },
       {
-        path: 'angular/attribute-directive',
+        path: 'attribute-directive',
         component: AttributeDirectiveComponent
       },
       {
-        path: 'angular/component-interaction-p1',
+        path: 'component-interaction-p1',
         component: ComponentInteractionComponent
       },
       {
-        path: 'angular/component-interaction-p2',
+        path: 'component-interaction-p2',
         component: ComponentInteractionP2Component
       },
       {
-        path: 'angular/template-variable',
+        path: 'template-variable',
         component: TemplateVariableComponent
       },
       {
-        path: 'angular/typescript-data-type',
+        path: 'typescript-data-type',
         component: TypescriptDataTypeComponent
       },
       {
-        path: 'angular/typescript-adv-type',
+        path: 'typescript-adv-type',
         component: TypescriptAdvTypeComponent
       },
       {
-        path: 'angular/content-projection',
+        path: 'content-projection',
         component: ContentProjectionComponent
       },
       {
-        path: 'angular/ng-template',
+        path: 'ng-template',
         component: NgTemplateComponent
       },
       {
-        path: 'angular/intro-dependency-injection',
+        path: 'intro-dependency-injection',
         component: IntroDependenceInjectionComponent
       },
       {
-        path: 'angular/dependency-injection',
+        path: 'dependency-injection',
         component: DependenceInjectionComponent
       },
       {
-        path: 'angular/content-child',
+        path: 'content-child',
         component: ContentChildComponent
       },
       {
-        path: 'angular/pipe',
+        path: 'pipe',
         component: PipeComponent
       },
       {
-        path: 'angular/intro-rxjs-observable',
+        path: 'intro-rxjs-observable',
         component: IntroRxjsObservableComponent
       },
       {
-        path: 'angular/rxjs-creation-operators',
+        path: 'rxjs-creation-operators',
         component: RxjsCreationOperatorsComponent
       },
       {
-        path: 'angular/transformation-operators',
+        path: 'transformation-operators',
         component: TransformationOperatorsComponent
       },
       {
-        path: 'angular/filtering-operators',
+        path: 'filtering-operators',
         component: RxjsFilteringOperatorsComponent
       },
       {
-        path: 'angular/combination-operators',
+        path: 'combination-operators',
         component: RxjsCombinationOperatorsComponent
       },
     ]

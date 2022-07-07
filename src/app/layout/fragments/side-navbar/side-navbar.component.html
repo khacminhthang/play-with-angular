@@ -1,5 +1,5 @@
 <mat-nav-list class="side-navnar">
-    <ng-container *ngFor="let menu of menuList | async; index as i;">
+    <ng-container *ngFor="let menu of menuList; index as i;">
         <ng-container [ngTemplateOutlet]="menu.children ?  childMenu : parentMenu"
             [ngTemplateOutletContext]="{menu:menu}">
         </ng-container>
@@ -19,7 +19,8 @@
             <mat-icon mat-list-icon>{{menu.icon}}</mat-icon>{{menu.text}}
         </mat-expansion-panel-header>
         <mat-nav-list>
-            <mat-list-item [routerLink]="submenu.routerLink" *ngFor="let submenu of menu.children" routerLinkActive="is-active" [routerLinkActiveOptions]="{exact:
+            <mat-list-item [routerLink]="submenu.routerLink" *ngFor="let submenu of menu.children"
+                routerLinkActive="is-active" [routerLinkActiveOptions]="{exact:
                 true}">
                 <mat-icon>{{submenu.icon}}</mat-icon> {{submenu.text}}
             </mat-list-item>

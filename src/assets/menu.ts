@@ -1,9 +1,4 @@
-[
-  {
-    "text": "Dashboard",
-    "icon": "dashboard",
-    "routerLink": "/"
-  },
+export const menuAngular = [
   {
     "text": "Common Concept",
     "icon": "inventory_2",
@@ -11,72 +6,72 @@
       {
         "text": "Data binding",
         "icon": "category",
-        "routerLink": "angular/data-binding"
+        "routerLink": "data-binding"
       },
       {
         "text": "Structure Directive",
         "icon": "layers",
-        "routerLink": "angular/structure-directive"
+        "routerLink": "structure-directive"
       },
       {
         "text": "Attribute Directive",
         "icon": "all_inbox",
-        "routerLink": "angular/attribute-directive"
+        "routerLink": "attribute-directive"
       },
       {
         "text": "Component Interaction P1",
         "icon": "all_inbox",
-        "routerLink": "angular/component-interaction-p1"
+        "routerLink": "component-interaction-p1"
       },
       {
         "text": "Component Interaction P2",
         "icon": "all_inbox",
-        "routerLink": "angular/component-interaction-p2"
+        "routerLink": "component-interaction-p2"
       },
       {
         "text": "Template Variable",
         "icon": "all_inbox",
-        "routerLink": "angular/template-variable"
+        "routerLink": "template-variable"
       },
       {
         "text": "Typescript Data Type",
         "icon": "all_inbox",
-        "routerLink": "angular/typescript-data-type"
+        "routerLink": "typescript-data-type"
       },
       {
         "text": "Typescript Adv Type",
         "icon": "all_inbox",
-        "routerLink": "angular/typescript-adv-type"
+        "routerLink": "typescript-adv-type"
       },
       {
         "text": "Content Projection",
         "icon": "all_inbox",
-        "routerLink": "angular/content-projection"
+        "routerLink": "content-projection"
       },
       {
         "text": "Ng Template",
         "icon": "all_inbox",
-        "routerLink": "angular/ng-template"
+        "routerLink": "ng-template"
       },
       {
         "text": "Intro Dependency Injection",
         "icon": "category",
-        "routerLink": "angular/intro-dependency-injection"
+        "routerLink": "intro-dependency-injection"
       },
       {
         "text": "Dependency Injection",
         "icon": "layers",
-        "routerLink": "angular/dependency-injection"
+        "routerLink": "dependency-injection"
       },
       {
         "text": "Content Child",
         "icon": "all_inbox",
-        "routerLink": "angular/content-child"
+        "routerLink": "content-child"
       },
       {
         "text": "Pipe",
         "icon": "all_inbox",
-        "routerLink": "angular/pipe"
+        "routerLink": "pipe"
       }
     ]
   },
@@ -87,28 +82,31 @@
       {
         "text": "Intro Rxjs Observable",
         "icon": "all_inbox",
-        "routerLink": "angular/intro-rxjs-observable"
+        "routerLink": "intro-rxjs-observable"
       },
       {
         "text": "Rxjs Creation Operators",
         "icon": "all_inbox",
-        "routerLink": "angular/rxjs-creation-operators"
+        "routerLink": "rxjs-creation-operators"
       },
       {
         "text": "Transformation Operators",
         "icon": "all_inbox",
-        "routerLink": "angular/transformation-operators"
+        "routerLink": "transformation-operators"
       },
       {
         "text": "Filtering Operators",
         "icon": "all_inbox",
-        "routerLink": "angular/filtering-operators"
+        "routerLink": "filtering-operators"
       },
       {
         "text": "Combination  Operators",
         "icon": "all_inbox",
-        "routerLink": "angular/combination-operators"
+        "routerLink": "combination-operators"
       }
     ]
   }
-]
+];
+export const menuDotNetCore = [
+ 
+];
