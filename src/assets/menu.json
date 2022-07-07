@@ -11,72 +11,72 @@
       {
         "text": "Data binding",
         "icon": "category",
-        "routerLink": "/data-binding"
+        "routerLink": "angular/data-binding"
       },
       {
         "text": "Structure Directive",
         "icon": "layers",
-        "routerLink": "/structure-directive"
+        "routerLink": "angular/structure-directive"
       },
       {
         "text": "Attribute Directive",
         "icon": "all_inbox",
-        "routerLink": "/attribute-directive"
+        "routerLink": "angular/attribute-directive"
       },
       {
         "text": "Component Interaction P1",
         "icon": "all_inbox",
-        "routerLink": "/component-interaction-p1"
+        "routerLink": "angular/component-interaction-p1"
       },
       {
         "text": "Component Interaction P2",
         "icon": "all_inbox",
-        "routerLink": "/component-interaction-p2"
+        "routerLink": "angular/component-interaction-p2"
       },
       {
         "text": "Template Variable",
         "icon": "all_inbox",
-        "routerLink": "/template-variable"
+        "routerLink": "angular/template-variable"
       },
       {
         "text": "Typescript Data Type",
         "icon": "all_inbox",
-        "routerLink": "/typescript-data-type"
+        "routerLink": "angular/typescript-data-type"
       },
       {
         "text": "Typescript Adv Type",
         "icon": "all_inbox",
-        "routerLink": "/typescript-adv-type"
+        "routerLink": "angular/typescript-adv-type"
       },
       {
         "text": "Content Projection",
         "icon": "all_inbox",
-        "routerLink": "/content-projection"
+        "routerLink": "angular/content-projection"
       },
       {
         "text": "Ng Template",
         "icon": "all_inbox",
-        "routerLink": "/ng-template"
+        "routerLink": "angular/ng-template"
       },
       {
         "text": "Intro Dependency Injection",
         "icon": "category",
-        "routerLink": "/intro-dependency-injection"
+        "routerLink": "angular/intro-dependency-injection"
       },
       {
         "text": "Dependency Injection",
         "icon": "layers",
-        "routerLink": "/dependency-injection"
+        "routerLink": "angular/dependency-injection"
       },
       {
         "text": "Content Child",
         "icon": "all_inbox",
-        "routerLink": "/content-child"
+        "routerLink": "angular/content-child"
       },
       {
         "text": "Pipe",
         "icon": "all_inbox",
-        "routerLink": "/pipe"
+        "routerLink": "angular/pipe"
       }
     ]
   },
@@ -87,22 +87,22 @@
       {
         "text": "Intro Rxjs Observable",
         "icon": "all_inbox",
-        "routerLink": "/intro-rxjs-observable"
+        "routerLink": "angular/intro-rxjs-observable"
       },
       {
         "text": "Rxjs Creation Operators",
         "icon": "all_inbox",
-        "routerLink": "/rxjs-creation-operators"
+        "routerLink": "angular/rxjs-creation-operators"
       },
       {
         "text": "Transformation Operators",
         "icon": "all_inbox",
-        "routerLink": "/transformation-operators"
+        "routerLink": "angular/transformation-operators"
       },
       {
         "text": "Filtering Operators",
         "icon": "all_inbox",
-        "routerLink": "/filtering-operators"
+        "routerLink": "angular/filtering-operators"
       }
     ]
   }
