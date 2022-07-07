@@ -20,6 +20,7 @@ import { TemplateVariableComponent } from './components/template-variable/templa
 import { TransformationOperatorsComponent } from './components/transformation-operators/transformation-operators.component';
 import { TypescriptAdvTypeComponent } from './components/typescript-adv-type/typescript-adv-type.component';
 import { TypescriptDataTypeComponent } from './components/typescript-data-type/typescript-data-type.component';
+import { RxjsCombinationOperatorsComponent } from './components/rxjs-combination-operators/rxjs-combination-operators.component';
 
 const routes: Routes = [
   {
@@ -101,6 +102,10 @@ const routes: Routes = [
       {
         path: 'angular/filtering-operators',
         component: RxjsFilteringOperatorsComponent
+      },
+      {
+        path: 'angular/combination-operators',
+        component: RxjsCombinationOperatorsComponent
       },
     ]
   }]

@@ -103,6 +103,11 @@
         "text": "Filtering Operators",
         "icon": "all_inbox",
         "routerLink": "angular/filtering-operators"
+      },
+      {
+        "text": "Combination  Operators",
+        "icon": "all_inbox",
+        "routerLink": "angular/combination-operators"
       }
     ]
   }

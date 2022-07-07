@@ -4,7 +4,6 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MaterialModule } from './material.module';
 import { RouterModule } from '@angular/router';
 import { HomeComponent } from './components/home/home.component';
 
@@ -32,7 +31,9 @@ import { IntroRxjsObservableComponent } from './components/intro-rxjs-observable
 import { RxjsCreationOperatorsComponent } from './components/rxjs-creation-operators/rxjs-creation-operators.component';
 import { TransformationOperatorsComponent } from './components/transformation-operators/transformation-operators.component';
 import { RxjsFilteringOperatorsComponent } from './components/rxjs-filtering-operators/rxjs-filtering-operators.component';
+import { RxjsCombinationOperatorsComponent } from './components/rxjs-combination-operators/rxjs-combination-operators.component';
 import { FragmentsModule } from './layout/fragments/fragments.module';
+import { MaterialModule } from './material.module';
 
 @NgModule({
   declarations: [
@@ -58,19 +59,20 @@ import { FragmentsModule } from './layout/fragments/fragments.module';
     IntroRxjsObservableComponent,
     RxjsCreationOperatorsComponent,
     TransformationOperatorsComponent,
-    RxjsFilteringOperatorsComponent
+    RxjsFilteringOperatorsComponent,
+    RxjsCombinationOperatorsComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
+    MaterialModule,
     FragmentsModule,
     RouterModule,
     BrowserAnimationsModule,
     FormsModule,
     HttpClientModule,
     MatNativeDateModule,
-    ReactiveFormsModule,
-    MaterialModule
+    ReactiveFormsModule
   ],
   entryComponents:[
     ToggleComponent

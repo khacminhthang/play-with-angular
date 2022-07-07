@@ -1,0 +1,345 @@
+<div>
+  <h1 style="font-size: 3rem;">RxJS Combination Operators</h1>
+  <br>
+  <p>Tiếp tục cuộc hành trình tìm hiểu về các operators của RxJS nhé. Lần này, chúng ta sẽ tìm hiểu về 1 loại operators
+    rất quan trọng khi làm việc với Angular vì những operators này sẽ cho phép các bạn kết hợp nhiều Observable lại với
+    nhau. Những operators này gọi là Combination Operators.</p>
+  <br>
+  <pre>
+    <code>{{text1}}</code>
+</pre>
+  <br>
+
+  <!-- forkJoin() -->
+  <span style="font-size: 2rem;" class="pb-0">forkJoin()</span>
+  <div class="border-b1"></div>
+  <br>
+  <p>forkJoin(...sources: any[]): Observable any>
+  </p>
+  <p>Nếu bạn nào đã dùng quen Promise qua rồi thì forkJoin() sẽ là 1 operator cực kỳ quen thuộc vì xét về công dụng thì
+    forkJoin() tương đương với Promise.all().
+  </p>
+  <p>forkJoin() nhận vào tham số là 1 list các Observables theo dạng Array hoặc Dictionary (Object) (children). Khi các
+    children Observables complete hết thì forkJoin() sẽ emit giá trị của các children Observables theo dạng Array hoặc
+    Dictionary (tuỳ vào tham số truyền vào) rồi sau đó sẽ complete.</p>
+  <br>
+  <pre>
+        <code>{{text2}}</code>
+    </pre>
+  <strong>Lưu ý:</strong>
+  <ul>
+    <li>forkJoin() chỉ emit khi các children Observables complete. Nếu như 1 trong số các children Observables không
+      complete, forkJoin() sẽ không bao giờ emit.</li>
+    <li>forkJoin() sẽ throw error khi 1 trong các children Observables throw error, và giá trị của các children
+      Observables đã complete khác sẽ bị nuốt mất nếu như các bạn không xử lý error hợp lý.
+    </li>
+  </ul>
+  <br>
+  <strong>Use-case:</strong>
+  <p>forkJoin() sử dụng rất nhiều trong ứng dụng Angular, đặc biệt là khi bạn cần request cùng lúc một loạt các
+    Dropdown/Select.</p>
+  <pre>
+    <code>{{text3}}</code>
+  </pre>
+  <p>forkJoin() khi dùng với children Observables là 1 Array, thì forkJoin() có thể nhận vào 1 tham số thứ 2 gọi là
+    projectFunction. projectFunction này sẽ được gọi với các tham số là giá trị của children Observables và kết quả của
+    projectFunction sẽ là kết quả emit của forkJoin(). projectFunction chỉ được thực thi nếu như forkJoin() SẼ emit
+    (nghĩa là tất cả children Observables đều complete)</p>
+  <pre>
+      <code>{{text4}}</code>
+  </pre>
+  <br>
+
+  <!--combineLatest()-->
+  <span style="font-size: 2rem;" class="pb-0">combineLatest()</span>
+  <div class="border-b1"></div>
+  <br>
+  <p>combineLatest O extends ObservableInput any>, R>(...observables: (SchedulerLike | O | ((...values: ObservedValueOf
+    O>[]) => R))[]): Observable R></p>
+  <p>combineLatest() giống với forkJoin() là cũng sẽ nhận vào tham số là 1 Array Observable>. Khác với forkJoin() là
+    combineLatest() không nhận vào Dictionary (Object) và combineLatest() sẽ emit khi TẤT CẢ các children Observables
+    emit ít nhất một lần, nghĩa là các children Observables không cần phải complete mà chỉ cần emit ít nhất 1 giá trị
+    thì combineLatest() sẽ emit giá trị là Array gồm tất cả các giá trị được children Observables emit, theo thứ tự.
+  </p>
+  <p>Thay vì truyền vào Array Observable> cho combineLatest() như sau: combineLatest([obs1, obs2]), bạn cũng có thể
+    truyền vào mà ko cần [] như: combineLatest(obs1, obs2). Cả 2 cách đều cho ra kết quả như nhau, tuy nhiên, RxJS
+    khuyên dùng cách 1 hơn vì nó nhất quán với forkJoin() hơn và cũng dễ dự đoán được kết quả hơn, vì kết quả của
+    combineLatest() là 1 Array. Vì vậy, mình chỉ đề cập đến cách dùng combineLatest([obs1, obs2])
+  </p>
+  <pre>
+                  <code>{{text5}}</code>
+              </pre>
+  <strong>Lưu ý:</strong>
+  <ul>
+    <li>Qua ví dụ, các bạn cũng có thể thấy là combineLatest(), sau lần emit đầu tiên của các children Observables, thì
+      sẽ emit giá trị mới nhất của child Observable đang emit + giá trị gần nhất của các children Observables đã emit.
+    </li>
+    <li>Cũng qua ví dụ, các bạn có thể thấy là Observable thứ 2 2} (interval(1000)) bị nuốt mất 2 giá trị đầu tiên là 0
+      và 1 vì 2} đã emit với tần suất nhanh hơn là Observable có khoảng thời gian lâu nhất 3}. Đây là điều các bạn cần
+      lưu ý để có thể tránh hiện tượng racing condition.</li>
+    <li>combineLatest() sẽ complete khi tất cả children Observables complete.</li>
+    <li>combineLatest() sẽ không bao giờ complete nếu như 1 trong số các children Observables không bao giờ complete.
+    </li>
+    <li>combineLatest() sẽ throw error nếu như 1 trong số các children Observables throw error và giá trị của các
+      children Observables đã emit khác sẽ bị nuốt (behavior này giống với forkJoin())</li>
+  </ul>
+
+  <strong>Use-case</strong>
+  <p>Dùng rất nhiều trong việc combine state khi dùng Service trong Angular. Vì tính chất long-lived không complete sau
+    1 lần emit, combineLatest() là sự lựa chọn tốt cho việc combine các state trong Service và kết hợp với AsyncPipe để
+    dùng trong template.</p>
+  <pre>
+      <code>{{text6}}</code>
+  </pre>
+  <br>
+  <pre>
+                  <code>{{text7}}</code>
+              </pre>
+  <p>Như trên là 1 ví dụ khá hoàn chỉnh về việc xử lý PaginationComponent trong Angular sử dụng combineLatest() và
+    AsyncPipe. Khi updateSize() và updatePage() được thực thi thì currentPage$ và currentSize$ sẽ emit giá trị mới, dẫn
+    đến combineLatest() (vm$) sẽ emit giá trị mới và template sẽ được update (vm$ | async).</p>
+  <p>Cũng giống như forkJoin(), khi dùng tham số là 1 Array Observable> thì combineLatest() có thẻ nhận vào thêm 1 tham
+    số là projectFunction. projectFunction này sẽ được gọi với các tham số là giá trị của children Observables và kết
+    quả của projectFunction sẽ là kết quả emit của combineLatest(). Đây cũng là lí do mình chỉ đề cập đến cách dùng
+    combineLatest([obs1, obs2]) vì tính nhất quán với forkJoin(), và khả năng dùng projectFunction. Sau đây là ví dụ
+    về vm$ ở trên viết lại với projectFunction</p>
+  <br>
+  <pre>
+                    <code>{{text8}}</code>
+                </pre>
+  <br>
+
+  <!--zip()-->
+  <span style="font-size: 2rem;" class="pb-0">zip()</span>
+  <div class="border-b1"></div>
+  <br>
+  <p>zip O extends ObservableInput any>, R>(...observables: (O | ((...values: ObservedValueOf O>[]) => R))[]):
+    Observable ObservedValueOf O>[] | R></p>
+  <p>zip() nhận vào tham số là ...(Observables | Function) để tượng trưng cho các child Observable được truyền vào lần
+    lượt. zip() là 1 operator khá hay ho vì zip() sẽ gom tất cả các giá trị được emit bởi children Observable theo cặp.
+  </p>
+  <p>Nghĩa là sao? Ví dụ: obs1 emit 1 - 2 - 3, obs2 emit 4 - 5 - 6, obs3 emit 7 - 8 - 9. Nếu như bạn dùng
+    combineLatest() thì giá trị mà các bạn nhận được là:</p>
+  <br>
+  <pre>
+                  <code>{{text9}}</code>
+              </pre>
+  <p>Nhưng khi dùng zip với ví dụ trên:</p>
+  <pre>
+                  <code>{{text10}}</code>
+              </pre>
+  <p>zip() sẽ complete khi 1 trong các children Observables complete. Nghĩa là các bạn chỉ luôn luôn nhận được giá trị
+    đã được gộp lại của zip</p>
+  <pre>
+                  <code>{{text11}}</code>
+              </pre>
+  <p>zip() sẽ throw error nếu 1 trong các children Observables throw error.</p>
+  <p>Nếu tham số cuối cùng của zip() là 1 Function thì zip() sẽ coi tham số này là projectFunction. Cách thức hoạt động
+    hoàn toàn giống với projectFunction của combineLatest() và forkJoin().</p>
+  <strong>Use-case</strong>
+  <p>zip() cực kỳ hữu hiệu nếu như các bạn rơi vào các trường hợp sau:</p>
+  <p>Giá trị cuối cùng mà bạn cần được cung cấp bởi nhiều Observables khác nhau. Ví dụ:</p>
+  <pre>
+    <code>{{text12}}</code>
+</pre>
+  <p>Kết hợp giá trị của 2 Observables khác nhau ở 2 thời điểm khác nhau. Ví dụ: các bạn muốn biết toạ độ chuột của
+    người dùng từ lúc họ mousedown cho đến lúc họ mouseup, hoặc có thể lấy khoảng thời gian họ rê chuột (dùng new Date()
+    thay vì getCoords() như ví dụ bên dưới)</p>
+  <pre>
+      <code>{{text13}}</code>
+  </pre>
+  <br>
+
+  <!--concat()-->
+  <span style="font-size: 2rem;" class="pb-0">concat()</span>
+  <div class="border-b1"></div>
+  <br>
+  <p>concat O extends ObservableInput any>, R>(...observables: (SchedulerLike | O)[]): Observable ObservedValueOf O> |
+    R></p>
+  <p>concat() nhận vào tham số ...Observable để tượng trưng cho các child Observable được truyền vào lần lượt thay vì
+    truyền vào 1 Array Observable></p>'
+  <p>concat() sẽ subscribe vào các children Observables theo thứ tự được truyền vào và sẽ emit khi Observable đang được
+    subscribe complete (gọi là 1}).</p>
+  <ul>
+    <li>Nếu 1} emit và complete, concat() sẽ emit giá trị mà 1} emit rồi sẽ subscribe vào Observable kế tiếp.</li>
+    <li>Nếu 1} error, concat() sẽ error ngay lặp tức và chuỗi Observable phía sau sẽ bị bỏ qua.</li>
+    <li>Nếu 1} complete mà không emit, concat() sẽ bỏ qua và subscribe vào Observable kế tiếp</li>
+    <li>Nếu 1} emit và không complete, concat() sẽ emit giá trị mà 1} emit NHƯNG sẽ không subscribe vào Observable kế
+      tiếp vì 1} không complete.</li>
+  </ul>
+  <p>concat() sẽ hoạt động tương tự cho LẦN LƯỢT từng children Observables cho đến khi không còn Observable nào thì
+    concat() sẽ complete.</p>
+  <br>
+  <pre>
+        <code>{{text14}}</code>
+      </pre>
+  <p>Các bạn có thể thấy là concat() sẽ chờ cho of(4, 5, 6).pipe(delay(1000)) emit và complete thì concat() mới emit
+    4-5-6 rồi subscribe vào of(1, 2, 3).</p>
+  <p>Các bạn cũng có thể truyền 1 Observable nhiều lần vào cho concat().</p>
+  <br>
+  <pre>
+        <code>{{text15}}</code>
+      </pre>
+  <br>
+
+  <!--merge()-->
+  <span style="font-size: 2rem;" class="pb-0">merge()</span>
+  <div class="border-b1"></div>
+  <br>
+  <p>merge T, R>(...observables: any[]): Observable R></p>
+  <p>merge() nhận vào tham số ...(Observable | number) để tượng trưng cho các child Observable được truyền vào lần lượt
+    thay vì truyền vào 1 Array Observable>. Khác với concat(), merge() không quan tâm đến thứ tự mà các children
+    Observables emit cho nên merge() không bị giới hạn bởi việc các Observable con phải complete thì Observable kế
+    tiếp mới được subscribe. Tham số cuối cùng của merge() nếu là 1 number, thì merge() sẽ coi tham số đó là số
+    concurrent. concurrent xác định số lượng children Observables mà merge() sẽ subscribe song song (concurrently).
+    Default thì merge() sẽ subscribe vào TẤT CẢ children Observables song song.</p>
+  <p>merge() sẽ subscribe vào tất cả (phụ thuộc vào tham số concurrent nếu được truyền vào) các children Observables và
+    sẽ:</p>
+  <ul>
+    <li>emit giá trị mà bất cứ Observable nào emit.</li>
+    <li>throw error nếu 1 trong children Observables throw error</li>
+    <li>complete khi và chỉ khi tất cả children Observables complete.</li>
+  </ul>
+  <br>
+  <pre>
+        <code>{{text16}}</code>
+      </pre>
+  <p>Các bạn thấy sự khác biệt với concat() chưa? Ở đây, merge() emit luôn 1,2,3 rồi mới tới 4,5,6 và không hề quan tâm
+    đến thứ tự mà các children Observables này được truyền vào. Mình thêm 1 ví dụ khác để các bạn thấy rõ hơn cách hoạt
+    động của merge()
+  </p>
+  <br>
+  <pre>
+      <code>{{text17}}</code>
+    </pre>
+  <p>Ví dụ trên sẽ cho các bạn thấy merge() sẽ emit khi mà child Observable emit thôi và có thể emit xen kẽ nhau. Sau
+    đây sẽ là ví dụ truyền vào tham số concurrent</p>
+  <pre>
+      <code>{{text18}}</code>
+    </pre>
+  <p>Các bạn sẽ thấy khi truyền vào tham số concurrent là 2, merge sẽ chỉ subscribe vào first và second song song mà
+    thôi. Cho đến khi first complete, thì third mới bắt đầu đc subscribe. Điều này cũng sẽ cho các bạn thấy được rằng
+    thật ra concat() chính là merge() với concurrent là 1.</p>
+  <strong>Use-case:</strong>
+  <p>Trong Angular, merge() có thể được sử dụng khi các bạn có 1 FormGroup và các bạn muốn lắng nghe vào từng
+    FormControl.valueChanges để thực hiện 1 nghiệp vụ nào đó. Lúc này, các bạn không hề quan tâm thứ tự việc FormControl
+    nào sẽ thay đổi, các bạn chỉ cần quan tâm là nếu FormControl đó thay đổi thì sẽ xử lý hợp lý.</p>
+  <br>
+  <pre>
+          <code>{{text19}}</code>
+        </pre>
+  <br>
+
+  <!--race-->
+  <span style="font-size: 2rem;" class="pb-0">race</span>
+  <div class="border-b1"></div>
+  <br>
+  <p>race T>(...observables: any[]): Observable T>
+  </p>
+  <p>race() là một operator khá hay ho và khá hữu ích trong 1 số trường hợp nhất định. race() có tham số giống như
+    merge() và concat() nên mình sẽ không lặp lại nữa.</p>
+  <ul>
+    <li>race() sẽ emit giá trị của Observable nào emit đầu tiên (nhanh nhất) sau đó lặp lại cho đến khi 1 trong các
+      children Observables complete</li>
+    <li>race() sẽ error ngay lập tức nếu Observable nhanh nhất lại throw error thay vì emit giá trị.</li>
+  </ul>
+  <br>
+  <pre>
+        <code>{{text20}}</code>
+      </pre>
+  <br>
+  <strong>Use-case:</strong>
+  <p>Ở một ứng dụng bất kỳ, các bạn lâu lâu sẽ phải hiển thị 1 Banner nào đó dựa vào hành động của người dùng. Ví dụ:
+    Người dùng vừa submit 1 form, bạn hiển thị 1 Banner (ng-ant-zorro Alert) báo người dùng là họ submit thành công,
+    hoặc họ có gặp lỗi. Nghiệp vụ lúc này muốn Banner này sẽ tắt đi khi 1 trong 3 điều kiện sau được thoả:</p>
+  <ul>
+    <li>Sau khi hiển thị được 10s</li>
+    <li>Người dùng click đóng Banner</li>
+    <li>Người dùng navigate sang một page khác.</li>
+  </ul>
+  <p>Lúc này, operator thích hợp nhất chính là race() vì các bạn chỉ muốn đóng Banner khi 1 trong 3 điều kiện trên được
+    thoả mà thôi.</p>
+  <br>
+  <pre>
+          <code>{{text21}}</code>
+        </pre>
+  <p>Tất cả các operators trên đây đều là static function. Các operators sau sẽ là các pipeable operator, nghĩa là các
+    operator sau đây đều được dùng với pipe() và sẽ được bao bên ngoài 1 Observable gọi là Outer Observable.</p>
+  <br>
+
+  <!--withLatestFrom-->
+  <span style="font-size: 2rem;" class="pb-0">withLatestFrom</span>
+  <div class="border-b1"></div>
+  <br>
+  <p>withLatestFrom T, R>(...args: any[]): OperatorFunction T, R>
+  </p>
+  <p>withLatestFrom() nhận vào tham số là 1 Observable. withLatestFrom() sẽ gộp giá trị emit của Outer Observable với
+    giá trị gần nhất của tham số Observable thành 1 Array rồi emit Array này.</p>
+  <br>
+  <pre>
+            <code>{{text22}}</code>
+          </pre>
+  <p>withLatestFrom() cũng nhận vào tham số thứ 2 optional là projectFunction. Cách thức hoạt động như những
+    projectFunction được đề cập trong bài viết này.</p>
+  <strong>Use-case</strong>
+  <p>Vì tính chất chỉ emit khi Outer Observable emit nên withLatestFrom() sẽ phù hợp với những nghiệp vụ mà các bạn cần
+    lắng nghe 1 Observable (đây là Outer Observable) và cần thêm giá trị gần nhất của 1 Observable khác. Nếu dùng
+    combineLatest() thì mỗi lần Observable khác kia emit, thì combineLatest() cũng emit và đây là điều chúng ta không
+    muốn.</p>
+  <br>
+  <pre>
+              <code>{{text23}}</code>
+            </pre>
+  <br>
+
+
+  <!--startWith-->
+  <span style="font-size: 2rem;" class="pb-0">startWith</span>
+  <div class="border-b1"></div>
+  <br>
+  <p>startWith T, D>(...array: (SchedulerLike | T)[]): OperatorFunction T, T | D>
+  </p>
+  <p>startWith() là 1 operator rất dễ hiểu. startWith() nhận vào 1 list các tham số. startWith() sẽ làm cho cả
+    Observable emit giá trị của startWith() trước rồi mới emit đến giá trị của Outer Observable. startWith() sẽ emit giá
+    trị ngay lặp tức mà không phụ thuộc vào việc Outer Observable có emit hay là chưa.</p>
+  <br>
+  <pre>
+            <code>{{text24}}</code>
+          </pre>
+  <strong>Use-case</strong>
+  <p>startWith() có thể được dùng trong Angular để cung cấp giá trị ban đầu cho các API call. Ví dụ:</p>
+  <br>
+  <pre>
+              <code>{{text25}}</code>
+            </pre>
+  <br>
+
+  <!--endWith-->
+  <span style="font-size: 2rem;" class="pb-0">endWith</span>
+  <div class="border-b1"></div>
+  <br>
+  <p>endWith T>(...array: (SchedulerLike | T)[]): MonoTypeOperatorFunction T>
+  </p>
+  <p>endWith() cũng nhận vào 1 list các tham số như startWith() nhưng cách hoạt động thì ngược lại với startWith(). Một
+    điểm khác biệt lớn là endWith() chỉ emit giá trị của endWith() khi Outer Observable complete mà thôi.</p>
+  <br>
+  <pre>
+            <code>{{text26}}</code>
+          </pre>
+  <br>
+
+  <!--pairwise-->
+  <span style="font-size: 2rem;" class="pb-0">pairwise</span>
+  <div class="border-b1"></div>
+  <br>
+  <p>pairwise T>(): OperatorFunction T, [T, T]>
+  </p>
+  <p>pairwise() là 1 operator rất thú vị và rất kén nghiệp vụ. pairwise() sẽ gộp giá trị emit gần nhất và giá trị đang
+    được emit của Outer Observable thành 1 Array (1 cặp giá trị) và emit Array này.</p>
+  <br>
+  <pre>
+              <code>{{text27}}</code>
+            </pre>
+  <br>
+
+</div>
