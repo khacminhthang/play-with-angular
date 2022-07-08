@@ -1,0 +1,128 @@
+<div>
+  <h1 style="font-size: 3rem;">RxJS Error Handling and Conditional Operators</h1>
+  <br>
+  <p>Trong ngày đầu tiên tìm hiểu RxJS chúng ta được biết rằng, mỗi Observable có thể gửi về các message cho Next,
+    Error, Complete. Và nếu như có Error được phát sinh thì Observable sẽ dừng lại. Vậy làm thế nào để chúng ta có thể
+    catch được Error đó?</p>
+  <p>Trong ngày hôm nay chúng ta sẽ cùng tìm hiểu một số operators để xử lý lỗi và một số khác để làm việc với các loại
+    điều kiện (Error Handling and Conditional Operators).</p>
+  <p>Trong ngày 24 này, chúng ta sẽ tiếp tục sử dụng observer mặc định như sau:</p>
+  <br>
+  <pre>
+      <code>{{text1}}</code>
+  </pre>
+  <br>
+
+  <h1 style="font-size: 2.5rem;">RxJS Error Handling Operators</h1>
+  <br>
+
+  <!-- catchError() -->
+  <span style="font-size: 2rem;" class="pb-0">catchError()</span>
+  <div class="border-b1"></div>
+  <br>
+  <p>Đối với trường hợp các bạn muốn bắt được lỗi và muốn xử lý lỗi đó, ví dụ: biến đổi Error thành một value thông
+    thường, tránh bị terminate stream. Bạn có thể dùng catchError (.catch cho prototype chain).
+  </p>
+  <p>catchError T, O extends ObservableInput any>>(selector: (err: any, caught: Observable T>) => O): OperatorFunction
+    T, T | ObservedValueOf O>>
+  </p>
+  <br>
+  <pre>
+          <code>{{text2}}</code>
+      </pre>
+  <p>Trong trường hợp trên nếu chúng ta không bắt error thì observer.error sẽ là nơi đón Error, nhưng vì chúng ta trả về
+    là một next: Error nên error này đã được handle bởi observer.next.</p>
+  <p>Một ví dụ trong ứng dụng là khi các bạn làm việc với forkJoin Day 23, lúc này nếu một stream nào đó emit error thì
+    toàn bộ stream sẽ bị văng ra error. Trong trường hợp các bạn muốn nó vẫn tiếp tục chạy hết và chúng ta sẽ tách Error
+    ra ở pipe tiếp theo thì chỉ cần catchError lại như trên là được.</p>
+  <br>
+  <pre>
+      <code>{{text3}}</code>
+    </pre>
+  <p>Nếu bạn return về Observable trước đó (source Observable), chúng ta có thể tiến hành retry. Nhưng hãy thật cẩn thận
+    vì có thể sinh ra infinite loop. Nếu bạn muốn retry kèm theo giới hạn về số lần, chúng ta có thể kết hợp với take:
+  </p>
+  <pre>
+        <code>{{text4}}</code>
+    </pre>
+  <p>Ngoài ra, trong catchError bạn hoàn toàn có thể throw về một error để pipe phía sau có thể handle tiếp.</p>
+  <br>
+
+  <!--retry-->
+  <span style="font-size: 2rem;" class="pb-0">retry</span>
+  <div class="border-b1"></div>
+  <br>
+  <p>retry T>(count: number = -1): MonoTypeOperatorFunction T></p>
+  <p>Operator này sẽ resubscribe vào source Observable khi có error emit từ source. Nếu chúng ta không truyền gì vào cho
+    param count, lúc này nó có thể retry không giới hạn số lần. Ngược lại, nó sẽ retry max số lần được truyền vào.
+  </p>
+  <p>Nó khá hữu ích khi bạn muốn retry HTTP request chẳng hạn. Lưu ý chỉ nên dùng cho get data, không nên dùng cho
+    Create, Update, Delete vì có thể sinh ra race condition.
+  </p>
+  <pre>
+                    <code>{{text5}}</code>
+                </pre>
+  <strong>Lưu ý, cách hoạt động của retry operator khác với catch kèm theo kỹ thuật retry ở trên.</strong>
+  <p>Ngoài retry chúng ta có thể dùng retryWhen để có thể control vào quá trình retry (ví dụ: khi nào sẽ retry).</p>
+  <p>Một use-case khá hay là retryBackoff operator, nó sẽ tăng thời gian sau mỗi lần retry:</p>
+  <pre>
+        <code>{{text6}}</code>
+    </pre>
+  <br>
+
+  <h1 style="font-size: 2.5rem;">RxJS Error Conditional Operators</h1>
+  <br>
+
+  <!--defaultIfEmpty/throwIfEmpty-->
+  <span style="font-size: 2rem;" class="pb-0">defaultIfEmpty/throwIfEmpty</span>
+  <div class="border-b1"></div>
+  <br>
+  <p>defaultIfEmpty T, R>(defaultValue: R = null): OperatorFunction T, T | R></p>
+  <p>throwIfEmpty T>(errorFactory: () => any = defaultErrorFactory): MonoTypeOperatorFunction T></p>
+  <p>Hai operators này cho phép chúng ta trả về các giá trị tương ứng (default value hoặc Error) nếu source stream là
+    empty (không emit value nào mà chỉ có complete).
+  </p>
+  <p>Giả sử, chúng ta cần làm yêu cầu nếu người dùng không click vào sau 1s thì sẽ báo lỗi. Ví dụ tạo transaction sau 1s
+    không confirm thì hủy và báo lỗi cho người dùng.</p>
+  <br>
+  <pre>
+    <code>{{text7}}</code>
+</pre>
+  <br>
+
+  <!--every-->
+  <span style="font-size: 2rem;" class="pb-0">every</span>
+  <div class="border-b1"></div>
+  <br>
+  <p>Returns an Observable that emits whether or not every item of the source satisfies the condition specified.</p>
+  <p>every T>(predicate: (value: T, index: number, source: Observable T>) => boolean, thisArg?: any): OperatorFunction
+    T, boolean></p>
+  <p>Opeator này sẽ trả về true nếu tất cả các value emit của source thỏa mãn hàm predicate.
+  </p>
+  <p>Lưu ý nếu source không complete thì sẽ không có gì emit ra cả.</p>
+  <br>
+  <pre>
+      <code>{{text8}}</code>
+  </pre>
+  <p>Các method của Array trong JS, có cả every và some, nếu các bạn muốn có một operator giống some ở trong RxJS thì có
+    thể dùng first kèm theo predicate function. Giống như trong phần Router của Angular</p>
+  <br>
+  <pre>
+                    <code>{{text9}}</code>
+                </pre>
+  <br>
+
+  <!--iif-->
+  <span style="font-size: 2rem;" class="pb-0">iif</span>
+  <div class="border-b1"></div>
+  <br>
+  <p>Decides at subscription time which Observable will actually be subscribed. RxJS iff</p>
+  <p>iif T=never, F=never>(condition: () => boolean, trueResult: SubscribableOrPromise T> = EMPTY, falseResult:
+    SubscribableOrPromise F> = EMPTY): Observable T | F>
+  </p>
+  <p>Opeartor này cho phép chúng ta lựa chọn Observable tương ứng với hàm điều kiện khi thực hiện subscribe.
+  </p>
+  <pre>
+                    <code>{{text10}}</code>
+                </pre>
+</div>

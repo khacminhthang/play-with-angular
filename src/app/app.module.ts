@@ -34,6 +34,7 @@ import { RxjsFilteringOperatorsComponent } from './components/rxjs-filtering-ope
 import { RxjsCombinationOperatorsComponent } from './components/rxjs-combination-operators/rxjs-combination-operators.component';
 import { FragmentsModule } from './layout/fragments/fragments.module';
 import { MaterialModule } from './material.module';
+import { RxjsErrorHandlingComponent } from './components/rxjs-error-handling/rxjs-error-handling.component';
 
 @NgModule({
   declarations: [
@@ -60,7 +61,8 @@ import { MaterialModule } from './material.module';
     RxjsCreationOperatorsComponent,
     TransformationOperatorsComponent,
     RxjsFilteringOperatorsComponent,
-    RxjsCombinationOperatorsComponent
+    RxjsCombinationOperatorsComponent,
+    RxjsErrorHandlingComponent
   ],
   imports: [
     BrowserModule,

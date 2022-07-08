@@ -21,6 +21,7 @@ import { TransformationOperatorsComponent } from './components/transformation-op
 import { TypescriptAdvTypeComponent } from './components/typescript-adv-type/typescript-adv-type.component';
 import { TypescriptDataTypeComponent } from './components/typescript-data-type/typescript-data-type.component';
 import { RxjsCombinationOperatorsComponent } from './components/rxjs-combination-operators/rxjs-combination-operators.component';
+import { RxjsErrorHandlingComponent } from './components/rxjs-error-handling/rxjs-error-handling.component';
 
 const routes: Routes = [
   {
@@ -110,6 +111,10 @@ const routes: Routes = [
       {
         path: 'combination-operators',
         component: RxjsCombinationOperatorsComponent
+      },
+      {
+        path: 'error-handling',
+        component: RxjsErrorHandlingComponent
       },
     ]
   }]

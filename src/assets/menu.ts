@@ -103,10 +103,15 @@ export const menuAngular = [
         "text": "Combination  Operators",
         "icon": "all_inbox",
         "routerLink": "combination-operators"
+      },
+      {
+        "text": "Error Handling",
+        "icon": "all_inbox",
+        "routerLink": "error-handling"
       }
     ]
   }
 ];
 export const menuDotNetCore = [
- 
+
 ];
