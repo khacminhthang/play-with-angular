@@ -115,3 +115,218 @@ export const menuAngular = [
 export const menuDotNetCore = [
 
 ];
+
+export const menuCSharp = [
+  {
+    "text": "Basic",
+    "icon": "inventory_2",
+    "children": [
+      {
+        "text": "Overview",
+        "icon": "category",
+        "routerLink": "overview"
+      },
+      {
+        "text": "Environment",
+        "icon": "layers",
+        "routerLink": "environment"
+      },
+      {
+        "text": "Program Structure",
+        "icon": "all_inbox",
+        "routerLink": "program-structure"
+      },
+      {
+        "text": "Basic Syntax",
+        "icon": "all_inbox",
+        "routerLink": "basic-syntax"
+      },
+      {
+        "text": "Data Types",
+        "icon": "all_inbox",
+        "routerLink": "data-types"
+      },
+      {
+        "text": "Template Variable",
+        "icon": "all_inbox",
+        "routerLink": "template-variable"
+      },
+      {
+        "text": "Type Conversion",
+        "icon": "all_inbox",
+        "routerLink": "type-conversion"
+      },
+      {
+        "text": "Variables",
+        "icon": "all_inbox",
+        "routerLink": "variables"
+      },
+      {
+        "text": "Constants and Literals",
+        "icon": "all_inbox",
+        "routerLink": "constants-and-literals"
+      },
+      {
+        "text": "Operators",
+        "icon": "all_inbox",
+        "routerLink": "operators"
+      },
+      {
+        "text": "Decision Making",
+        "icon": "category",
+        "routerLink": "decision-making"
+      },
+      {
+        "text": "Loops",
+        "icon": "layers",
+        "routerLink": "loops"
+      },
+      {
+        "text": "Encapsulation",
+        "icon": "all_inbox",
+        "routerLink": "encapsulation"
+      },
+      {
+        "text": "Methods",
+        "icon": "all_inbox",
+        "routerLink": "methods"
+      },
+      {
+        "text": "Nullables",
+        "icon": "all_inbox",
+        "routerLink": "nullables"
+      },
+      {
+        "text": "Arrays",
+        "icon": "all_inbox",
+        "routerLink": "array"
+      },
+      {
+        "text": "Strings",
+        "icon": "all_inbox",
+        "routerLink": "strings"
+      },
+      {
+        "text": "Structure",
+        "icon": "all_inbox",
+        "routerLink": "structure"
+      },
+      {
+        "text": "Enums",
+        "icon": "all_inbox",
+        "routerLink": "enums"
+      },
+      {
+        "text": "Classes",
+        "icon": "all_inbox",
+        "routerLink": "classes"
+      },
+      {
+        "text": "Inheritance",
+        "icon": "all_inbox",
+        "routerLink": "inheritance"
+      },
+      {
+        "text": "Polymorphism",
+        "icon": "all_inbox",
+        "routerLink": "polymorphism"
+      },
+      {
+        "text": "Operator Overloading",
+        "icon": "all_inbox",
+        "routerLink": "operator-overloading"
+      },
+      {
+        "text": "Interfaces",
+        "icon": "all_inbox",
+        "routerLink": "interface"
+      },
+      {
+        "text": "Namespaces",
+        "icon": "all_inbox",
+        "routerLink": "namespaces"
+      },
+      {
+        "text": "Preprocessor Directives",
+        "icon": "all_inbox",
+        "routerLink": "preprocessor-directives"
+      },
+      {
+        "text": "Regular Expressions",
+        "icon": "all_inbox",
+        "routerLink": "regular-expressions"
+      },
+      {
+        "text": "Exception Handling",
+        "icon": "all_inbox",
+        "routerLink": "exception-handling"
+      },
+      {
+        "text": "File I/O",
+        "icon": "all_inbox",
+        "routerLink": "file-io"
+      }
+    ]
+  },
+  {
+    "text": "Advanced",
+    "icon": "inventory_2",
+    "children": [
+      {
+        "text": "Attributes",
+        "icon": "all_inbox",
+        "routerLink": "attributes"
+      },
+      {
+        "text": "Reflection",
+        "icon": "all_inbox",
+        "routerLink": "reflection"
+      },
+      {
+        "text": "Properties",
+        "icon": "all_inbox",
+        "routerLink": "properties"
+      },
+      {
+        "text": "Indexers",
+        "icon": "all_inbox",
+        "routerLink": "indexers"
+      },
+      {
+        "text": "Delegates",
+        "icon": "all_inbox",
+        "routerLink": "delegates"
+      },
+      {
+        "text": "Events",
+        "icon": "all_inbox",
+        "routerLink": "events"
+      },
+      {
+        "text": "Collections",
+        "icon": "all_inbox",
+        "routerLink": "collections"
+      },
+      {
+        "text": "Generics",
+        "icon": "all_inbox",
+        "routerLink": "generics"
+      },
+      {
+        "text": "Anonymous Methods",
+        "icon": "all_inbox",
+        "routerLink": "anonymous-methods"
+      },
+      {
+        "text": "Unsafe Codes",
+        "icon": "all_inbox",
+        "routerLink": "unsafe-codes"
+      },
+      {
+        "text": "Multithreading",
+        "icon": "all_inbox",
+        "routerLink": "multithreading"
+      },
+    ]
+  }
+];

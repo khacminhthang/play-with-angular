@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { menuAngular, menuDotNetCore } from 'src/assets/menu';
+import { menuAngular, menuCSharp, menuDotNetCore } from 'src/assets/menu';
 
 @Component({
   selector: 'app-main-shell',
@@ -17,13 +17,18 @@ export class MainShellComponent implements OnInit {
 
   ngOnInit() {
     this.route.params.subscribe((param) => {
-      switch (param.slug) {
-        case 'angular':
+      switch (window.location.pathname) {
+        case '/angular':
           {
             this.menuList = menuAngular;
             break;
           }
-        case 'dotnetcore':
+        case '/csharp':
+          {
+            this.menuList = menuCSharp;
+            break;
+          }
+        case '/dotnetcore':
           {
             this.menuList = menuDotNetCore;
             break;

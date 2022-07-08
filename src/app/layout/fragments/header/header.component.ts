@@ -23,17 +23,13 @@ export class HeaderComponent implements OnInit {
         filter((event) => event instanceof NavigationEnd),
         startWith(this.router)
       )
-
-
   }
 
   ngOnInit() {
     this.router.events.subscribe(data => {
       if (data instanceof ActivationStart) {
-        console.log(data)
         this.componentTitle = data.snapshot.data['title'];
       }
-
     });
   }
 }
