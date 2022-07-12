@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-data-binding',
@@ -15,9 +16,14 @@ export class DataBindingComponent implements OnInit {
   text4: any;
   text5: any;
   listName = ["Nam", "Quỳnh", "Hòa", "Tuấn Anh", "Dũng"];
-  constructor() { }
+  constructor(
+    private activatedRoute: ActivatedRoute
+  ) { }
 
   ngOnInit(): void {
+    this.activatedRoute.params.subscribe(async (value: any) => {
+      console.log(this.activatedRoute.snapshot.paramMap.get("id2"), 'id2');
+    });
     this.text1 = `
     View:
     <h2>Hello there!</h2>
