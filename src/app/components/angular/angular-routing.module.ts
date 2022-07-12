@@ -17,6 +17,7 @@ import { RxjsCombinationOperatorsComponent } from './rxjs-combination-operators/
 import { RxjsCreationOperatorsComponent } from './rxjs-creation-operators/rxjs-creation-operators.component';
 import { RxjsErrorHandlingComponent } from './rxjs-error-handling/rxjs-error-handling.component';
 import { RxjsFilteringOperatorsComponent } from './rxjs-filtering-operators/rxjs-filtering-operators.component';
+import { RxjsHoosComponent } from './rxjs-hoos/rxjs-hoos.component';
 import { StructureDirectiveComponent } from './structure-directive/structure-directive.component';
 import { TemplateVariableComponent } from './template-variable/template-variable.component';
 import { TransformationOperatorsComponent } from './transformation-operators/transformation-operators.component';
@@ -32,10 +33,6 @@ const angularRoutes: Routes = [
     path: ':slug',
     component: MainShellComponent,
     children: [
-      {
-        path: '', pathMatch: 'full',
-        component: HomeComponent
-      },
       {
         path: 'data-binding',
         component: DataBindingComponent
@@ -115,6 +112,10 @@ const angularRoutes: Routes = [
       {
         path: 'error-handling',
         component: RxjsErrorHandlingComponent
+      },
+      {
+        path: 'rxjs-hoos',
+        component: RxjsHoosComponent
       },
     ]
   }]

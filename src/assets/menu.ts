@@ -108,6 +108,11 @@ export const menuAngular = [
         "text": "Error Handling",
         "icon": "all_inbox",
         "routerLink": "error-handling"
+      },
+      {
+        "text": "Rxjs Higher Order Observables",
+        "icon": "all_inbox",
+        "routerLink": "rxjs-hoos"
       }
     ]
   }

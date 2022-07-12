@@ -30,6 +30,7 @@ import { FragmentsModule } from 'src/app/layout/fragments/fragments.module';
 import { HttpClientModule } from '@angular/common/http';
 import { MatNativeDateModule } from '@angular/material/core';
 import { RouterModule } from '@angular/router';
+import { RxjsHoosComponent } from './rxjs-hoos/rxjs-hoos.component';
 
 @NgModule({
   declarations: [
@@ -55,7 +56,8 @@ import { RouterModule } from '@angular/router';
     TransformationOperatorsComponent,
     RxjsFilteringOperatorsComponent,
     RxjsCombinationOperatorsComponent,
-    RxjsErrorHandlingComponent
+    RxjsErrorHandlingComponent,
+    RxjsHoosComponent
   ],
   entryComponents: [
     ToggleComponent
