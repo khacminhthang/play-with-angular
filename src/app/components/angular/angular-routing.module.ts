@@ -18,6 +18,7 @@ import { RxjsCreationOperatorsComponent } from './rxjs-creation-operators/rxjs-c
 import { RxjsErrorHandlingComponent } from './rxjs-error-handling/rxjs-error-handling.component';
 import { RxjsFilteringOperatorsComponent } from './rxjs-filtering-operators/rxjs-filtering-operators.component';
 import { RxjsHoosComponent } from './rxjs-hoos/rxjs-hoos.component';
+import { RxjsSubjectComponent } from './rxjs-subject/rxjs-subject.component';
 import { StructureDirectiveComponent } from './structure-directive/structure-directive.component';
 import { TemplateVariableComponent } from './template-variable/template-variable.component';
 import { TransformationOperatorsComponent } from './transformation-operators/transformation-operators.component';
@@ -116,6 +117,10 @@ const angularRoutes: Routes = [
       {
         path: 'rxjs-hoos',
         component: RxjsHoosComponent
+      },
+      {
+        path: 'rxjs-subject',
+        component: RxjsSubjectComponent
       },
     ]
   }]

@@ -1,0 +1,321 @@
+<div>
+  <h1 style="font-size: 3rem;">RxJS Subject and Multicasting</h1>
+  <br>
+
+  <!-- Observable Execution -->
+  <span style="font-size: 2rem;" class="pb-0">Observable Execution</span>
+  <div class="border-b1"></div>
+  <br>
+  <p>Như chúng ta đã biết, đối với các Observable thông thường, mỗi khi thực hiện subscribe sẽ sinh ra một execution
+    mới, và chúng độc lập với nhau.
+  </p>
+  <p>Ví dụ, chúng ta có một observable như sau:</p>
+  <pre>
+          <code>{{text1}}</code>
+      </pre>
+  <p>Giả sử chúng ta subscribe thêm một observer mới sau một khoảng thời gian (ví dụ: 2s)</p>
+  <br>
+  <pre>
+                <code>{{text2}}</code>
+            </pre>
+  <p>Như các bạn có thể thấy, khi hai observer subscribe vào, chúng sinh ra các execution khác nhau.</p>
+  <p>Câu hỏi đặt ra là có cách nào để bất cứ khi nào có một observer mới nào subscribe vào thì chúng sẽ share cùng một
+    execution không?</p>
+  <p>Hãy xem xét lại một chút về RxJS, nó có apply một design pattern có tên là Observer Pattern.</p>
+  <img src="assets/observer-pattern.png" style="height: 413px; width: 1000px;">
+  <br>
+  <br>
+  <p>Bây giờ thay vì subscribe riêng lẻ như ở các ví dụ trên, chúng ta hãy thêm một hybrid observer như sau:</p>
+  <pre>
+            <code>{{text3}}</code>
+          </pre>
+  <p>Oh wow, chỉ với việc implement Observer Pattern, giờ đây chúng ta đã có thể share được execution, và hoàn toàn có
+    thể share cho nhiều observer khác nữa nếu muốn.</p>
+  <p>Bây giờ chúng ta sẽ thêm một số thay đổi nhỏ nữa:</p>
+  <br>
+  <pre>
+            <code>{{text4}}</code>
+        </pre>
+  <p>Lúc này bạn sẽ thấy rằng hybridObserver khá là giống một Observable, lại cũng có những phần của một Observer.</p>
+  <p>Đây chính là một Subject ở trong RxJS.</p>
+  <p>A Subject is a special type of Observable that allows values to be multicasted to many Observers. Subjects are like
+    EventEmitters.</p>
+  <p>Every Subject is an Observable and an Observer. You can subscribe to a Subject, and you can call next to feed
+    values as well as error and complete.</p>
+  <br>
+  <pre>
+                        <code>{{text5}}</code>
+                    </pre>
+  <br>
+  <p>Với phương pháp kể trên, chúng ta đã cơ bản chuyển đổi từ một unicast Observable execution sang multicast, bằng
+    cách sử dụng Subject.</p>
+  <ul>
+    <li>unicast: giống như bạn vào Youtube, mở video nào đó đã được thu sẵn và xem, nó play từ đầu đến cuối video. Một
+      người khác vào xem, Youtube cũng sẽ phát từ đầu đến cuối như thế, hai người không có liên quan gì về thời gian
+      hiện tại của video mà mình đang xem.</li>
+    <li>multicast: cũng là hai người (có thể nhiều hơn) vào xem video ở Youtube, nhưng video đó đang phát Live (theo dõi
+      một show truyền hình, hay một trận bóng đá Live chẳng hạn). Lúc này Youtube sẽ phát video Live, và những người vào
+      xem video đó sẽ có cùng một thời điểm của video đó (cùng thời điểm của trận đấu đang diễn ra chẳng hạn).</li>
+  </ul>
+  <br>
+
+  <!-- Subject -->
+  <span style="font-size: 2rem;" class="pb-0">Subject</span>
+  <div class="border-b1"></div>
+  <br>
+  <p>Do Subject vừa là một Observable (chúng ta có thể subscribe vào nó), vừa là một Observer (có các method để chúng ta
+    tự control khi nào gửi notification). Nên nó khá hay được sử dụng trong ứng dụng, ví dụ để làm Event Bus chẳng hạn.
+  </p>
+  <p>Dưới đây là một ví dụ về type ahead:</p>
+  <pre>
+      <code>{{text6}}</code>
+  </pre>
+  <strong>Lưu ý:</strong>
+  <p>Ở ví dụ trên chúng ta có thể hoàn toàn tự control khi nào cần thiết thì emit notification tương ứng.</p>
+  <p>Và chúng ta có thể apply các operator của RxJS cung cấp để control được stream theo ý muốn.</p>
+  <br>
+
+
+  <!-- BehaviorSubject -->
+  <span style="font-size: 2rem;" class="pb-0">BehaviorSubject</span>
+  <div class="border-b1"></div>
+  <br>
+  <p>Một trong những vấn đề khi làm việc với Subject đó là tình huống late subscriber sẽ không nhận được các value đã
+    emit trong quá khứ, mà nó chỉ có thể nhận được value từ sau thời điểm nó subscribe. Chúng ta cùng quan sát ví dụ sau
+    đây.
+  </p>
+  <br>
+  <pre>
+          <code>{{text7}}</code>
+      </pre>
+  <p>Để giải quyết vấn đề này, chúng ta có một trong các biến thể của Subject đó là BehaviorSubject, nó là biến thế có
+    khái niệm về "the current value". BehaviorSubject lưu trữ lại giá trị mới emit gần nhất để khi một Observer mới
+    subscribe vào, nó sẽ emit giá trị đó ngay lập tức cho Observer vừa rồi.</p>
+  <p>A variant of Subject that requires an initial value and emits its current value whenever it is subscribed to.
+    BehaviorSubject</p>
+  <p>BehaviorSubjects are useful for representing "values over time". For instance, an event stream of birthdays is a
+    Subject, but the stream of a person’s age would be a BehaviorSubject.</p>\
+  <p>Hay như sử dụng BehaviorSubject để chia sẻ thông tin user hiện tại đang đăng nhập hệ thống cho các component khác
+    nhau trong Angular chẳng hạn.</p>
+  <p>Lưu ý: BehaviorSubject yêu cầu phải có giá trị khởi tạo khi tạo ra subject.</p>
+  <br>
+  <pre>
+    <code>{{text8}}</code>
+  </pre>
+  <br>
+
+  <!-- ReplaySubject -->
+  <span style="font-size: 2rem;" class="pb-0">ReplaySubject</span>
+  <div class="border-b1"></div>
+  <br>
+  <p>Một ReplaySubject tương tự như một BehaviorSubject khi nó có thể gửi những dữ liệu trước đó cho Observer mới
+    subscribe, nhưng nó có thể lưu giữ nhiều giá trị (có thể là toàn bộ giá trị của stream từ thời điểm ban đầu).
+  </p>
+  <p>Tham số đầu vào của ReplaySubject có thể là:</p>
+  <ul>
+    <li>buffer: là số lượng phần tử tối đa có thể lưu trữ.</li>
+    <li>windowTime: (ms) thời gian tối đa tính đến thời điểm gần nhất emit value.</li>
+  </ul>
+  <p>A variant of Subject that "replays" or emits old values to new subscribers. It buffers a set number of values and
+    will emit those values immediately to any new subscribers in addition to emitting new values to existing
+    subscribers. ReplaySubject</p>
+  <br>
+  <pre>
+              <code>{{text9}}</code>
+          </pre>
+  <p>Hoặc kết hợp buffer với windowTime:</p>
+  <br>
+  <pre>
+                <code>{{text10}}</code>
+            </pre>
+  <p>Trong ví dụ trên sau 1s chỉ có giá trị 3, 4 và 5 là được emit trong 500ms gần nhất và nằm trong buffer nên được
+    replay lại cho observerB.</p>
+  <br>
+
+  <!-- AsyncSubject -->
+  <span style="font-size: 2rem;" class="pb-0">AsyncSubject</span>
+  <div class="border-b1"></div>
+  <br>
+  <p>Đây là biến thể mà chỉ emit giá trị cuối cùng của Observable execution cho các observers, và chỉ khi execution
+    complete.
+  </p>
+  <p>A variant of Subject that only emits a value when it completes. It will emit its latest value to all its observers
+    on completion. AsyncSubject</p>
+  <p>Lưu ý: Nếu stream không complete thì không có gì được emit cả.</p>
+  <p>AsyncSubject khá giống Promise đấy chứ.</p>
+  <br>
+  <pre>
+            <code>{{text11}}</code>
+        </pre>
+  <br>
+
+  <!-- Subject Completion -->
+  <span style="font-size: 2rem;" class="pb-0">Subject Completion</span>
+  <div class="border-b1"></div>
+  <br>
+  <p>Khi BehaviorSubject complete, thì các Observers subscribe vào sau đó sẽ chỉ nhận được complete signal.
+  </p>
+  <p>Khi ReplaySubject complete, thì các Observers subscribe vào sau đó sẽ được emit tất cả các giá trị lưu trữ trong
+    buffer, sau đó mới thực thi complete của Observer.</p>
+  <p>Kể cả khi AsyncSubject complete rồi, Observer vẫn có thể subscribe vào được và vẫn nhận giá trị cuối cùng.</p>
+  <br>
+  <pre>
+            <code>{{text12}}</code>
+        </pre>
+  <br>
+  <pre>
+                  <code>{{text13}}</code>
+              </pre>
+  <br>
+  <pre>
+                        <code>{{text14}}</code>
+                    </pre>
+  <br>
+
+  <!-- Multicasting -->
+  <span style="font-size: 2rem;" class="pb-0">Multicasting</span>
+  <div class="border-b1"></div>
+  <br>
+  <p>Quay trở lại vấn đề ban đầu khi chúng ta mong muốn multicast. Chúng ta mong muốn cả hai observer đều chạy cùng một
+    execution.
+  </p>
+  <br>
+  <pre>
+            <code>{{text15}}</code>
+        </pre>
+  <p>Chúng ta sẽ có thể thay thế bằng cách dùng multicast operator như sau.</p>
+
+  <strong>multicast()</strong>
+  <p>multicast T, R>(subjectOrSubjectFactory: Subject T> | (() => Subject T>), selector?: (source: Observable T>) =>
+    Observable R>): OperatorFunction T, R></p>
+  <p>Returns an Observable that emits the results of invoking a specified selector on items emitted by a
+    ConnectableObservable that shares a single subscription to the underlying stream. multicast</p>
+  <p>Operator này sẽ trả về một Observable đặc biệt là ConnectableObservable, mà nó có thể share cùng một execution.</p>
+  <br>
+  <pre>
+              <code>{{text16}}</code>
+          </pre>
+  <br>
+  <p>Multicast nhận vào một subjectOrSubjectFactory, như trong ví dụ trên chúng ta truyền vào một instance của Subject.
+    Sau đó sẽ return về một ConnectableObservable, nó có một số method đặc biệt.</p>
+  <p>ConnectableObservable là một Observable nên chúng ta có thể subscribe vào nó. Nhưng để trigger thì chúng ta cần gọi
+    hàm connect.</p>
+  <p>connectableObservable.connect();</p>
+  <p>Nó tương đương với việc subscribe internal Subject vào Observable như ban đầu:</p>
+  <p>observable.subscribe(subject);</p>
+  <p>Lưu ý rằng, khi gọi hàm connect() chúng ta báo với stream là start đi, nhưng trong đoạn code trên không có trường
+    hợp nào để disconnect, nên các bạn có thể bị memory leak.</p>
+  <br>
+  <pre>
+            <code>{{text17}}</code>
+        </pre>
+  <br>
+  <p>Lúc này bạn cần lưu trữ lại subscription được trả về bởi lời gọi connect() để có thể unsubscribe.</p>
+  <br>
+  <pre>
+            <code>{{text18}}</code>
+        </pre>
+  <br>
+  <p>Lúc này bạn chỉ cần connectSub.unsubscribe() là sẽ unsubscribe internal Subject do đó không cần chạy
+    sub.unsubscribe() cũng được.</p>
+  <br>
+
+  <strong>refCount</strong>
+  <br>
+  <p>Việc phải connect và disconnect manually khá là low level. Do đó ConnectableObservable có một protocol khá thuận
+    tiện đó là: Khi có sự biến đổi về số lượng Observer từ 0 lên 1 thì sẽ tự gọi connect, và khi có sự biến đổi từ 1 về
+    0 thì sẽ tự động unsubscribe. Đây chính là lúc bạn có thể sử dụng đến refCount.
+  </p>
+  <br>
+  <pre>
+            <code>{{text19}}</code>
+        </pre>
+  <br>
+
+  <strong>SubjectFactory()</strong>
+  <br>
+  <p>Trong trường hợp Subject bị complete, nó sẽ không thể next thêm một value nào nữa, đó là đặc tính của một
+    Observable. Nên đối với trường hợp dưới đây, chúng ta sẽ không thể có execution nào được thực thi sau khi Subject đã
+    complete.
+  </p>
+  <br>
+  <pre>
+            <code>{{text20}}</code>
+        </pre>
+  <br>
+  <p>Sau 5s sharedObservable đã emit complete nên khi ở thời điểm 6s chúng ta tiếp tục subscribe thì nó không thể nhận
+    được các value được nữa. Lúc này để có thể tiếp tục trigger chúng ta cần phải tạo ra một Subject mới, đó chính là
+    lúc bạn sẽ có thể dùng đến SubjectFactory.</p>
+  <br>
+  <pre>
+            <code>{{text21}}</code>
+        </pre>
+  <br>
+  <br>
+  <pre>
+            <code>{{text22}}</code>
+        </pre>
+  <p>SubjectFactory là một function, nó sẽ trả về một Subject mới khi được gọi. Và khi có sự thay đổi refCount từ 0 =>
+    1, nó sẽ được gọi và bắt đầu được chạy.</p>
+  <br>
+
+  <strong>publish</strong>
+  <br>
+  <p>Việc sử dụng multicast(new Subject()) có thể được viết gọn lại bằng cách sử dụng publish.
+  </p>
+  <p>publish T, R>(selector?: OperatorFunction T, R>): MonoTypeOperatorFunctionT> | OperatorFunction T, R></p>
+  <p>Returns a ConnectableObservable, which is a variety of Observable that waits until its connect method is called
+    before it begins emitting items to those Observers that have subscribed to it. publish</p>
+  <p>Makes a cold Observable hot</p>
+  <br>
+  <pre>
+            <code>{{text23}}</code>
+        </pre>
+  <br>
+  <p>Ngoài ra, giống như Subject có các biến thể thì publish cũng có các biến thể tương ứng với một số loại Subject.</p>
+  <ul>
+    <li>BehaviorSubject => publishBehavior</li>
+    <li>ReplaySubject => publishReplay</li>
+    <li>AsyncSubject => publishLast</li>
+  </ul>
+  <br>
+
+  <strong>share</strong>
+  <br>
+  <p>Việc sử dụng multicast(() => new Subject()) + refCount khá phổ biến nên chúng ta có một shortcut khác là share.
+  </p>
+  <p>share T>(): MonoTypeOperatorFunction T></p>
+  <p>Returns a new Observable that multicasts (shares) the original Observable. As long as there is at least one
+    Subscriber this Observable will be subscribed and emitting data. When all subscribers have unsubscribed it will
+    unsubscribe from the source Observable. Because the Observable is multicasting it makes the stream hot. This is an
+    alias for multicast(() => new Subject()), refCount(). RxJS share</p>
+  <br>
+  <pre>
+            <code>{{text24}}</code>
+        </pre>
+  <br>
+
+
+  <strong>shareReplay</strong>
+  <br>
+  <p>Share source and replay specified number of emissions on subscription.
+  </p>
+  <p>shareReplay T>(configOrBufferSize?: number | ShareReplayConfig, windowTime?: number, scheduler?: SchedulerLike):
+    MonoTypeOperatorFunction T>
+  </p>
+  <p>This operator is a specialization of replay that connects to a source observable and multicasts through a
+    ReplaySubject constructed with the specified arguments. A successfully completed source will stay cached in the
+    shareReplayed observable forever, but an errored source can be retried.</p>
+  <br>
+  <p>Why use shareReplay?</p>
+  <p>You generally want to use shareReplay when you have side-effects or taxing computations that you do not wish to be
+    executed amongst multiple subscribers. It may also be valuable in situations where you know you will have late
+    subscribers to a stream that need access to previously emitted values. This ability to replay values on subscription
+    is what differentiates share and shareReplay.</p>
+  <p>Source code & documentation: https://github.com/ReactiveX/rxjs/blob/6.x/src/internal/operators/shareReplay.ts</p>
+  <p>Một use-case khá phổ biến là sử dụng shareReplay để làm caching.</p>
+  <pre>
+            <code>{{text25}}</code>
+        </pre>
+  <br>
+</div>

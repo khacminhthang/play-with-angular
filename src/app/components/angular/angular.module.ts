@@ -31,6 +31,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { MatNativeDateModule } from '@angular/material/core';
 import { RouterModule } from '@angular/router';
 import { RxjsHoosComponent } from './rxjs-hoos/rxjs-hoos.component';
+import { RxjsSubjectComponent } from './rxjs-subject/rxjs-subject.component';
 
 @NgModule({
   declarations: [
@@ -57,7 +58,8 @@ import { RxjsHoosComponent } from './rxjs-hoos/rxjs-hoos.component';
     RxjsFilteringOperatorsComponent,
     RxjsCombinationOperatorsComponent,
     RxjsErrorHandlingComponent,
-    RxjsHoosComponent
+    RxjsHoosComponent,
+    RxjsSubjectComponent
   ],
   entryComponents: [
     ToggleComponent
