@@ -82,221 +82,785 @@ export class RxjsSubjectComponent implements OnInit {
       complete: () => console.log('complete'),
     };
     this.text1 = `
-    interval(1000)
-    .pipe(map((val) => val * 2))
-    .suscribe(console.log);
-  // output: 0 -- 2 -- 4 -- 6 -- 8
+    const observable = interval(500).pipe(
+      take(5)
+    );
+    
+    const observerA = {
+      next: (val) => console.log(Observer A: $val}),
+      error: (err) => console.log(Observer A Error: $err}),
+      complete: () => console.log(Observer A complete),
+    };
+    
+    observable.subscribe(observerA);
+    
+    /**
+    Output:
+    
+    Observer A: 0
+    Observer A: 1
+    Observer A: 2
+    Observer A: 3
+    Observer A: 4
+    Observer A complete
+    */
     `;
     this.text2 = `
-    fromEvent(document, 'click')
-    .pipe(map(() => interval(1000)))
-    .subscribe(console.log);
-  // Click
-  // output: Observable {}
-  // Click
-  // output: Observable {}
-  // Click
-  // output: Observable {}
+    const observable = interval(500).pipe(
+      take(5)
+    );
+    
+    const observerA = {
+      next: (val) => console.log(Observer A: $val}),
+      error: (err) => console.log(Observer A Error: $err}),
+      complete: () => console.log(Observer A complete),
+    };
+    
+    observable.subscribe(observerA);
+    
+    const observerB = {
+      next: (val) => console.log(Observer B: $val}),
+      error: (err) => console.log(Observer B Error: $err}),
+      complete: () => console.log(Observer B complete),
+    };
+    
+    setTimeout(() => {
+      observable.subscribe(observerB);
+    }, 2000);
+    
+    /**
+    Output:
+    
+    Observer A: 0
+    Observer A: 1
+    Observer A: 2
+    Observer A: 3
+    Observer A: 4
+    Observer A complete
+    Observer B: 0
+    Observer B: 1
+    Observer B: 2
+    Observer B: 3
+    Observer B: 4
+    Observer B complete
+    */
     `;
     this.text3 = `
-    const source = fromEvent(document, 'click').pipe(map(() => interval(1000)));
-
-    source.pipe(mergeAll()).subscribe(console.log);
-    source.pipe(switchAll()).subscribe(console.log);
-    source.pipe(concatAll()).subscribe(console.log);
+    const hybridObserver = {
+      observers: [],
+      registerObserver(observer) {
+        this.observers.push(observer);
+      },
+      next(value) {
+        this.observers.forEach(observer => observer.next(value));
+      },
+      error(err) {
+        this.observers.forEach(observer => observer.error(err));
+      },
+      complete() {
+        this.observers.forEach(observer => observer.complete());
+      }
+    }
+    
+    hybridObserver.registerObserver(observerA);
+    
+    observable.subscribe(hybridObserver);
+    
+    setTimeout(() => {
+      hybridObserver.registerObserver(observerB);
+    }, 2000);
+    
+    /**
+    Output:
+    
+    Observer A: 0
+    Observer A: 1
+    Observer A: 2
+    Observer A: 3
+    Observer A: 4
+    Observer B: 4
+    Observer A complete
+    Observer B complete
+    /*
       `;
     this.text4 = `
-    this.queryInput.valueChanges.pipe(debounceTime(500)).subscribe((query) => {
-      this.apiService.filterData(query).subscribe((data) => {
-        /*...*/
-      });
-    });
+    const hybridObserver = {
+      observers: [],
+      subscribe(observer) {
+        this.observers.push(observer);
+      },
+      next(value) {
+        this.observers.forEach(observer => observer.next(value));
+      },
+      error(err) {
+        this.observers.forEach(observer => observer.error(err));
+      },
+      complete() {
+        this.observers.forEach(observer => observer.complete());
+      }
+    }
+    
+    hybridObserver.subscribe(observerA);
+    
+    observable.subscribe(hybridObserver);
+    
+    setTimeout(() => {
+      hybridObserver.subscribe(observerB);
+    }, 2000);
       `;
     this.text5 = `
-    fromEvent(document, 'click').pipe(
-      switchMap(() => interval(1000).pipe(take(10)))
-    );
+    const subject = new Subject();
+
+    subject.subscribe(observerA);
+    
+    observable.subscribe(subject);
+    
+    setTimeout(() => {
+      subject.subscribe(observerB);
+    }, 2000);
       `;
     this.text6 = `
-    this.queryInput.valueChanges
-    .pipe(
-      debounceTime(500),
-      switchMap((query) => this.apiService.filterData(query))
-    )
-    .subscribe((data) => {
-      /*...*/
-    });
+    @Component({
+      selector: 'my-app',
+      templateUrl: './app.component.html',
+      styleUrls: [ './app.component.css' ]
+    })
+    export class AppComponent implements OnInit  {
+    
+      searchTerm$ = new Subject<string>();
+    
+      ngOnInit() {
+        this.searchTerm$.asObservable().pipe(
+          throttleTime(250, undefined, {
+            leading: true,
+            trailing: true,
+          }),
+          distinctUntilChanged(),
+        ).subscribe({
+          next: value => console.log(value)
+        });
+      }
+    
+      onInput(event: Event) {
+        const target = event.target as HTMLInputElement;
+        this.searchTerm$.next(target.value);
+      }
+    }
       `;
     this.text7 = `
-    fromEvent(document, 'click').pipe(
-      mergeMap(() => interval(1000).pipe(take(10)))
-    );
+    const subject = new Subject();
+
+    subject.subscribe({
+      next: v => console.log("observerA: " + v)
+    });
     
-    // Click, subscribe {1}
-    // {1}: 0 -- 1 -- 2 -- 3 -- 4
-    // Click, subscribe {2}
-    // {1}: 5 -- 6 -- 7 -- 8
-    // {2}: 0 -- 1 -- 2 -- 3
-    // Click, subscribe {3}
-    // {1}: 9 -- complete {1}
-    // {2}: 4 -- 5 -- 6 -- 7 -- 8 -- 9 -- complete {2}
-    // {3}: 0 -- 1 -- 2 -- 3 -- 4 -- 5 -- 6 -- 7 -- 8 -- 9 -- complete {3}
+    subject.next(1);
+    subject.next(2);
+    
+    subject.subscribe({
+      next: v => console.log("observerB: " + v)
+    });
+    
+    subject.next(3);
+    
+    /**
+    Output
+    
+    observerA: 1
+    observerA: 2
+    observerA: 3
+    observerB: 3
+    */
       `;
     this.text8 = `
-    fromEvent(document, 'click').pipe(
-      concatMap(() => interval(1000).pipe(take(5))) // mình giảm từ take(10) thành take(5) để type ít hơn 😅
-    );
-    // Click, subscribe {1}
-    // {1}: 0 -- 1 -- 2 --
-    // Click, không có gì xảy ra
-    // {1}: 3 -- 4 -- complete {1}
-    // subscribe {2}
-    // {2}: 0 -- 1
-    // Click, không có gì xảy ra
-    // {2}: 2 -- 3 -- 4 -- complete {2}
-    // subscribe {3}
-    // {3}: 0 -- 1 -- 2 -- 3 -- 4 -- complete {3}
+    const subject = new BehaviorSubject(0); // 0 is the initial value
+
+    subject.subscribe({
+      next: (v) => console.log('observerA: ' + v)
+    });
+    
+    subject.next(1);
+    subject.next(2);
+    
+    subject.subscribe({
+      next: (v) => console.log('observerB: ' + v)
+    });
+    
+    subject.next(3);
+    
+    /**
+    Output
+    
+    observerA: 0
+    observerA: 1
+    observerA: 2
+    observerB: 2
+    observerA: 3
+    observerB: 3
+    */
       `;
     this.text9 = `
-    from([image1, image2, image3]).pipe(
-      // image1, image2, và image3 là loại dữ liệu File
-      concatMap((singleImage) => this.apiService.upload(singleImage)) // upload từng image theo thứ tự
-    );
+    const subject = new ReplaySubject(3); // buffer 3 values for new subscribers
+
+    subject.subscribe({
+      next: (v) => console.log('observerA: ' + v)
+    });
+    
+    subject.next(1);
+    subject.next(2);
+    subject.next(3);
+    subject.next(4);
+    
+    subject.subscribe({
+      next: (v) => console.log('observerB: ' + v)
+    });
+    
+    subject.next(5);
+    
+    /**
+    Output:
+    
+    observerA: 1
+    observerA: 2
+    observerA: 3
+    observerA: 4
+    observerB: 2
+    observerB: 3
+    observerB: 4
+    observerA: 5
+    observerB: 5
+    */
       `;
     this.text10 = `
-    fromEvent(document, 'click').pipe(
-      map(() => axios('...')),
-      concatAll()
-    );
+    const subject = new ReplaySubject(100, 500 /* windowTime */);
+
+    subject.subscribe({
+      next: (v) => console.log('observerA: ' + v)
+    });
+    
+    let i = 1;
+    const id = setInterval(() => subject.next(i++), 200);
+    
+    setTimeout(() => {
+      subject.subscribe({
+        next: (v) => console.log('observerB: ' + v)
+      });
+    }, 1000);
+    
+    setTimeout(() => {
+      subject.complete();
+      clearInterval(id);
+    }, 2000);
+    
+    /**
+    Output:
+    
+    observerA: 1
+    observerA: 2
+    observerA: 3
+    observerA: 4
+    observerA: 5
+    observerB: 3
+    observerB: 4
+    observerB: 5
+    observerA: 6
+    observerB: 6
+    ...
+    */
       `;
     this.text11 = `
-    function log(val) {
-      // helper function thôi
-      console.log(val + ' emitted!!!');
-      console.log('-----------------');
-    }
+    const subject = new AsyncSubject();
+
+    subject.subscribe({
+      next: (v) => console.log('observerA: ' + v)
+    });
     
-    concat(
-      timer(1000).pipe(mapTo('first timer'), tap(log)), // emit "first timer" sau 1 giây
-      timer(5000).pipe(mapTo('second timer'), tap(log)), // emit "second timer" sau 5 giây
-      timer(3000).pipe(mapTo('last timer'), tap(log)) // emit "last timer" sau 3 giây
-    )
-      .pipe(
-        exhaustMap((c) =>
-          interval(1000).pipe(
-            map((v) =>  c }: v } ),
-            take(4)
-          )
-        ) // interval(1000) này sẽ mất 4 giây để complete
-      )
-      .subscribe(console.log);
+    subject.next(1);
+    subject.next(2);
+    subject.next(3);
+    subject.next(4);
     
-    // Sau 1 giây:
-    // first timer emitted!! -- đây là hàm log
-    // first timer: 0
-    // first timer: 1
-    // first timer: 2
-    // first timer: 3 -- complete -- và lúc này 5 giây đã trôi qua
+    subject.subscribe({
+      next: (v) => console.log('observerB: ' + v)
+    });
     
-    // second timer emitted!! -- đây là hàm log
-    // second timer: 0
-    // second timer: 1
-    // second timer: 2 -- lúc này 3 giây tiếp theo trôi qua
-    // last timer emitted!! -- đây là hàm log
-    // second timer: 3 -- complete
-    // KHÔNG CÒN GÌ XẢY RA
+    subject.next(5);
+    subject.complete();
+    
+    /**
+    Output:
+    
+    observerA: 5
+    observerB: 5
+    */
       `;
     this.text12 = `
-    fromEvent(document, 'click').pipe(switchMapTo(interval(1000).pipe(take(10))));
+    const subject = new BehaviorSubject(0); // 0 is the initial value
 
-    fromEvent(document, 'click').pipe(mergeMapTo(interval(1000).pipe(take(10))));
+    subject.subscribe({
+      next: (v) => console.log('observerA: ' + v),
+      complete: () => console.log('observerA: done')
+    });
     
-    fromEvent(document, 'click').pipe(concatMapTo(interval(1000).pipe(take(10))));
+    subject.next(1);
+    subject.next(2);
+    
+    subject.subscribe({
+      next: (v) => console.log('observerB: ' + v),
+      complete: () => console.log('observerB: done')
+    });
+    
+    subject.next(3);
+    
+    subject.complete();
+    
+    subject.subscribe({
+      next: (v) => console.log('observerC: ' + v),
+      complete: () => console.log('observerC: done')
+    });
+    
+    /**
+    Output:
+    
+    observerA: 0
+    observerA: 1
+    observerA: 2
+    observerB: 2
+    observerA: 3
+    observerB: 3
+    observerA: done
+    observerB: done
+    observerC: done
+    */
       `;
     this.text13 = `
-    const [even$, odd$] = partition(interval(1000), (x) => x % 2 === 1);
-    merge(
-      evens$.pipe(map((x) => even -  x } )),
-      odds$.pipe(map((x) => odd -  x } ))
-    ).subscribe(console.log);
+    const subject = new ReplaySubject(3);
+
+    subject.subscribe({
+      next: (v) => console.log('observerA: ' + v),
+      complete: () => console.log('observerA: done')
+    });
     
-    // even - 0
-    // odd - 1
-    // even - 2
-    // odd - 3
-    // ...
+    let i = 1;
+    const id = setInterval(() => subject.next(i++), 200);
+    
+    setTimeout(() => {
+      subject.complete();
+      clearInterval(id);
+      subject.subscribe({
+        next: (v) => console.log('observerB: ' + v),
+        complete: () => console.log('observerB: done')
+      });
+    }, 1000);
+    
+    /**
+    Output:
+    
+    observerA: 1
+    observerA: 2
+    observerA: 3
+    observerA: 4
+    observerA: 5
+    observerA: done
+    observerB: 3
+    observerB: 4
+    observerB: 5
+    observerB: done
+    */
       `;
     this.text14 = `
-    interval(1000)
-    .pipe(
-      tap((val) => console.log('before map', val)),
-      map((val) => val * 2),
-      tap((val) => console.log('after map', val))
-    )
-    .subscribe();
-  
-  // before map: 0
-  // after map: 0
-  
-  // before map: 1
-  // after map: 2
-  
-  // before map: 2
-  // after map: 4
-  // ...
+    const subject = new AsyncSubject();
+
+    subject.subscribe({
+      next: (v) => console.log('observerA: ' + v),
+      complete: () => console.log('observerA: done')
+    });
+    
+    subject.next(1);
+    subject.next(2);
+    subject.next(3);
+    subject.next(4);
+    subject.next(5);
+    
+    subject.complete();
+    
+    subject.subscribe({
+      next: (v) => console.log('observerB: ' + v),
+      complete: () => console.log('observerB: done')
+    });
+    /**
+    Output:
+    
+    observerA: 5
+    observerA: done
+    observerB: 5
+    observerB: done
+    */
       `;
     this.text15 = `
-    fromEvent(document, 'click').pipe(delay(1000)).subscribe(console.log);
-
-    // click
-    // 1s -- MouseEvent
-    // click
-    // 1s -- MouseEvent
+    const observable = interval(500).pipe(
+      take(5)
+    );
+    
+    const subject = new Subject();
+    
+    const observerA = {
+      next: (val) => console.log(Observer A: $val}),
+      error: (err) => console.log(Observer A Error: $err}),
+      complete: () => console.log(Observer A complete),
+    };
+    
+    const observerB = {
+      next: (val) => console.log(Observer B: $val}),
+      error: (err) => console.log(Observer B Error: $err}),
+      complete: () => console.log(Observer B complete),
+    };
+    
+    subject.subscribe(observerA);
+    
+    observable.subscribe(subject);
+    
+    setTimeout(() => {
+      subject.subscribe(observerB);
+    }, 2000);
       `;
     this.text16 = `
-    fromEvent(document, 'click')
-    .pipe(delayWhen(() => timer(1000)))
-    .subscribe(console.log);
-  // click
-  // 1s -- MouseEvent
-  // click
-  // 1s -- MouseEvent
+    const subject = new Subject();
+
+    const connectableObservable = interval(500).pipe(
+      take(5),
+      multicast(subject)
+    ) as ConnectableObservable<number>;
+    
+    const observerA = {
+      next: (val) => console.log( Observer A: $ val} ),
+      error: (err) => console.log( Observer A Error: $ err}),
+      complete: () => console.log( Observer A complete),
+    };
+    
+    const observerB = {
+      next: (val) => console.log(Observer B: $ val}),
+      error: (err) => console.log(Observer B Error: $ err} ),
+      complete: () => console.log(Observer B complete),
+    };
+    
+    connectableObservable.subscribe(observerA);
+    connectableObservable.connect();
+    
+    setTimeout(() => {
+      connectableObservable.subscribe(observerB);
+    }, 2000);
+    
+    /**
+    Output:
+    
+    Observer A: 0
+    Observer A: 1
+    Observer A: 2
+    Observer A: 3
+    Observer A: 4
+    Observer B: 4
+    Observer A complete
+    Observer B complete
+    */
       `;
     this.text17 = `
-    this.loading = true;
-    this.apiService
-      .get()
-      .pipe(finalize(() => (this.loading = false)))
-      .subscribe();
+    const subject = new Subject();
+
+    const connectableObservable = interval(500).pipe(
+      tap(x => console.log('log.info: ' + x)),
+      multicast(subject)
+    ) as ConnectableObservable<number>;
+    
+    const observerA = {
+      next: (val) => console.log(Observer A: $val } ),
+      error: (err) => console.log(Observer A Error: $err } ),
+      complete: () => console.log(Observer A complete),
+    };
+    
+    const observerB = {
+      next: (val) => console.log(Observer B: $val } ),
+      error: (err) => console.log(Observer B Error: $err } ),
+      complete: () => console.log(Observer B complete),
+    };
+    
+    const sub = connectableObservable.subscribe(observerA);
+    connectableObservable.connect();
+    
+    setTimeout(() => {
+      sub.add(connectableObservable.subscribe(observerB));
+    }, 2000);
+    
+    setTimeout(() => {
+      sub.unsubscribe();
+    }, 3000);
+    
+    /**
+    Output:
+    
+    log.info: 0
+    Observer A: 0
+    log.info: 1
+    Observer A: 1
+    log.info: 2
+    Observer A: 2
+    log.info: 3
+    Observer A: 3
+    log.info: 4
+    Observer A: 4
+    Observer B: 4
+    log.info: 5
+    Observer A: 5
+    Observer B: 5
+    log.info: 6
+    log.info: 7
+    log.info: 8
+    log.info: 9
+    log.info: 10
+    ...
       `;
     this.text18 = `
-    of('repeated data').pipe(repeat(3)).subscribe(console.log);
-    // 'repeated data'
-    // 'repeated data'
-    // 'repeated data'
+    const sub = connectableObservable.subscribe(observerA);
+    const connectSub = connectableObservable.connect();
+    
+    setTimeout(() => {
+      sub.add(connectableObservable.subscribe(observerB));
+    }, 2000);
+    
+    setTimeout(() => {
+      sub.unsubscribe();
+    
+      connectSub.unsubscribe();
+    }, 3000);
       `;
     this.text19 = `
-    fromEvent(document, 'click').pipe(timeInterval()).subscribe(console.log);
-    // click
-    // TimeInterval {value: MouseEvent, interval: 1000 } // nghĩa là từ lúc subscribe đến lúc click lần đầu thì mất 1s
+    const subject = new Subject();
+
+    const connectableObservable = interval(500).pipe(
+      tap(x => console.log('log.info: ' + x)),
+      multicast(subject)
+    ) as ConnectableObservable<number>;
+    
+    const observerA = {
+      next: (val) => console.log(Observer A: $ val } ),
+      error: (err) => console.log(Observer A Error: $ err } ),
+      complete: () => console.log(Observer A complete),
+    };
+    
+    const observerB = {
+      next: (val) => console.log(Observer B: $ val } ),
+      error: (err) => console.log(Observer B Error: $err } ),
+      complete: () => console.log(Observer B complete),
+    };
+    
+    const observable = connectableObservable.refCount();
+    
+    const subA = observable.subscribe(observerA); // ref from 0 => 1
+    
+    let subB;
+    setTimeout(() => {
+      subB = observable.subscribe(observerB); // ref from 1 => 2
+    }, 2000);
+    
+    setTimeout(() => {
+      subA.unsubscribe(); // ref from 2 => 1
+    }, 3000);
+    
+    setTimeout(() => {
+      subB.unsubscribe(); // ref from 1 => 0
+    }, 5000);
       `;
     this.text20 = `
-    interval(2000).pipe(timeout(1000)).subscribe(console.log, console.error);
-
-    // Error { name: "TimeoutError" }
+    const connectableObservable = interval(500).pipe(
+      take(10),
+      tap(x => console.log('log.info: ' + x)),
+      multicast(new Subject())
+    ) as ConnectableObservable<number>;
+    
+    const observerA = {
+      next: (val) => console.log(Observer A: $val}),
+      error: (err) => console.log(Observer A Error: $err}),
+      complete: () => console.log(Observer A complete),
+    };
+    
+    const observerB = {
+      next: (val) => console.log(Observer B: $val}),
+      error: (err) => console.log(Observer B Error: $err}),
+      complete: () => console.log(Observer B complete),
+    };
+    
+    const sharedObservable = connectableObservable.refCount();
+    
+    const subA = sharedObservable.subscribe(observerA);
+    
+    let subB;
+    setTimeout(() => {
+      subB = sharedObservable.subscribe(observerB);
+    }, 2000);
+    
+    setTimeout(() => {
+      const subA2 = sharedObservable.subscribe(observerA);
+    }, 6000);
       `;
     this.text21 = `
-    async function test() {
-      const helloWorld = await of('hello')
-        .pipe(map((val) => val + ' World'))
-        .toPromise();
-      console.log(helloWorld); // hello World
-    }
+    const connectableObservable = interval(500).pipe(
+      take(10),
+      tap(x => console.log('log.info: ' + x)),
+      multicast(() => new Subject())
+    ) as ConnectableObservable<number>;
       `;
+    this.text22 = `
+    const sharedObservable = connectableObservable.refCount();
+
+    const subA = sharedObservable.subscribe(observerA);
+    
+    let subB;
+    setTimeout(() => {
+      subB = sharedObservable.subscribe(observerB);
+    }, 2000);
+    
+    setTimeout(() => {
+      const subA2 = sharedObservable.subscribe(observerA);
+    }, 6000);
+      `;
+    this.text23 = `
+    const connectableObservable = interval(500).pipe(
+      tap(x => console.log('log.info: ' + x)),
+      publish(),
+    ) as ConnectableObservable<number>;
+    
+    const observerA = {
+      next: (val) => console.log(Observer A: $val}),
+      error: (err) => console.log(Observer A Error: $err}),
+      complete: () => console.log(Observer A complete),
+    };
+    
+    const observerB = {
+      next: (val) => console.log(Observer B: $val}),
+      error: (err) => console.log(Observer B Error: $err}),
+      complete: () => console.log(Observer B complete),
+    };
+    
+    const sharedObservable = connectableObservable.refCount();
+    
+    const subA = sharedObservable.subscribe(observerA); // ref from 0 => 1
+    
+    let subB;
+    setTimeout(() => {
+      subB = sharedObservable.subscribe(observerB); // ref from 1 => 2
+    }, 2000);
+    
+    setTimeout(() => {
+      subA.unsubscribe(); // ref from 2 => 1
+    }, 3000);
+    
+    setTimeout(() => {
+      subB.unsubscribe(); // ref from 1 => 0
+    }, 5000);
+      `;
+    this.text24 = `
+    const sharedObservable = interval(500).pipe(
+      tap(x => console.log('log.info: ' + x)),
+      share(),
+    );
+    
+    const observerA = {
+      next: (val) => console.log(Observer A: $val } ),
+      error: (err) => console.log(Observer A Error: $err } ),
+      complete: () => console.log(Observer A complete),
+    };
+    
+    const observerB = {
+      next: (val) => console.log(Observer B: $ val } ),
+      error: (err) => console.log(Observer B Error: $ err }),
+      complete: () => console.log(Observer B complete),
+    };
+    
+    const subA = sharedObservable.subscribe(observerA); // ref from 0 => 1
+    
+    let subB;
+    setTimeout(() => {
+      subB = sharedObservable.subscribe(observerB); // ref from 1 => 2
+    }, 2000);
+    
+    setTimeout(() => {
+      subA.unsubscribe(); // ref from 2 => 1
+    }, 3000);
+    
+    setTimeout(() => {
+      subB.unsubscribe(); // ref from 1 => 0
+    }, 5000);
+    `;
+    this.text25 = `
+    import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs/Observable';
+import { Subject } from 'rxjs/Subject';
+import { timer } from 'rxjs/observable/timer';
+import { switchMap, shareReplay, map, takeUntil } from 'rxjs/operators';
+
+export interface Joke {
+  id: number;
+  joke: string;
+  categories: Array<string>;
+}
+
+export interface JokeResponse {
+  type: string;
+  value: Array<Joke>;
+}
+
+const API_ENDPOINT = 'https://api.icndb.com/jokes/random/5?limitTo=[nerdy]';
+const REFRESH_INTERVAL = 10000;
+const CACHE_SIZE = 1;
+
+@Injectable()
+export class JokeService {
+  private cache$: Observable<Array<Joke>>;
+  private reload$ = new Subject<void>();
+
+  constructor(private http: HttpClient) { }
+
+  // This method is responsible for fetching the data.
+  // The first one who calls this function will initiate 
+  // the process of fetching data.
+  get jokes() {
+    if (!this.cache$) {
+      // Set up timer that ticks every X milliseconds
+      const timer$ = timer(0, REFRESH_INTERVAL);
+          
+      // For each timer tick make an http request to fetch new data
+      // We use shareReplay(X) to multicast the cache so that all 
+      // subscribers share one underlying source and don't re-create 
+      // the source over and over again. We use takeUntil to complete
+      // this stream when the user forces an update.
+      this.cache$ = timer$.pipe(
+        switchMap(() => this.requestJokes()),
+        takeUntil(this.reload$),
+        shareReplay(CACHE_SIZE)
+      );
+    }
+
+    return this.cache$;
+  }
+
+  // Public facing API to force the cache to reload the data
+  forceReload() {
+    this.reload$.next();
+    this.cache$ = null;
+  }
+
+  // Helper method to actually fetch the jokes
+  private requestJokes() {
+    return this.http.get<JokeResponse>(API_ENDPOINT).pipe(
+      map(response => response.value)
+    );
+  }
+}
+    `;
   }
 
   changeAge(event: any) {
     this.user.age = event.value;
   }
-
 }

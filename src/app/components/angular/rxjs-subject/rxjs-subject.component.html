@@ -2,389 +2,320 @@
   <h1 style="font-size: 3rem;">RxJS Subject and Multicasting</h1>
   <br>
 
-  <!-- RxJS Higher Order Observables (HOOs) -->
-  <span style="font-size: 2rem;" class="pb-0">RxJS Higher Order Observables (HOOs)</span>
+  <!-- Observable Execution -->
+  <span style="font-size: 2rem;" class="pb-0">Observable Execution</span>
   <div class="border-b1"></div>
   <br>
-  <p>HOOs là những operators mà sẽ nhận vào giá trị của Outer Observable (hay còn gọi là Source) và sẽ trả về một Inner
-    Observable (hay còn gọi là Destination) khác. Nhắc lại ngày trước 1 chút, chúng ta đã cùng tìm hiểu về map(), là
-    Transformation Operator
+  <p>Như chúng ta đã biết, đối với các Observable thông thường, mỗi khi thực hiện subscribe sẽ sinh ra một execution
+    mới, và chúng độc lập với nhau.
   </p>
+  <p>Ví dụ, chúng ta có một observable như sau:</p>
   <pre>
           <code>{{text1}}</code>
       </pre>
-  <p>Các bạn sẽ thấy là map() dùng giá trị của interval(1000) là 0 -- 1 -- 2 -- 3 -- 4... và trả về giá trị mới là nhân
-    đôi của giá trị ban đầu 0 -- 2 -- 4 -- 6 -- 8.... HOOs cũng là những Transformation Operators nhưng thay vì
-    transform thành value mới thì chúng sẽ trả về Observable mới để chúng ta có thể subscribe vào Observable mới này và
-    lấy giá trị mới.</p>
-  <br>
-
-  <strong>Nguồn gốc của các HOOs?</strong>
-  <p>Trước khi tìm hiểu về cái HOOs, chúng ta sẽ tìm hiểu các operators sau: mergeAll(), concatAll(), và switchAll().
-    Như mình vừa nói qua ở trên, operator map() dùng để chuyển giá trị được emit từ Source Observable sang 1 giá trị mới
-    rồi emit giá trị mới này. Ở ví dụ trên, chúng ta thấy map() trả về 1 giá trị bình thường. Vậy trường hợp map() trả
-    về giá trị là 1 Observable thì sao? Chúng ta hãy thử nhé.</p>
+  <p>Giả sử chúng ta subscribe thêm một observer mới sau một khoảng thời gian (ví dụ: 2s)</p>
   <br>
   <pre>
                 <code>{{text2}}</code>
             </pre>
-  <p>Như các bạn thấy, chúng ta nhận được Observable } ở trên Console. Lí do là vì map() trả về 1 Observable, là
-    interval(1000) ở đây. Và lúc này các bạn đang có 1 Higher Order Observable (aka Observable Observable>). Các bạn có
-    thể hiểu là mỗi lần click, chúng ta sẽ có 1 interval() mới. Lúc này, chúng ta có thể dùng 1 trong 3 operators mình
-    vừa liệt kê ở trên để pipe vào Source Observable này:</p>
+  <p>Như các bạn có thể thấy, khi hai observer subscribe vào, chúng sinh ra các execution khác nhau.</p>
+  <p>Câu hỏi đặt ra là có cách nào để bất cứ khi nào có một observer mới nào subscribe vào thì chúng sẽ share cùng một
+    execution không?</p>
+  <p>Hãy xem xét lại một chút về RxJS, nó có apply một design pattern có tên là Observer Pattern.</p>
+  <img src="assets/observer-pattern.png" style="height: 413px; width: 1000px;">
   <br>
+  <br>
+  <p>Bây giờ thay vì subscribe riêng lẻ như ở các ví dụ trên, chúng ta hãy thêm một hybrid observer như sau:</p>
   <pre>
             <code>{{text3}}</code>
           </pre>
-  <p>Cả 3 merge/switch/concatAll sẽ giúp các bạn chuyển Higher Order Observable về lại First Order Observable bằng cách
-    sẽ subscribe vào Observable mà map() trả về. Nói cách khác, các Higher Order Observables chính là
-    merge/switch/concatAll + map(). Cách thức hoạt động cũng như tính chất của merge/switch/concat khác nhau như thế nào
-    thì chúng ta sẽ tìm hiểu qua các Higher Order Observables nhé.</p>
-  <br>
-
-  <strong>Tại sao lại cần HOOs?</strong>'
-  <p>Chúng ta xem qua ví dụ sau:</p>
+  <p>Oh wow, chỉ với việc implement Observer Pattern, giờ đây chúng ta đã có thể share được execution, và hoàn toàn có
+    thể share cho nhiều observer khác nữa nếu muốn.</p>
+  <p>Bây giờ chúng ta sẽ thêm một số thay đổi nhỏ nữa:</p>
   <br>
   <pre>
             <code>{{text4}}</code>
         </pre>
-  <p>Chúng ta có một use-case rất quen thuộc: một FormControl là queryInput dùng để xử lý một Text Input. Chúng ta cần
-    lắng nghe vào valueChanges trên FormControl này để thực hiện việc gọi backend với query mới. Nhưng các bạn có thấy
-    điều gì sai sai không? Đó là chúng ta đã vi phạm một trong những lỗi dễ gặp nhất khi làm việc với RxJS: Nested
-    Subscription, hay còn gọi là Subscribe-in-Subscribe.</p>
-
-  <p>Tại sao điều này không tốt? Để hiểu được chúng ta cần phải hiểu là Observable sẽ không làm gì cho đến khi
-    subscribe. Khi bạn subscribe vào 2 Observable lồng vào nhau như thế này, 2 Observable này bắt đầu next value các
-    kiểu con đà điểu hoàn toàn tách biệt, không liên quan gì đến nhau. Thử hình dung các bước sau:</p>
-
-  <p>1. Người dùng type: "abc" vào queryInput và ngừng type.</p>
-  <p>2. Sau 500ms (debounceTime()), valueChanges emit giá trị abc và chúng ta subscribe vào valueChanges với observer:
-    query => ...}</p>
-  <p>3. Từ query, chúng ta ngay lặp tức gọi apiService.filterData(query) và đây cũng là 1 Observable, nên chúng ta
-    subscribe.</p>
-  <p>4. Sau 1 khoảng thời gian ngẫu nhiên (vì là API request mà, hên xui 😅), chúng ta có data và bắt đầu hiển thị lên
-    template.</p>
-  <p>Mọi thứ đều đẹp như mơ, cho đến khi có thêm các bước như sau.</p>
-  <p>5.Người dùng xoá abc đi và type vào xyz. Mọi thứ diễn ra dưới 500ms và người dùng dừng lại ở xyz. 6-7. Như bước 2
-    và 3, chúng ta có query với giá trị là xyz và sẽ gọi apiService.filterData(query). (tạm gọi đây là 1})</p>
-  <p>6.Sau 1 khoảng thời gian KHÁ LÂU, người dùng lại tiếp tục đổi query từ xyz thành abcxyz.</p>
-  <p>7. Sau 500ms, chúng ta lại có query là abcxyz và sẽ tiếp tục gọi apiService.filterData(query) (tạm gọi đây là 2})
-  </p>
-  <p>Lúc này, 1} hoàn tất và chúng ta có data. Hiển thị lên template nhưng hỡi ơi, data của 1} là data mà liên quan
-    đến query = 'xyz' cơ mà. Hiện tại query là abcxyz mất rồi. Thế là bạn nhận ra behavior của đoạn code trên có Racing
-    Condition trầm trọng.</p>
-  <p>Trên đây chỉ là 1 ví dụ trong vô vàn ví dụ vì sao Nested Subscription là không tốt. Lí do ở đây chính là đối với
-    Nested Subscription, chúng ta không thể quản lý cả 2 Observable và làm cho chúng đồng bộ với nhau được, cho nên các
-    bạn nên tránh cái lỗi ngớ ngẩn này ra. Và cách tránh tốt nhất chính là hiểu + áp dụng HOOs</p>
+  <p>Lúc này bạn sẽ thấy rằng hybridObserver khá là giống một Observable, lại cũng có những phần của một Observer.</p>
+  <p>Đây chính là một Subject ở trong RxJS.</p>
+  <p>A Subject is a special type of Observable that allows values to be multicasted to many Observers. Subjects are like
+    EventEmitters.</p>
+  <p>Every Subject is an Observable and an Observer. You can subscribe to a Subject, and you can call next to feed
+    values as well as error and complete.</p>
   <br>
-
-  <strong>switchMap()</strong>
-  <br>
-  <p>switchMap T, R, O extends ObservableInput any>>(project: (value: T, index: number) => O, resultSelector?:
-    (outerValue: T, innerValue: ObservedValueOf O>, outerIndex: number, innerIndex: number) => R): OperatorFunction T,
-    ObservedValueOf O> | R></p>
-  <p>switchMap() là một trong những HOOs được dùng nhiều nhất trong RxJS cũng như trong ứng dụng Angular. switchMap() sẽ
-    nhận vào một projectFunction mà sẽ nhận vào giá trị được emit từ Outer Observable và sẽ phải trả về 1 Observable
-    (Inner Observable) mới. Giá trị cuối cùng của Outer Observable khi dùng với switchMap() sẽ là giá trị mà Inner
-    Observable emit. Vì đây là HOO đầu tiên nên mình sẽ cố giải thích kĩ càng và đầy đủ hơn. Các bạn hình dung case sau:
-  </p>
   <pre>
                         <code>{{text5}}</code>
                     </pre>
   <br>
+  <p>Với phương pháp kể trên, chúng ta đã cơ bản chuyển đổi từ một unicast Observable execution sang multicast, bằng
+    cách sử dụng Subject.</p>
   <ul>
-    <li>fromEvent(document, 'click'): Rất đơn giản. Tạo 1 Observable từ sự kiện click lên document. Mỗi lần click sẽ
-      emit 1 giá trị (giá trị ở đây sẽ là MouseEvent nhưng chúng ta không quan tâm đến nhé)</li>
-    <li>interval(1000).pipe(take(10)): Chúng ta đã tìm hiểu khá nhiều về interval và take trong những ngày qua. Dòng này
-      sẽ trả về 1 Observable emit 1 giá trị mỗi giây và sẽ complete sau 10 giây. Việc này là để fake 1 request tốn 10s
-      mới complete. Và dùng interval để chúng ta có thể theo dõi được giá trị được emit thay vì dùng timer.</li>
-    <li>Mình pipe(switchMap()) vào Outer Observable là fromEvent() rồi return Inner Observable là interval(). Các bạn
-      hãy hiểu là khi Outer Observable emit giá trị mới thì một Inner Observable được trả về, và switchMap() sẽ
-      subscribe vào Inner Observable mới này. Ví dụ: mình click 2 lần, chúng ta sẽ có 2 Inner Observable.</li>
+    <li>unicast: giống như bạn vào Youtube, mở video nào đó đã được thu sẵn và xem, nó play từ đầu đến cuối video. Một
+      người khác vào xem, Youtube cũng sẽ phát từ đầu đến cuối như thế, hai người không có liên quan gì về thời gian
+      hiện tại của video mà mình đang xem.</li>
+    <li>multicast: cũng là hai người (có thể nhiều hơn) vào xem video ở Youtube, nhưng video đó đang phát Live (theo dõi
+      một show truyền hình, hay một trận bóng đá Live chẳng hạn). Lúc này Youtube sẽ phát video Live, và những người vào
+      xem video đó sẽ có cùng một thời điểm của video đó (cùng thời điểm của trận đấu đang diễn ra chẳng hạn).</li>
   </ul>
-  <p>Tính chất của switchMap() là sẽ unsubscribe vào Inner Observable hiện tại khi một Inner Observable mới được return.
-    Nói cách khác, switchMap() sẽ chỉ giữ 1 và chỉ 1 Subscription bất cứ lúc nào. Bây giờ chúng ta sẽ cùng thực hiện các
-    bước sau với đoạn code trên và phân tích kết quả cũng như behavior của switchMap() nhé:</p>
-  <p>1. Click lên Document. Lúc này, Outer emit, dẫn đến 1 interval() được return cho switchMap(). Mình tạm gọi
-    interval() này là 1}.</p>
-  <p>2. switchMap() bắt đầu subscribe vào 1}</p>
-  <p>3. Console bắt đầu hiển thị giá trị của 1}: 0 -- 1 -- 2 -- 3 -- 4 .... Các bạn nhớ là interval() này sẽ tốn 10s để
-    complete nhé.</p>
-  <p>4. Ở giây thứ 5 - 6 gì đó, chúng ta lại Click lên Document lần nữa. Điều này sẽ làm cho Outer emit lần thứ 2, dẫn
-    đến
-    1 interval() mới được return cho switchMap(), tạm gọi đây là 2}</p>
-  <p>5. switchMap() đang subscribe vào 1}, nhận thấy có Observable mới là 2}, sẽ ngay lặp tức unsubscribe khỏi 1} và
-    subscribe vào 2}.</p>
-  <p>6. Nhìn vào Console, chúng ta sẽ thấy giá trị lặp lại từ: 0 -- 1 -- 2 -- 3 .... Lí do là đây là giá trị của 2}, là
-    1 interval() mới cho nên giá trị sẽ bắt đầu chạy từ số 0.</p>
-  <p>Qua phân tích như trên, các bạn đã thấy rằng switchMap() sẽ unsubscribe Inner Observable nếu như Inner Observable
-    đang được subscribe chưa complete MÀ Outer Observable lại emit tiếp. Điều này cực kỳ hữu dụng nếu như chúng ta áp
-    dụng switchMap() cho ví dụ queryInput ở trên. Có phải là nếu dùng switchMap(), mỗi lần queryInput có giá trị mới,
-    switchMap() sẽ unsubscribe thằng apiService.filterData() mà chưa complete không? Vì trên thực tế, nếu query thay đổi
-    thì data được filter theo query cũ chúng ta đâu cần quan tâm làm gì. Các bạn thử dùng switchMap() cho ví dụ đầu tiên
-    rồi chạy xem sao nhé:
+  <br>
+
+  <!-- Subject -->
+  <span style="font-size: 2rem;" class="pb-0">Subject</span>
+  <div class="border-b1"></div>
+  <br>
+  <p>Do Subject vừa là một Observable (chúng ta có thể subscribe vào nó), vừa là một Observer (có các method để chúng ta
+    tự control khi nào gửi notification). Nên nó khá hay được sử dụng trong ứng dụng, ví dụ để làm Event Bus chẳng hạn.
   </p>
+  <p>Dưới đây là một ví dụ về type ahead:</p>
   <pre>
       <code>{{text6}}</code>
   </pre>
   <strong>Lưu ý:</strong>
-  <p>Như ở phần Nguồn gốc, mình có đề cập đến switchMap = switchAll + map. Tuy nhiên, một số trường hợp sẽ làm cho
-    switchAll + map không hoạt động đúng tính chất của switchMap() nữa. Điển hình là khi bạn dùng với Promise. Vì tính
-    chất non-cancellable của Promise, nên nếu các bạn có request gửi đi thì switchAll() cũng không cancel được vì
-    Promise không hề cancel được.</p>
-  <p>Một lưu ý nữa, khi làm việc với Http Client trong Angular chẳng hạn, bạn chỉ nên dùng switchMap cho những task get
-    dữ liệu, nếu bạn sử dụng cho Create, Update, Delete có thể sinh ra race condition. Lúc này các bạn nên thay thế bằng
-    mergeMap hoặc concatMap.</p>
+  <p>Ở ví dụ trên chúng ta có thể hoàn toàn tự control khi nào cần thiết thì emit notification tương ứng.</p>
+  <p>Và chúng ta có thể apply các operator của RxJS cung cấp để control được stream theo ý muốn.</p>
   <br>
 
-  <strong>mergeMap()</strong>
+
+  <!-- BehaviorSubject -->
+  <span style="font-size: 2rem;" class="pb-0">BehaviorSubject</span>
+  <div class="border-b1"></div>
   <br>
-  <p>mergeMap T, R, O extends ObservableInput any>>(project: (value: T, index: number) => O, resultSelector?: number |
-    ((outerValue: T, innerValue: ObservedValueOf O>, outerIndex: number, innerIndex: number) => R), concurrent: number
-    = Number.POSITIVE_INFINITY): OperatorFunction T, ObservedValueOf O> | R></p>
-  <p>mergeMap() là HOO phổ biến thứ hai sau switchMap(). mergeMap() cũng nhận vào 1 projectFunction mà sẽ nhận giá trị
-    được emit từ Outer Observable và sẽ phải trả về 1 Inner Observable. Sau đó, mergeMap() sẽ subscribe Inner Observable
-    này. Outer Observable + mergeMap() cuối cùng sẽ emit giá trị mà Inner Observable emit.</p>
-  <p>Khác với switchMap(), mergeMap() sẽ không unsubscribe Inner Observable cũ nếu như có Inner Observable mới. Nói đúng
-    hơn, mergeMap() sẽ giữ nhiều Subscription. Vì tính chất này, mergeMap() thích hợp khi bạn có nghiệp vụ mà không
-    cần/được dừng Inner Observable nếu như Outer Observable có emit giá trị mới (ví dụ những nghiệp vụ liên quan đến
-    Write vào Database, switchMap() sẽ thích hợp với Read).</p>
+  <p>Một trong những vấn đề khi làm việc với Subject đó là tình huống late subscriber sẽ không nhận được các value đã
+    emit trong quá khứ, mà nó chỉ có thể nhận được value từ sau thời điểm nó subscribe. Chúng ta cùng quan sát ví dụ sau
+    đây.
+  </p>
   <br>
   <pre>
           <code>{{text7}}</code>
       </pre>
-  <p>Các bạn đã thấy sự khác biệt với switchMap() rồi chứ? Vì mergeMap() sẽ không unsubscribe Inner Observable nên số
-    lượng Subscription mà mergeMap() tạo ra có khi lên rất nhiều, các bạn chú ý khi dừng mergeMap() nhé. Không cẩn thận
-    là ăn Memory Leak đấy.</p>
-  <p>Operator này còn nhận vào một tham số là concurrent giống như merge operator để control có bao nhiêu Inner
-    Observable có thể chạy đồng thời.</p>
-  <p>Nếu bạn set concurrent = 1 chúng ta sẽ có cách hoạt động tương tự như concatMap phía dưới.</p>
-  <br>
-
-  <strong>concatMap()</strong>
-  <br>
-  <p>concatMap T, R, O extends ObservableInput any>>(project: (value: T, index: number) => O, resultSelector?:
-    (outerValue: T, innerValue: ObservedValueOf O>, outerIndex: number, innerIndex: number) => R): OperatorFunction T,
-    ObservedValueOf O> | R></p>
-  <p>Giống với mergeMap() và switchMap(), concatMap() cũng nhận vào 1 projectFunction và projectFunction này cũng sẽ
-    phải trả về 1 Inner Observable. Khác với mergeMap() và switchMap(), concatMap() sẽ subscribe vào Inner Observable và
-    sẽ CHỜ cho đến khi Inner Observable này complete thì mới subscribe vào Inner Observable tiếp theo (nếu như có Inner
-    Observable tiếp theo). Chúng ta sẽ tiếp tục phân tích lại ví dụ ở trên nhé:</p>
+  <p>Để giải quyết vấn đề này, chúng ta có một trong các biến thể của Subject đó là BehaviorSubject, nó là biến thế có
+    khái niệm về "the current value". BehaviorSubject lưu trữ lại giá trị mới emit gần nhất để khi một Observer mới
+    subscribe vào, nó sẽ emit giá trị đó ngay lập tức cho Observer vừa rồi.</p>
+  <p>A variant of Subject that requires an initial value and emits its current value whenever it is subscribed to.
+    BehaviorSubject</p>
+  <p>BehaviorSubjects are useful for representing "values over time". For instance, an event stream of birthdays is a
+    Subject, but the stream of a person’s age would be a BehaviorSubject.</p>\
+  <p>Hay như sử dụng BehaviorSubject để chia sẻ thông tin user hiện tại đang đăng nhập hệ thống cho các component khác
+    nhau trong Angular chẳng hạn.</p>
+  <p>Lưu ý: BehaviorSubject yêu cầu phải có giá trị khởi tạo khi tạo ra subject.</p>
   <br>
   <pre>
-            <code>{{text8}}</code>
-        </pre>
-  <p>Các bạn thấy chứ? concatMap() sẽ chờ cho đến khi 1} complete rồi mới subscribe vào 2} và tương tự cho 3}. Với
-    tính chất này, concatMap() rất thích hợp trong các nghiệp vụ phải cần quan tâm đến THỨ TỰ thực hiện. Ví dụ: đèn giao
-    thông, gọi số báo danh, hoặc nghiệp vụ dễ demo hơn là upload hình theo thứ tự.</p>
+    <code>{{text8}}</code>
+  </pre>
+  <br>
+
+  <!-- ReplaySubject -->
+  <span style="font-size: 2rem;" class="pb-0">ReplaySubject</span>
+  <div class="border-b1"></div>
+  <br>
+  <p>Một ReplaySubject tương tự như một BehaviorSubject khi nó có thể gửi những dữ liệu trước đó cho Observer mới
+    subscribe, nhưng nó có thể lưu giữ nhiều giá trị (có thể là toàn bộ giá trị của stream từ thời điểm ban đầu).
+  </p>
+  <p>Tham số đầu vào của ReplaySubject có thể là:</p>
+  <ul>
+    <li>buffer: là số lượng phần tử tối đa có thể lưu trữ.</li>
+    <li>windowTime: (ms) thời gian tối đa tính đến thời điểm gần nhất emit value.</li>
+  </ul>
+  <p>A variant of Subject that "replays" or emits old values to new subscribers. It buffers a set number of values and
+    will emit those values immediately to any new subscribers in addition to emitting new values to existing
+    subscribers. ReplaySubject</p>
   <br>
   <pre>
               <code>{{text9}}</code>
           </pre>
-  <strong>Lưu ý:</strong>
-  <p>Như phần Nguồn gốc mình có đề cập tới concatMap = concatAll + map. Tuy nhiên, có một số trường hợp concatAll + map
-    sẽ hoạt động không đúng với tính chất của concatMap. Điển hình chính là khi các bạn nhúng Promise vào. Các bạn xem
-    ví dụ sau:</p>
+  <p>Hoặc kết hợp buffer với windowTime:</p>
   <br>
   <pre>
                 <code>{{text10}}</code>
             </pre>
-  <p>Lúc này, vì bản chất eager của Promise, khi được invoke là sẽ gửi request ngay lặp tức, nghĩa là axios(...) kia đã
-    gửi request tại thời điểm map() mất rồi cho nên concatAll() ở đây để thực thi theo thứ tự thì hoàn toàn vô nghĩa, và
-    nhiều trường hợp sẽ bị Racing Condition ngay.</p>
+  <p>Trong ví dụ trên sau 1s chỉ có giá trị 3, 4 và 5 là được emit trong 500ms gần nhất và nằm trong buffer nên được
+    replay lại cho observerB.</p>
   <br>
 
-  <strong>exhaustMap()</strong>
+  <!-- AsyncSubject -->
+  <span style="font-size: 2rem;" class="pb-0">AsyncSubject</span>
+  <div class="border-b1"></div>
   <br>
-  <p>exhaustMap T, R, O extends ObservableInput any>>(project: (value: T, index: number) => O, resultSelector?:
-    (outerValue: T, innerValue: ObservedValueOf O>, outerIndex: number, innerIndex: number) => R): OperatorFunction T,
-    ObservedValueOf O> | R></p>
-  <p>exhaustMap(), cũng như 3 HOOs trên, nhận vào 1 projectFunction và projectFunction này cũng sẽ phải trả về 1 Inner
-    Observable. exhaustMap() sẽ subscribe vào Inner Observable này và trong khi Inner Observable đang emit (chưa
-    complete) giá trị của nó mà có 1 Inner Observable mới (do Outer Observable emit giá trị mới, nhớ nha các bạn 👌) thì
-    Inner Observable mới này sẽ bị BỎ QUA hoàn toàn khi Inner Observable cũ chưa complete.</p>
-  <p>Cách hoạt động khá khá giống với throttle mà chúng ta đã tìm hiểu qua. Để thấy rõ được cách hoạt động của
-    exhaustMap(), chúng ta xem qua ví dụ sau:</p>
+  <p>Đây là biến thể mà chỉ emit giá trị cuối cùng của Observable execution cho các observers, và chỉ khi execution
+    complete.
+  </p>
+  <p>A variant of Subject that only emits a value when it completes. It will emit its latest value to all its observers
+    on completion. AsyncSubject</p>
+  <p>Lưu ý: Nếu stream không complete thì không có gì được emit cả.</p>
+  <p>AsyncSubject khá giống Promise đấy chứ.</p>
   <br>
   <pre>
             <code>{{text11}}</code>
         </pre>
-  <p>Các bạn có thể thấy là khi exhaustMap() đang chạy Inner Observable của second timer mà last timer emit, thì
-    exhaustMap() bỏ qua hoàn toàn Inner Observable của last timer và mọi nghiệp vụ dừng lại sau khi Inner Observable của
-    second timer complete. Đây là tính chất của exhaustMap(), là 1 trong những Rate Limiting HOO hiếm hoi 😎</p>
   <br>
 
-  <strong>switch/concat/mergeMapTo()</strong>
+  <!-- Subject Completion -->
+  <span style="font-size: 2rem;" class="pb-0">Subject Completion</span>
+  <div class="border-b1"></div>
   <br>
-  <p>3 HOOs này đều có cách HOO *mapTo() tương ứng. Cách thức hoạt động giống với HOO nguyên bản. Tuy nhiên, thay vì
-    nhận vào projectFunction thì các bạn truyền hẳn vào Inner Observable luôn. Nếu các bạn có các nghiệp vụ cần dùng đến
-    cái HOOs này mà không quan tâm giá trị của Outer Observable, thì cứ dùng các HOO *mapTo() này.</p>
+  <p>Khi BehaviorSubject complete, thì các Observers subscribe vào sau đó sẽ chỉ nhận được complete signal.
+  </p>
+  <p>Khi ReplaySubject complete, thì các Observers subscribe vào sau đó sẽ được emit tất cả các giá trị lưu trữ trong
+    buffer, sau đó mới thực thi complete của Observer.</p>
+  <p>Kể cả khi AsyncSubject complete rồi, Observer vẫn có thể subscribe vào được và vẫn nhận giá trị cuối cùng.</p>
   <br>
   <pre>
             <code>{{text12}}</code>
         </pre>
   <br>
-
-  <strong>partition()</strong>
-  <br>
-  <p>partition T>(source: any, predicate: (value: T, index: number) => boolean, thisArg?: any): [Observable T>,
-    Observable T>
-  </p>
-  <p>partition() thực chất không phải là 1 HOO, mà nó là 1 HOF (Higher Order Function). Tuy nhiên, nếu xét về tính chất
-    thì nó cũng nhận vào 1 Source và trả về, không chỉ 1, mà là 2 Destination. partition() nhận vào 2 tham số:</p>
-  <ul>
-    <li>Source Observable</li>
-    <li>predicateFunction: predicateFunction này sẽ được invoke cho mỗi giá trị mà Source Observable emit. Với tham số
-      predicateFunction, partition() sẽ chia Source Observable thành 2 Destination Observables: 1 Observable với giá trị
-      thoả điều kiện của predicateFunction, Observable còn lại chứa giá trị không thoả điều kiện của predicateFunction.
-    </li>
-  </ul>
+  <pre>
+                  <code>{{text13}}</code>
+              </pre>
   <br>
   <pre>
-            <code>{{text13}}</code>
-        </pre>
-  <p>partition() cực kỳ hữu ích trong trường hợp 1 WebSocket về notifications từ backend và các bạn muốn phân chia thành
-    readNotification$ và unreadNotification$ để xử lý 2 Observables này 1 cách khác nhau.</p>
-  <p>Trên đây là những HOOs thường dùng nhất trong RxJS. Ngoài ra, RxJS còn có các HOOs sau: expand(), groupBy(), và
-    mergeScan(). Tuy nhiên, những HOOs này khá ít khi sử dụng, thực chất là mình chưa dùng qua những HOOs này bao giờ
-    nên mình xin không đề cập đến. Các bạn có thể tự tìm hiểu nhé vì chúng khá dễ, ít nhất là dễ hiểu hơn so với mấy cái
-    switchMap() rồi concatMap() kia 😛</p>
+                        <code>{{text14}}</code>
+                    </pre>
   <br>
 
-
-  <!-- Utility Operators -->
-  <span style="font-size: 2rem;" class="pb-0">Utility Operators</span>
+  <!-- Multicasting -->
+  <span style="font-size: 2rem;" class="pb-0">Multicasting</span>
   <div class="border-b1"></div>
   <br>
-  <p>Đúng với tên gọi, đây là những operators cung cấp 1 số tiện ích cho chúng ta mà đôi khi rất hiệu quả.
+  <p>Quay trở lại vấn đề ban đầu khi chúng ta mong muốn multicast. Chúng ta mong muốn cả hai observer đều chạy cùng một
+    execution.
   </p>
-  <br>
-
-  <strong>tap()</strong>
-  <br>
-  <p>tap T>(nextOrObserver?: NextObserver T> | ErrorObserver T> | CompletionObserver T> | ((x: T) => void), error?: (e:
-    any) => void, complete?: () => void): MonoTypeOperatorFunction T>
-  </p>
-  <p>Ngoài hàm subscribe thì chắc tap() là 1 trong những operator được dùng nhiều nhất trong RxJS. tap() là 1 operator
-    mà các bạn có thể pipe vào bất cứ Observable nào và tại bất cứ vị trí nào. tap() nhận vào tham số giống như
-    subscribe đó là Observer hoặc là 3 functions nextFunction, errorFunction, và completeFunction. Vì nhận vào tham số
-    giống subscribe, nên bản chất tap() không trả về giá trị gì. Điều này nghĩa là tap() hoàn toàn không làm thay đổi
-    bất cứ gì trên 1 Observable. Các bạn có thể dùng tap() để:</p>
-  <p>Log giá trị được emit ở bất cứ thời điểm nào trong Observable. Điều này giúp debug được giá trị của 1 Observable
-    trước và sau khi dùng 1 operator nào đó.</p>
-  <br>
-  <pre>
-            <code>{{text14}}</code>
-        </pre>
-  <p>Để thực thi 1 nghiệp vụ nào đó mà nghiệp vụ sử dụng giá trị của Observable emit và mutate giá trị đó. Việc này được
-    coi là side effect đối với Observable hiện tại</p>
-  <p>Để thực thi 1 nghiệp vụ nào đó mà hoàn toàn không liên quan đến giá trị mà Observable emit. Ví dụ, để start/stop
-    loader.</p>
-  <br>
-
-  <strong>delay()/delayWhen()</strong>
-  <br>
-  <p>delay T>(delay: number | Date, scheduler: SchedulerLike = async): MonoTypeOperatorFunction T>
-  </p>
-  <p>delay() khá là dễ hiểu, chỉ là delay giá trị emit của 1 Observable nào đó dựa vào tham số truyền vào. Nếu như tham
-    số truyền vào là Number, thì delay() sẽ chạy 1 timer với khoảng thời gian là tham số, sau đó sẽ emit giá trị của
-    Observable. Nếu như tham số truyền vào là Date, thì delay() sẽ hoãn giá trị emit tới khi thời gian hiện tại bằng với
-    Date được truyền vào.</p>
-  <p>Log giá trị được emit ở bất cứ thời điểm nào trong Observable. Điều này giúp debug được giá trị của 1 Observable
-    trước và sau khi dùng 1 operator nào đó.</p>
   <br>
   <pre>
             <code>{{text15}}</code>
         </pre>
-  <p>delayWhen T>(delayDurationSelector: (value: T, index: number) => Observable any>, subscriptionDelay?: Observable
-    any>): MonoTypeOperatorFunction T></p>
-  <p>delayWhen() tính chất hoạt động giống như delay() nhưng thay vì truyền vào khoảng thời gian Number hoặc ngày Date,
-    thì chúng ta truyền vào 1 function mà trả về 1 Observable. delayWhen() sẽ hoãn emit giá trị của Source Observable
-    cho đến khi Observable truyền vào emit.</p>
+  <p>Chúng ta sẽ có thể thay thế bằng cách dùng multicast operator như sau.</p>
+
+  <strong>multicast()</strong>
+  <p>multicast T, R>(subjectOrSubjectFactory: Subject T> | (() => Subject T>), selector?: (source: Observable T>) =>
+    Observable R>): OperatorFunction T, R></p>
+  <p>Returns an Observable that emits the results of invoking a specified selector on items emitted by a
+    ConnectableObservable that shares a single subscription to the underlying stream. multicast</p>
+  <p>Operator này sẽ trả về một Observable đặc biệt là ConnectableObservable, mà nó có thể share cùng một execution.</p>
   <br>
   <pre>
               <code>{{text16}}</code>
           </pre>
   <br>
-
-  <strong>finalize()</strong>
-  <br>
-  <p>finalize T>(callback: () => void): MonoTypeOperatorFunction T>
-  </p>
-  <p>finalize() rất đơn giản là 1 operator mà sẽ nhận vào 1 callback. callback này sẽ được thực thi khi Observable
-    complete hoặc error. Use-case thường gặp nhất của finalize() chính là stop loader/spinner, vì chúng ta sẽ muốn cái
-    loader/spinner dừng lại/không hiển thị khi 1 API Request thực hiện xong, cho dù có lỗi hay không có lỗi.</p>
+  <p>Multicast nhận vào một subjectOrSubjectFactory, như trong ví dụ trên chúng ta truyền vào một instance của Subject.
+    Sau đó sẽ return về một ConnectableObservable, nó có một số method đặc biệt.</p>
+  <p>ConnectableObservable là một Observable nên chúng ta có thể subscribe vào nó. Nhưng để trigger thì chúng ta cần gọi
+    hàm connect.</p>
+  <p>connectableObservable.connect();</p>
+  <p>Nó tương đương với việc subscribe internal Subject vào Observable như ban đầu:</p>
+  <p>observable.subscribe(subject);</p>
+  <p>Lưu ý rằng, khi gọi hàm connect() chúng ta báo với stream là start đi, nhưng trong đoạn code trên không có trường
+    hợp nào để disconnect, nên các bạn có thể bị memory leak.</p>
   <br>
   <pre>
             <code>{{text17}}</code>
         </pre>
   <br>
-
-  <strong>repeat()</strong>
-  <br>
-  <p>repeat T>(count: number = -1): MonoTypeOperatorFunction T>
-  </p>
-  <p>repeat(), đúng như tên gọi, sẽ nhận vào tham số count và sẽ lặp lại Source Observable đúng với số count mà được
-    truyền vào.</p>
+  <p>Lúc này bạn cần lưu trữ lại subscription được trả về bởi lời gọi connect() để có thể unsubscribe.</p>
   <br>
   <pre>
             <code>{{text18}}</code>
         </pre>
   <br>
-
-  <strong>timeInterval()</strong>
+  <p>Lúc này bạn chỉ cần connectSub.unsubscribe() là sẽ unsubscribe internal Subject do đó không cần chạy
+    sub.unsubscribe() cũng được.</p>
   <br>
-  <p>timeInterval T>(scheduler: SchedulerLike = async): OperatorFunction T, TimeInterval T>>
+
+  <strong>refCount</strong>
+  <br>
+  <p>Việc phải connect và disconnect manually khá là low level. Do đó ConnectableObservable có một protocol khá thuận
+    tiện đó là: Khi có sự biến đổi về số lượng Observer từ 0 lên 1 thì sẽ tự gọi connect, và khi có sự biến đổi từ 1 về
+    0 thì sẽ tự động unsubscribe. Đây chính là lúc bạn có thể sử dụng đến refCount.
   </p>
-  <p>timeInterval() dùng để đo khoảng thời gian giữa 2 lần emit của Source Observable. Ví dụ là tính thời gian giữa 2
-    lần click của người dùng. timerInterval() sẽ chạy timer ở thời điểm Observable được subscribe. Nghĩa là khi bắt đầu
-    subscribe cho đến lúc có giá trị đầu tiên được emit, thì timeInterval() sẽ track được khoảng thời gian này.</p>
   <br>
   <pre>
             <code>{{text19}}</code>
         </pre>
   <br>
 
-  <strong>timeout()</strong>
+  <strong>SubjectFactory()</strong>
   <br>
-  <p>timeout T>(due: number | Date, scheduler: SchedulerLike = async): MonoTypeOperatorFunction T>
+  <p>Trong trường hợp Subject bị complete, nó sẽ không thể next thêm một value nào nữa, đó là đặc tính của một
+    Observable. Nên đối với trường hợp dưới đây, chúng ta sẽ không thể có execution nào được thực thi sau khi Subject đã
+    complete.
   </p>
-  <p>timeout() nhận vào tham số giống như delay(), là 1 khoảng thời gian Number hoặc 1 ngày nào đó Date. timeout() sẽ
-    throw error nếu như Source Observable không emit giá trị trong khoảng thời gian (nếu như tham số là Number) hoặc cho
-    tới khi thời gian hiện tại bằng với ngày được truyền vào (nếu như tham số là Date).</p>
   <br>
   <pre>
             <code>{{text20}}</code>
         </pre>
   <br>
-
-  <strong>timeoutWith()</strong>
-  <br>
-  <p>timeoutWith T, R>(due: number | Date, withObservable: any, scheduler: SchedulerLike = async): OperatorFunction T, T
-    | R>
-  </p>
-  <p>timeoutWith() hoạt đột tương tự timeout() nhưng nhận thêm tham số thứ 2 là 1 Observable. Nếu như trường hợp Source
-    Observable emit giá trị quá chậm so với due thì timeoutWith() thay vì throw error, timeoutWith() sẽ subscribe vào
-    tham số Observable kia.</p>
-  <br>
-  <pre>
-            <code>{{text20}}</code>
-        </pre>
-  <br>
-
-  <strong>toPromise()</strong>
-  <br>
-  <p>À ha, mình đặt cái này cuối cùng là có ý đồ 😅. Nhìn tên hàm các bạn cũng đoán được hàm này làm gì rồi phải không?
-    Đây không phải là 1 operator nhưng được RxJS liệt kê vào Utility Operator. toPromise() là 1 instance method trên
-    class Observable dùng để chuyển đổi 1 Observable thành Promise🤦‍. Tuy nhiên, toPromise() sẽ bị deprecated vào RxJS
-    v7 sắp tới, các bạn nào dùng thì cẩn thận nhé.
-  </p>
+  <p>Sau 5s sharedObservable đã emit complete nên khi ở thời điểm 6s chúng ta tiếp tục subscribe thì nó không thể nhận
+    được các value được nữa. Lúc này để có thể tiếp tục trigger chúng ta cần phải tạo ra một Subject mới, đó chính là
+    lúc bạn sẽ có thể dùng đến SubjectFactory.</p>
   <br>
   <pre>
             <code>{{text21}}</code>
         </pre>
-  <p>Trên đây là các Utility Operator mà RxJS cung cấp. Sử dụng nhiều nhất chắc chắn là tap() vì các bạn sẽ dùng tap()
-    để debug Observable Flow rất nhiều 😂</p>
+  <br>
+  <br>
+  <pre>
+            <code>{{text22}}</code>
+        </pre>
+  <p>SubjectFactory là một function, nó sẽ trả về một Subject mới khi được gọi. Và khi có sự thay đổi refCount từ 0 =>
+    1, nó sẽ được gọi và bắt đầu được chạy.</p>
   <br>
 
+  <strong>publish</strong>
+  <br>
+  <p>Việc sử dụng multicast(new Subject()) có thể được viết gọn lại bằng cách sử dụng publish.
+  </p>
+  <p>publish T, R>(selector?: OperatorFunction T, R>): MonoTypeOperatorFunctionT> | OperatorFunction T, R></p>
+  <p>Returns a ConnectableObservable, which is a variety of Observable that waits until its connect method is called
+    before it begins emitting items to those Observers that have subscribed to it. publish</p>
+  <p>Makes a cold Observable hot</p>
+  <br>
+  <pre>
+            <code>{{text23}}</code>
+        </pre>
+  <br>
+  <p>Ngoài ra, giống như Subject có các biến thể thì publish cũng có các biến thể tương ứng với một số loại Subject.</p>
+  <ul>
+    <li>BehaviorSubject => publishBehavior</li>
+    <li>ReplaySubject => publishReplay</li>
+    <li>AsyncSubject => publishLast</li>
+  </ul>
+  <br>
+
+  <strong>share</strong>
+  <br>
+  <p>Việc sử dụng multicast(() => new Subject()) + refCount khá phổ biến nên chúng ta có một shortcut khác là share.
+  </p>
+  <p>share T>(): MonoTypeOperatorFunction T></p>
+  <p>Returns a new Observable that multicasts (shares) the original Observable. As long as there is at least one
+    Subscriber this Observable will be subscribed and emitting data. When all subscribers have unsubscribed it will
+    unsubscribe from the source Observable. Because the Observable is multicasting it makes the stream hot. This is an
+    alias for multicast(() => new Subject()), refCount(). RxJS share</p>
+  <br>
+  <pre>
+            <code>{{text24}}</code>
+        </pre>
+  <br>
+
+
+  <strong>shareReplay</strong>
+  <br>
+  <p>Share source and replay specified number of emissions on subscription.
+  </p>
+  <p>shareReplay T>(configOrBufferSize?: number | ShareReplayConfig, windowTime?: number, scheduler?: SchedulerLike):
+    MonoTypeOperatorFunction T>
+  </p>
+  <p>This operator is a specialization of replay that connects to a source observable and multicasts through a
+    ReplaySubject constructed with the specified arguments. A successfully completed source will stay cached in the
+    shareReplayed observable forever, but an errored source can be retried.</p>
+  <br>
+  <p>Why use shareReplay?</p>
+  <p>You generally want to use shareReplay when you have side-effects or taxing computations that you do not wish to be
+    executed amongst multiple subscribers. It may also be valuable in situations where you know you will have late
+    subscribers to a stream that need access to previously emitted values. This ability to replay values on subscription
+    is what differentiates share and shareReplay.</p>
+  <p>Source code & documentation: https://github.com/ReactiveX/rxjs/blob/6.x/src/internal/operators/shareReplay.ts</p>
+  <p>Một use-case khá phổ biến là sử dụng shareReplay để làm caching.</p>
+  <pre>
+            <code>{{text25}}</code>
+        </pre>
+  <br>
 </div>

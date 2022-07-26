@@ -113,6 +113,11 @@ export const menuAngular = [
         "text": "Rxjs Higher Order Observables",
         "icon": "all_inbox",
         "routerLink": "rxjs-hoos"
+      },
+      {
+        "text": "RxJS Subject and Multicasting",
+        "icon": "all_inbox",
+        "routerLink": "rxjs-subject"
       }
     ]
   }
