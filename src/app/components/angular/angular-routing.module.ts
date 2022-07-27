@@ -11,6 +11,7 @@ import { DataBindingComponent } from './data-binding/data-binding.component';
 import { DependenceInjectionComponent } from './dependence-injection/dependence-injection.component';
 import { IntroDependenceInjectionComponent } from './intro-dependence-injection/intro-dependence-injection.component';
 import { IntroRxjsObservableComponent } from './intro-rxjs-observable/intro-rxjs-observable.component';
+import { LazyLoadComponent } from './lazy-load/lazy-load.component';
 import { NgTemplateComponent } from './ng-template/ng-template.component';
 import { PipeComponent } from './pipe/pipe.component';
 import { RouterPart2Component } from './router-part2/router-part2.component';
@@ -127,6 +128,10 @@ const angularRoutes: Routes = [
       {
         path: 'router-part2',
         component: RouterPart2Component
+      },
+      {
+        path: 'lazy-load',
+        component: LazyLoadComponent
       },
     ]
   }]

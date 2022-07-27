@@ -1,0 +1,56 @@
+<div>
+  <h1 style="font-size: 3rem;">Angular Router - Lazy Loading Modules</h1>
+  <br>
+
+  <!-- Lazy load module -->
+  <span style="font-size: 2rem;" class="pb-0">Lazy load module</span>
+  <div class="border-b1"></div>
+  <br>
+  <p>Để hỗ trợ lazy load module trong Angular, đầu tiên mình cần làm một số việc.
+  </p>
+  <p>1.Xóa AdminModule trong mảng import của AppModule đi. Vì nếu mình import vô đây thì khi bundle toàn bộ phần code
+    của AdminModule sẽ được load cùng AppModule như mình đã thấy ở trên Note: nhớ xóa cả phần import ở trên đi nhá,
+    không thì sẽ ko giải quyết vấn đề gì đâu :))
+  </p>
+  <p>2.Config lại route cho AdminModule. Mình cần bỏ phần path admin ở trong AdminRoutingModule đi. Lý do thì các bạn
+    xem step 3 sẽ rõ.</p>
+  <p>3.Bước quan trọng nhất, trong AppRoutingModule, chúng ta cần config để load admin module theo cú pháp của lazy
+    loading module khi mở ứng dụng ở path có dạng /admin</p>
+  <p>Vẫn là định nghĩa là path admin, nhưng thay vì component, mình dùng loadChildren với cú pháp () =>
+    import('./admin/admin.module').then((m) => m.AdminModule), tức là một function có return lại một dynamic import
+    module.</p>
+  <p>Vậy là xong rồi đấy. Giờ mình mở sẽ run npm run build một lần nữa. Giờ CLI đã tạo ra một file JS mới dành riêng cho
+    AdminModule tên admin-admin-module.js.</p>
+  <p>Mình sẽ mở app lên xem thử, các bạn sẽ thấy một sự khác bọt khá lớn.</p>
+  <p>Khi mình mới load page, thì app có load các file cần thiết và main.js. Tuy nhiên khi mình ấn vào Admin để đi đến
+    /admin, lúc đó admin-admin-module.js mới được load. Lazy load chính là như thế, tức là không load ngay từ đầu, mà
+    chỉ load khi cần đến.</p>
+  <br>
+  <br>
+
+  <!-- Lazy load syntax() -->
+  <span style="font-size: 2rem;" class="pb-0">Lazy load syntax()</span>
+  <div class="border-b1"></div>
+  <br>
+  <p>import('...') syntax được khuyến cáo sử dụng từ Angular version 8.
+  </p>
+  <p>Ngoài cách dùng import('...') syntax, chúng ta có một cách dùng từ Angular version 7 trở xuống như sau:
+    loadChildren: './admin/admin.module#AdminModule'. Đó là một magic string, để chỉ ra file path đến file mà chứa
+    NgModule có kèm Router cần load.</p>
+  <strong>Preloading Lazy Module</strong>
+  <p>Việc tách ra thành các lazy loading module rất có lợi cho lần tải trang của user. Với việc browser phải download
+    file JS nhỏ hơn, nên thời gian chờ đợi để tương tác với website sẽ giảm. Tuy nhiên nhiều khi các lazy loading module
+    có thể có size rất lớn. Dẫn đến việc khi user bấm vào một link, sẽ mất thời gian để tải. Ví dụ vẫn là lazy loading
+    AdminModule ở trên nhưng giờ mình giả lập là mạng điện thoại, xem tình hình thế nào nhé.</p>
+  <p>Anh em thấy đấy, thời gian từ khi bấm vào link Admin cho đến khi UI hiện ra có khi cả 10s. Quá chậm.</p>
+  <p>Có một số module mà mình biết rằng thường là khi user mở ứng dụng của mình ra, họ sẽ click vào đó đầu tiên. Chúng
+    ta có thể dùng kĩ thuật Preloading để load những bundle ở background.</p>
+  <p>Để enable preloading cho tất cả các lazy loaded modules, các bạn cần import PreloadAllModules từ package
+    @angular/router và cấu hình nó ở trong AppRoutingModule, đoạn forRoot.</p>
+  <br>
+  <pre>
+          <code>{{text1}}</code>
+      </pre>
+  <br>
+
+</div>

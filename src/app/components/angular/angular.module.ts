@@ -34,6 +34,7 @@ import { RxjsHoosComponent } from './rxjs-hoos/rxjs-hoos.component';
 import { RxjsSubjectComponent } from './rxjs-subject/rxjs-subject.component';
 import { RouterComponent } from './router/router.component';
 import { RouterPart2Component } from './router-part2/router-part2.component';
+import { LazyLoadComponent } from './lazy-load/lazy-load.component';
 
 @NgModule({
   declarations: [
@@ -63,7 +64,8 @@ import { RouterPart2Component } from './router-part2/router-part2.component';
     RxjsHoosComponent,
     RxjsSubjectComponent,
     RouterComponent,
-    RouterPart2Component
+    RouterPart2Component,
+    LazyLoadComponent
   ],
   entryComponents: [
     ToggleComponent

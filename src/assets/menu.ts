@@ -135,6 +135,11 @@ export const menuAngular = [
         "icon": "all_inbox",
         "routerLink": "router-part2"
       },
+      {
+        "text": "Angular Router - Lazy Loading Modules",
+        "icon": "all_inbox",
+        "routerLink": "lazy-load"
+      },
     ]
   }
 ];
