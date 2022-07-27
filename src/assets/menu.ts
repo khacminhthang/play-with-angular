@@ -137,11 +137,6 @@ export const menuCSharp = [
         "routerLink": "overview"
       },
       {
-        "text": "Environment",
-        "icon": "layers",
-        "routerLink": "environment"
-      },
-      {
         "text": "Program Structure",
         "icon": "all_inbox",
         "routerLink": "program-structure"

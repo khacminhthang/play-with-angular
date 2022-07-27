@@ -7,9 +7,20 @@ import { MaterialModule } from 'src/app/material.module';
 import { MatNativeDateModule } from '@angular/material/core';
 import { RouterModule } from '@angular/router';
 import { CSharpRoutingModule } from './csharp-routing.module';
+import { OverviewComponent } from './overview/overview.component';
+import { ProgramStructureComponent } from './program-structure/program-structure.component';
+import { BasicSyntaxComponent } from './basic-syntax/basic-syntax.component';
+import { DataTypesComponent } from './data-types/data-types.component';
+import { StructuresComponent } from './structures/structures.component';
 
 @NgModule({
-  declarations: [],
+  declarations: [
+    OverviewComponent,
+    ProgramStructureComponent,
+    BasicSyntaxComponent,
+    DataTypesComponent,
+    StructuresComponent
+  ],
   imports: [
     CommonModule,
     MaterialModule,

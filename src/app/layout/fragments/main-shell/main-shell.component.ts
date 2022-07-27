@@ -17,18 +17,19 @@ export class MainShellComponent implements OnInit {
 
   ngOnInit() {
     this.route.params.subscribe((param) => {
-      switch (window.location.pathname) {
-        case '/angular':
+      let pathname = window.location.pathname.split('/')[1];
+      switch (pathname) {
+        case 'angular':
           {
             this.menuList = menuAngular;
             break;
           }
-        case '/csharp':
+        case 'csharp':
           {
             this.menuList = menuCSharp;
             break;
           }
-        case '/dotnetcore':
+        case 'dotnetcore':
           {
             this.menuList = menuDotNetCore;
             break;
