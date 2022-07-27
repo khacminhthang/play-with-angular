@@ -31,10 +31,6 @@ const angularRoutes: Routes = [
   {
     path: '',
     component: MainShellComponent,
-  },
-  {
-    path: ':slug',
-    component: MainShellComponent,
     children: [
       {
         path: 'data-binding',
