@@ -1,0 +1,179 @@
+<div>
+  <h1 style="font-size: 3rem;">Angular Router - Feature Modules, Child Routes and Services</h1>
+  <p>Tiếp tục với Angular Router từ hôm trước, hôm nay chúng ta sẽ tìm hiểu những thành phần tiếp theo như Feature
+    Module, Child Routes và một số Services hay sử dụng.</p>
+  <br>
+
+  <!-- Feature Modules -->
+  <span style="font-size: 2rem;" class="pb-0">Feature Modules</span>
+  <div class="border-b1"></div>
+  <br>
+  <p>Giả sử với ứng dụng hôm trước, chúng ta mong muốn tách ra nhiều NgModule khác nhau để chia nhỏ ứng dụng ra thay vì
+    chỉ sử dụng một NgModule duy nhất thì có được không? Chẳng phải chúng ta có thể sử dụng nhiều NgModule trong một ứng
+    dụng Angular hay sao??? Làm thế nào để có nhiều Feature Modules mà có support Router?
+  </p>
+  <p>Câu trả lời chính là sử dụng RouterModule.forChild ở các Feature Modules.</p>
+  <br>
+
+  <!-- Tách ArticleModule -->
+  <span style="font-size: 2rem;" class="pb-0">Tách ArticleModule</span>
+  <div class="border-b1"></div>
+  <br>
+  <p>Đầu tiên chúng ta sẽ tạo mới một NgModule và đưa những phần cần quản lý bởi NgModule đó vào trong như components,
+    services, etc.
+  </p>
+  <pre>
+              <code>{{text1}}</code>
+          </pre>
+  <p>Tiếp theo, chúng ta sẽ config RouterModule giống như đã từng làm với AppRoutingModule, nhưng thay vì gọi forRoot
+    thì chúng ta sẽ gọi forChild (nguyên nhân tại sao thì các bạn quay trở lại Day 27).</p>
+  <br>
+  <pre>
+                    <code>{{text2}}</code>
+                </pre>
+  <p>Như thế là chúng ta đã tạo xong Feature Module kèm theo Router, bây giờ chúng ta cần import nó vào AppModule để có
+    thể sử dụng.</p>
+  <pre>
+                <code>{{text3}}</code>
+              </pre>
+  <br>
+
+  <!-- Route config redirect -->
+  <span style="font-size: 2rem;" class="pb-0">Route config redirect</span>
+  <div class="border-b1"></div>
+  <br>
+  <p>Để redirect người dùng khi vào một route nào đó đến một route khác, bạn có thể config như sau:
+  </p>
+  <pre>
+                <code>{{text4}}</code>
+            </pre>
+  <p>Các bạn lưu ý rằng ở trong trường hợp redirect, thông thường chúng ta nên dùng strategy để check path là full.</p>
+  <p>Vậy có những strategy nào?</p>
+  <p>Với config pathMatch, chúng ta sẽ có thể có 2 strategy là full và prefix, giá trị mặc định khi bạn không set cho
+    pathMatch sẽ là prefix.</p>
+  <ul>
+    <li>Đối với full, bạn sẽ compare path mà người dùng đang muốn navigate tới có bằng hay không - tương tự như dùng ==.
+      Ví dụ: URL người dùng muốn là tiepphan.com/abc/xyz thì chúng ta có path tương ứng là abc/xyz nên nếu người dùng
+      yêu cầu đi đến abc/cde thì sẽ không thỏa mãn với điều kiện chúng ta đang có.</li>
+    <li>Đối với prefix thì chỉ cần bằng prefix là được. Ví dụ, nếu người dùng muốn vào tiepphan.com/abc/xyz thì path abc
+      cũng thỏa mãn, do đó những yêu cầu như render component nào, cũng sẽ được thực thi.</li>
+  </ul>
+
+  <strong>Thứ tự route khi config</strong>
+  <p>Để ý khi mình config route ở step 2, mình đặt detail ở trên phần route trống. Đó là vì thứ tự trong mảng Routes là
+    quan trọng và ảnh hưởng đến việc load route. Route nào càng chi tiết thì nên được config trước những route ít chi
+    tiết hơn. Ví dụ</p>
+  <p>/detail/123/edit - để show edit form cho item id 123 /detail/123 - để show thông tin chi tiết cho item id 123.</p>
+  <p>Thì phần config cho route edit nên được đẩy lên trước. Những phần nào generic thì nên để phía sau những phần detail
+    hơn.</p>
+  <br>
+
+
+  <!-- Routing Module -->
+  <span style="font-size: 2rem;" class="pb-0">Routing Module</span>
+  <div class="border-b1"></div>
+  <br>
+  <p>Có một kỹ thuật trong Angular Router đó là Routing Module, được dùng để tách phần routing ra thành một module
+    riêng, và được sử dụng kèm với một NgModule thông thường. Trường hợp của AppRoutingModule là một ví dụ.
+  </p>
+  <p>Bạn hoàn toàn có thể áp dụng kỹ thuật này với các Feature Module như sau.</p>
+  <pre>
+                            <code>{{text5}}</code>
+                        </pre>
+
+  <p>Ở đây chúng ta sẽ config routing với RouterModule.forChild(routes), sau đó chúng ta exports RouterModule ra ngoài
+    để ArticleModule có thể sử dụng những directives/components mà RouterModule cung cấp mà không cần imports
+    RouterModule.</p>
+  <br>
+  <pre>
+      <code>{{text6}}</code>
+  </pre>
+
+  <!-- Child Routes -->
+  <span style="font-size: 2rem;" class="pb-0">Child Routes</span>
+  <div class="border-b1"></div>
+  <br>
+  <p>Nhìn vào config phía dưới đây các bạn sẽ thấy rằng có một phần prefix khá giống nhau. Vậy chúng ta có cấu trúc nào
+    cho dạng parent-child hay không?
+  </p>
+  <p>Cách 1</p>
+  <pre>
+    <code>{{text7}}</code>
+  </pre>
+  <p>Angular Router cho phép bạn truyền vào cấu trúc parent-child như sau:</p>
+  <br>
+  <pre>
+          <code>{{text8}}</code>
+        </pre>
+  <p>Đây là cách config tương đương với Cách 1. Chúng ta sẽ có dạng parent + child cho path ở trên.</p>
+  <p>Ngoài ra, parent route có thể activate một component, chúng ta thường gọi nó là layout component. Trong component
+    này nhất định phải có chứa router-outlet, nó sẽ là điểm đánh dấu để activate các child component.</p>
+  <pre>
+        <code>{{text9}}</code>
+    </pre>
+  <br>
+
+
+  <!-- ActivatedRoute Service. -->
+  <span style="font-size: 2rem;" class="pb-0">ActivatedRoute Service.</span>
+  <div class="border-b1"></div>
+  <br>
+  <p>Service này cung cấp một số public API cho phép chúng ta biết được thông tin về route đang activated và component
+    đã được loaded (activated).
+  </p>
+  <strong>Retrieve params</strong>
+  <p>Ví dụ trong Day 27, chúng ta muốn lấy thông tin của params, lúc đó chúng ta đã inject service này vào
+    ArticleDetailComponent như sau:</p>
+  <pre>
+    <code>{{text10}}</code>
+  </pre>
+  <p>Ngoài cách sử dụng snapshot ở trên chúng ta có thể sử dụng Observable để observe như sau</p>
+  <br>
+  <pre>
+          <code>{{text11}}</code>
+        </pre>
+  <p>Lý do tại sao chúng ta sử dụng Observable ở đây mà không phải là snapshot?</p>
+  <p>Về nguyên tắc mặc định, khi di chuyển vào một path, Angular Router sẽ cố gắng reuse component trước đó, nếu chưa
+    có, hoặc khác config thì mới tạo mới component.</p>
+  <p>Ví dụ, bạn đang ở /article, và di chuyển vào từng article /article/bai-viet-1, và theo config ở phần trước, chúng
+    ta thấy rằng đây là 2 config khác nhau, nên Angular Router sẽ tạo mới component, lúc này snapshot và paramMap
+    Observable sẽ có cùng giá trị cho slug là bai-viet-1.</p>
+  <p>Một trường hợp khác là khi bạn từ /article/bai-viet-1 navigate sang /article/bai-viet-2, lúc này chúng sẽ sử dụng
+    cùng config, và do component ArticleDetailComponent đã được activated rồi, Angular Router sẽ không tạo lại nó nữa,
+    mà reuse luôn. Lúc này snapshot không thay đổi, vì snapshot chỉ tạo một lần duy nhất khi tạo ArticleDetailComponent,
+    còn paramMap Observable sẽ emit một giá trị mới cho slug.</p>
+  <p>Vậy nên tùy theo từng trường hợp cụ thể mà bạn sẽ dùng các cách khác nhau để có thể lấy về dữ liệu tương ứng.</p>
+
+  <strong>Retrieve config: query params, route data, etc</strong>
+  <p>Ngoài việc cung cấp API cho params, ActivatedRoute Service cũng cho phép bạn lấy/observe query params thông qua
+    queryParamMap.</p>
+  <p>Ví dụ bạn vào một URL là tiepphan.com/page/2?sort=createdDate, thì bạn có thể lấy về sort query qua
+    snapshot.queryParamMap.get('sort') hoặc</p>
+  <pre>
+        <code>{{text12}}</code>
+    </pre>
+  <br>
+
+  <!-- Router Service. -->
+  <span style="font-size: 2rem;" class="pb-0">Router Service.</span>
+  <div class="border-b1"></div>
+  <br>
+  <p>Service này cung cấp cho chúng ta các cách để thao tác với URL, hoặc có thể sử dụng để navigate trong component
+    chẳng hạn.
+  </p>
+  <p>Ví dụ: Bạn có một button, khi người dùng click vào đó sẽ thực hiện một số task, nếu thành công sẽ navigate về trang
+    chủ chẳng hạn. Lúc này bạn có thể sử dụng 1 trong hai method sau để navigate.</p>
+  <p>Ví dụ trong Day 27, chúng ta muốn lấy thông tin của params, lúc đó chúng ta đã inject service này vào
+    ArticleDetailComponent như sau:</p>
+  <pre>
+    <code>{{text13}}</code>
+  </pre>
+  <pre>
+          <code>{{text14}}</code>
+        </pre>
+  <p>Ngoài ra bạn có thể observe Router Event để làm gì đó:</p>
+  <pre>
+        <code>{{text15}}</code>
+    </pre>
+  <br>
+</div>

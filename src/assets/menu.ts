@@ -120,6 +120,22 @@ export const menuAngular = [
         "routerLink": "rxjs-subject"
       }
     ]
+  },
+  {
+    "text": "Router Concept",
+    "icon": "inventory_2",
+    "children": [
+      {
+        "text": "Angular Router",
+        "icon": "all_inbox",
+        "routerLink": "router"
+      },
+      {
+        "text": "Feature Modules, Child Routes and Services",
+        "icon": "all_inbox",
+        "routerLink": "router-part2"
+      },
+    ]
   }
 ];
 export const menuDotNetCore = [

@@ -32,6 +32,8 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { RouterModule } from '@angular/router';
 import { RxjsHoosComponent } from './rxjs-hoos/rxjs-hoos.component';
 import { RxjsSubjectComponent } from './rxjs-subject/rxjs-subject.component';
+import { RouterComponent } from './router/router.component';
+import { RouterPart2Component } from './router-part2/router-part2.component';
 
 @NgModule({
   declarations: [
@@ -59,7 +61,9 @@ import { RxjsSubjectComponent } from './rxjs-subject/rxjs-subject.component';
     RxjsCombinationOperatorsComponent,
     RxjsErrorHandlingComponent,
     RxjsHoosComponent,
-    RxjsSubjectComponent
+    RxjsSubjectComponent,
+    RouterComponent,
+    RouterPart2Component
   ],
   entryComponents: [
     ToggleComponent

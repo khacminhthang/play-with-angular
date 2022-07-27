@@ -13,6 +13,8 @@ import { IntroDependenceInjectionComponent } from './intro-dependence-injection/
 import { IntroRxjsObservableComponent } from './intro-rxjs-observable/intro-rxjs-observable.component';
 import { NgTemplateComponent } from './ng-template/ng-template.component';
 import { PipeComponent } from './pipe/pipe.component';
+import { RouterPart2Component } from './router-part2/router-part2.component';
+import { RouterComponent } from './router/router.component';
 import { RxjsCombinationOperatorsComponent } from './rxjs-combination-operators/rxjs-combination-operators.component';
 import { RxjsCreationOperatorsComponent } from './rxjs-creation-operators/rxjs-creation-operators.component';
 import { RxjsErrorHandlingComponent } from './rxjs-error-handling/rxjs-error-handling.component';
@@ -121,6 +123,14 @@ const angularRoutes: Routes = [
       {
         path: 'rxjs-subject',
         component: RxjsSubjectComponent
+      },
+      {
+        path: 'router',
+        component: RouterComponent
+      },
+      {
+        path: 'router-part2',
+        component: RouterPart2Component
       },
     ]
   }]
