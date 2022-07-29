@@ -136,9 +136,24 @@ export const menuAngular = [
         "routerLink": "router-part2"
       },
       {
-        "text": "Angular Router - Lazy Loading Modules",
+        "text": "Lazy Loading Modules",
         "icon": "all_inbox",
         "routerLink": "lazy-load"
+      },
+      {
+        "text": "Guards and Resolvers Part 1",
+        "icon": "all_inbox",
+        "routerLink": "guards-and-resolvers-part1"
+      },
+      {
+        "text": "Guards and Resolvers Part 2",
+        "icon": "all_inbox",
+        "routerLink": "guards-and-resolvers-part2"
+      },
+      {
+        "text": "Guards and Resolvers Part 3",
+        "icon": "all_inbox",
+        "routerLink": "guards-and-resolvers-part3"
       },
     ]
   }

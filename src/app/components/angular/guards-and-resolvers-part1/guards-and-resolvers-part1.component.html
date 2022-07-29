@@ -1,0 +1,191 @@
+<div>
+  <h1 style="font-size: 3rem;">Angular Router - Guards and Resolvers Part 1</h1>
+  <br>
+  <p>Thông thường, một trang web được chia thành các pages, và có thể có những pages bạn phải được cấp một quyền nào đó
+    thì mới có thể vào được.</p>
+  <p>Đối với các ứng dụng server-side render thông thường, người dùng sẽ navigate vào các URL, sau đó server sẽ kiểm tra
+    tính hợp lệ hay không để trả về trang yêu cầu.</p>
+  <p>Đối với các ứng dụng Single Page Apps (SPAs) được viết bằng Angular (hoặc có thể là React, Vue, etc), do chúng ta
+    đã tải hết resouces cần thiết về và chỉ call đến DataSources để lấy về data và render Component/View tương ứng mà
+    không cần phải reload lại pages. Do đó nhiệm vụ kiểm tra tính hợp lệ khi người dùng muốn render một/một vài
+    component sẽ bao gồm cả phần frontend.</p>
+  <br>
+
+  <!-- Angular Router Navigation Cycle -->
+  <span style="font-size: 2rem;" class="pb-0">Angular Router Navigation Cycle</span>
+  <div class="border-b1"></div>
+  <br>
+  <p>Angular Router bao gồm 5 operations cơ bản.</p>
+  <p>Khi nhận một URL, Angular Router sẽ thực hiện các hành động sau:</p>
+  <ul>
+    <li>1. Applies redirects</li>
+    <li>2. Recognizes router states</li>
+    <li>3. Runs guards and resolves data,</li>
+    <li>4. Activates all the needed components</li>
+    <li>5. Manages navigation</li>
+  </ul>
+  <p>Để demo cho các nội dung tiếp theo, ứng dụng của chúng ta bao gồm các config routing như sau:</p>
+  <br>
+  <strong>app-routing.module.ts</strong>
+  <pre>
+            <code>{{text1}}</code>
+        </pre>
+  <strong>article-routing.module.ts</strong>
+  <br>
+  <pre>
+            <code>{{text2}}</code>
+        </pre>
+  <strong>admin-routing.module.ts</strong>
+  <br>
+  <pre>
+            <code>{{text3}}</code>
+        </pre>
+
+  <br>
+
+  <!--Navigation -->
+  <span style="font-size: 2rem;" class="pb-0">Navigation</span>
+  <div class="border-b1"></div>
+  <br>
+  <p>Operation đầu tiên chính là Navigation hay Applies redirects.</p>
+  <p>Đối với thẻ a href thông thường, hành vi mặc định của nó sẽ gửi request đến URL được chỉ định. Do đó Angular Router
+    cung cấp một directive là routerLink để thay thế hành vi đó. Directive đó là cách declarative để thực hiện
+    navigation. Ngoài ra chúng ta cũng có các cách imperative như dùng Router.navigate() hoặc Router.navigateByUrl().
+  </p>
+  <p>Navigation được thực hiện (thông thường) qua việc thay đổi URL bằng các cách kể trên.</p>
+  <p>Ví dụ với ứng dụng demo của chúng ta, https://stackblitz.com/edit/angular-100-days-of-code-day-30, navigation phát
+    sinh khi navigate từ trang Article List /article vào trang Article Detail /article/:slug.</p>
+  <p>Sau bước này Angular Router sẽ emit event NavigationStart.</p>
+  <br>
+
+  <!--Recognizes router states -->
+  <span style="font-size: 2rem;" class="pb-0">Recognizes router states</span>
+  <div class="border-b1"></div>
+  <br>
+  <p>Operation thứ hai là Recognizes router states. Ở bước này, Angular Router sẽ thực hiện một số thuật toán như
+    Backtracking, Depth-First để thực hiện matching xem route nào thỏa mãn với URL đang muốn redirect đến. The Powerful
+    URL Matching Engine of Angular Router</p>
+  <p>Ở bước này, chúng ta hoàn toàn có thể được redirect sang một URL khác, nhưng cuối cùng chúng ta sẽ đi vào một trong
+    hai trường hợp: hoặc là lỗi do không có route nào thỏa mãn, hoặc là route recognized.</p>
+  <p>Ví dụ như app demo của chúng ta, khi người dùng navigate vào /, nó sẽ redirect về /article, và sẽ được recognized.
+    Nhưng nếu người dùng đi vào /something-not-present, chúng ta sẽ nhận được lỗi Error: Cannot match any routes. URL
+    Segment: 'something-not-present'.</p>
+  <p>Sau khi kết thúc, chúng ta sẽ có được RouterState chứa thông tin về các activated route như component được liên
+    kết, params, data, ... ActivatedRoute.</p>
+  <p>Sau bước này Angular Router sẽ emit event RoutesRecognized.</p>
+  <br>
+
+  <!--Runs guards -->
+  <span style="font-size: 2rem;" class="pb-0">Runs guards</span>
+  <div class="border-b1"></div>
+  <br>
+  <p>Đây chính là Operation mà chúng ta sẽ tìm hiểu chủ yếu trong ngày hôm nay.</p>
+  <p>Ở thời điểm này, chúng ta sẽ có future router state, Router sẽ kiểm tra xem nơi mà chúng ta sắp đến này có được
+    phép hay không.</p>
+  <p>Chúng ta có thể apply nhiều Guards khác nhau, Router sẽ check nếu tất cả các Guards đều trả về true hoặc Promise
+    true>> hoặc Observable true>> thì sẽ cấp cho giấy thông hành. Ngược lại, nếu bạn trả về các giá trị false hoặc
+    Promise false>> hoặc Observable false>> hoặc một UrlTree thì sẽ không cấp phép.</p>
+  <p>Ở stage này, Router sẽ emit hai events GuardsCheckStart, GuardsCheckEnd..</p>
+  <p>Đối với ứng dụng của chúng ta sẽ có nhiều chỗ để apply được Guards, như khi vào trang /admin, hay vào chức năng
+    edit của một article, hoặc là có cho phép navigate ra khỏi page edit khi người dùng đang thực hiện editing hay
+    không, etc.</p>
+  <br>
+
+  <!--Resolves data -->
+  <span style="font-size: 2rem;" class="pb-0">Resolves data</span>
+  <div class="border-b1"></div>
+  <br>
+  <p>Sau khi chạy xong Guards, Router sẽ tiếp tục với Resolves data. Ở bước này chúng ta có thể prefetch data trước khi
+    Router render bất cứ thứ gì.</p>
+  <p>Ở stage này, Router sẽ emit hai events ResolveStart, ResolveEnd.</p>
+  <p>Sau bước này, Router sẽ update thêm những phần của resolvers vào data property của ActivatedRoute.</p>
+  <p>Ở stage này, Router sẽ emit hai events GuardsCheckStart, GuardsCheckEnd..</p>
+  <p>Sau khi đã chạy hết tất cả các resolvers đã được thiết lập từ trước, Router sẽ tiến hành activate component vào các
+    router-outlet tương ứng trong config đã được set trước đó.</p>
+  <br>
+
+  <!--Activating Components -->
+  <span style="font-size: 2rem;" class="pb-0">Activating Components</span>
+  <div class="border-b1"></div>
+  <br>
+  <p>Ở thời điểm này, Router sẽ activate các components đã được liên kết với các activated route. Đây sẽ là thời điểm
+    khởi tạo mới hoặc reuse các components sau đó render chúng vào các router-outlet tương ứng. Default sẽ là primary
+    outlet - tức là <router-outlet></router-outlet> mà không có name.</p>
+  <p>Các events tương ứng là ActivationStart, ActivationEnd, ChildActivationStart, ChildActivationEnd.</p>
+  <p>Sau khi navigate xong xuôi, Router sẽ emit event NavigationEnd, đây cũng là event các bạn có thể observe để thực
+    hiện hành vi nào đó cần thiết sau khi navigation.</p>
+  <p>Tiếp theo đó Router sẽ update URL trên thanh địa chỉ của browser, để các bạn có thể nhìn thấy sự thay đổi, trừ
+    trường hợp các bạn set skipLocationChange = true.</p>
+  <br>
+
+  <!--Manages navigation -->
+  <span style="font-size: 2rem;" class="pb-0">Manages navigation</span>
+  <div class="border-b1"></div>
+  <br>
+  <p>Từ đây, Router lại tiếp tục observe, nếu có một yêu cầu nào đó để thay đổi URL thông qua các cách đã liệt kê ở
+    trên, nó sẽ thực hiện tiếp một chu trình nữa.</p>
+  <br>
+
+  <!--Route Guards -->
+  <span style="font-size: 2rem;" class="pb-0">Route Guards</span>
+  <div class="border-b1"></div>
+  <br>
+  <p>Route Guards để giải quyết câu hỏi, liệu tôi có được phép redirect đến URL này hay không.</p>
+  <p>Angular Router cung cấp một số guards như sau:</p>
+  <li>Activate components:</li>
+  <pre>
+            <code>{{text4}}</code>
+        </pre>
+  <br>
+  <pre>
+            <code>{{text5}}</code>
+        </pre>
+  <li>Deactivate components:</li>
+  <br>
+  <pre>
+            <code>{{text6}}</code>
+        </pre>
+  <li>Load children (lazy loading route):</li>
+  <br>
+  <pre>
+            <code>{{text7}}</code>
+        </pre>
+  <br>
+
+  <!-- CanActivate -->
+  <span style="font-size: 2rem;" class="pb-0">CanActivate</span>
+  <div class="border-b1"></div>
+  <br>
+  <p>Giả sử chúng ta có chức năng edit bài viết, yêu cầu đưa ra là chỉ có ai là author mới có thể edit được bài của
+    người đó. App demo sẽ có config routing như sau:</p>
+  <br>
+  <pre>
+            <code>{{text8}}</code>
+        </pre>
+  <p>Giờ đây bạn có thể vào bất cứ bài nào cũng sẽ có thể navigate được vào tiếp page edit.</p>
+  <p>Giờ đây bạn có thể tạo một service, sau đó kiểm tra các quyền để có thể cho phép người dùng có được di chuyển vào
+    hay không.</p>
+  <br>
+  <pre>
+            <code>{{text9}}</code>
+        </pre>
+  <p>Để có thể register guard vừa tạo, chúng ta cần thêm vào canActivate array khi config routing như sau:
+  </p>
+  <pre>
+            <code>{{text10}}</code>
+        </pre>
+  <br>
+  <p>Giả định rằng, chúng ta có một service để biết được user hiện tại là ai như sau:</p>
+  <pre>
+    <code>{{text11}}</code>
+</pre>
+  <p>Guard của chúng ta sẽ có thể có logic như sau:</p>
+  <pre>
+    <code>{{text12}}</code>
+</pre>
+  <p>Thành quả có được là chúng ta không thể vào page edit của bai-viet-2, vì author không phải là user đang đăng nhập.
+  </p>
+  <p>Tương tự như CanActivate, chúng ta có cách hoạt động của CanActivateChild, nhưng được apply cho các children của
+    một route.</p>
+  <br>
+</div>

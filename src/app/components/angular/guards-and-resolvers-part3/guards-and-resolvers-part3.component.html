@@ -1,0 +1,67 @@
+<div>
+  <h1 style="font-size: 3rem;">Angular Router - Guards and Resolvers Part 3</h1>
+  <br>
+
+  <!-- Route Resolvers -->
+  <span style="font-size: 2rem;" class="pb-0">Route Resolvers</span>
+  <div class="border-b1"></div>
+  <br>
+  <p>Sau khi Route Guards đã chạy xong và passed các guards này thì sẽ là thời điểm Route Resolvers được thực thi. Thông
+    thường đây là nơi chúng ta có thể chuẩn bị trước data để sử dụng cho routed component sắp được activate.</p>
+  <p>Liệu chúng ta có thật sự cần Resolvers?</p>
+  <p>Thông thường, chúng ta có thể vào component rồi từ ngOnInit chúng ta sẽ tiến hành các step để lấy về data cần thiết
+    cho component đó.</p>
+  <p>Ví dụ như component ArticleDetailComponent ở đây:</p>
+  <pre>
+                <code>{{text1}}</code>
+            </pre>
+  <p>Đúng vậy, khi component được activated, chúng ta sẽ tiến hành connect đến DataSource để lấy về dữ liệu cần thiết.
+    Trong khá nhiều trường hợp, quá trình đó là quá trình bất đồng bộ như trên.</p>
+  <p>Lúc này bạn sẽ nhìn thấy chúng ta có implement loading indicator để báo cho người dùng biết chúng ta đang đi lấy dữ
+    liệu về.</p>
+  <p>Với những trường hợp đơn giản như trên, chúng ta hoàn toàn có thể lấy về trước một phần data nào đó. Đây chính là
+    một dạng như middleware ở trong Angular Router mà chúng ta được biết đến dưới tên gọi Resolvers.</p>
+  <br>
+  <pre>
+                <code>{{text2}}</code>
+            </pre>
+  <p>Resolver chỉ là một service, có implement interface Resolve ở trên. Các Resolvers sẽ được call hàm resolve và
+    Router sẽ đợi đến khi nào data được resolved xong xuôi thì mới activate components.</p>
+  <p>Ví dụ, chúng ta có thể tạo một resolver để lấy về thông tin một Article như sau:</p>
+  <br>
+  <pre>
+                <code>{{text3}}</code>
+            </pre>
+  <p>Sau đó, config routing của article detail sẽ có thêm một key mới:</p>
+  <pre>
+        <code>{{text4}}</code>
+    </pre>
+  <p>Bây giờ chúng ta chạy thử sẽ thấy, thay vì hiển thị loading ở component, chúng ta đã lấy về data trước khi thực
+    hiện activate component, do đó sau khi navigate, resolver phải resolved rồi chúng ta mới có thể thấy component được
+    render ra. Vì thế nên chúng ta sẽ không thấy loading indicator đâu nữa.</p>
+  <br>
+
+  <!--Lưu ý -->
+  <span style="font-size: 2rem;" class="pb-0">Lưu ý</span>
+  <div class="border-b1"></div>
+  <br>
+  <p>Đây là điều mà bạn cần phải nhớ khi quyết định dùng Resolvers:
+  </p>
+  <ul>
+    <li>Nếu Resolver không resolved, bạn sẽ không thể nhìn thấy component của mình được render. Do đó nếu bạn sử dụng
+      Observable, và Observable có thể không bao giờ complete thì bạn sẽ không thể navigate vào page được.</li>
+    <li>Không share giữa nhiều Resolvers với nhau.</li>
+  </ul>
+  <p>Ví dụ, giả sử chúng ta có một service và nó emit 5 giá trị mỗi lần như sau:
+  </p>
+  <pre>
+      <code>{{text5}}</code>
+  </pre>
+  <p>Nếu bạn sử dụng trong component thông thường, chúng sẽ hiển thị rất bình thường, nhưng trong Resolvers thì chỉ khi
+    nào Observable trả về bởi getArticleBySlug complete, lúc đó bạn mới navigate vào page được.</p>
+  <p>Do đó, đối với những stream trả về nhiều value, thì bạn không nên dùng cho Resolvers. Ví dụ như WebSocket chẳng
+    hạn.</p>
+  <p>Quan điểm của mình, thì chúng ta chỉ nên dùng Resolver để lấy về một phần dữ liệu, sau đó component sẽ thực thi
+    tiếp các connection khác.</p>
+  <br>
+</div>

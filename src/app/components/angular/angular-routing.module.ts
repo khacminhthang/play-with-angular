@@ -9,6 +9,9 @@ import { ContentChildComponent } from './content-child/content-child.component';
 import { ContentProjectionComponent } from './content-projection/content-projection.component';
 import { DataBindingComponent } from './data-binding/data-binding.component';
 import { DependenceInjectionComponent } from './dependence-injection/dependence-injection.component';
+import { GuardsAndResolversPart1Component } from './guards-and-resolvers-part1/guards-and-resolvers-part1.component';
+import { GuardsAndResolversPart2Component } from './guards-and-resolvers-part2/guards-and-resolvers-part2.component';
+import { GuardsAndResolversPart3Component } from './guards-and-resolvers-part3/guards-and-resolvers-part3.component';
 import { IntroDependenceInjectionComponent } from './intro-dependence-injection/intro-dependence-injection.component';
 import { IntroRxjsObservableComponent } from './intro-rxjs-observable/intro-rxjs-observable.component';
 import { LazyLoadComponent } from './lazy-load/lazy-load.component';
@@ -132,6 +135,18 @@ const angularRoutes: Routes = [
       {
         path: 'lazy-load',
         component: LazyLoadComponent
+      },
+      {
+        path: 'guards-and-resolvers-part1',
+        component: GuardsAndResolversPart1Component
+      },
+      {
+        path: 'guards-and-resolvers-part2',
+        component: GuardsAndResolversPart2Component
+      },
+      {
+        path: 'guards-and-resolvers-part3',
+        component: GuardsAndResolversPart3Component
       },
     ]
   }]
