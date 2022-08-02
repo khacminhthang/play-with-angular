@@ -38,6 +38,8 @@ import { LazyLoadComponent } from './lazy-load/lazy-load.component';
 import { GuardsAndResolversPart1Component } from './guards-and-resolvers-part1/guards-and-resolvers-part1.component';
 import { GuardsAndResolversPart2Component } from './guards-and-resolvers-part2/guards-and-resolvers-part2.component';
 import { GuardsAndResolversPart3Component } from './guards-and-resolvers-part3/guards-and-resolvers-part3.component';
+import { TemplateDrivenFormComponent } from './template-driven-form/template-driven-form.component';
+import { TemplateDrivenForm2Component } from './template-driven-form2/template-driven-form2.component';
 
 @NgModule({
   declarations: [
@@ -71,7 +73,9 @@ import { GuardsAndResolversPart3Component } from './guards-and-resolvers-part3/g
     LazyLoadComponent,
     GuardsAndResolversPart1Component,
     GuardsAndResolversPart2Component,
-    GuardsAndResolversPart3Component
+    GuardsAndResolversPart3Component,
+    TemplateDrivenFormComponent,
+    TemplateDrivenForm2Component
   ],
   entryComponents: [
     ToggleComponent

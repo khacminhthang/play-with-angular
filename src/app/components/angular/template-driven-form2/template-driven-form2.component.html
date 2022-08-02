@@ -1,0 +1,119 @@
+<div>
+  <h1 style="font-size: 3rem;">Template-driven Forms Trong Angular Part 2</h1>
+  <br>
+  <p>Như chúng ta đã tìm hiểu trong Day 33 thì forms là một thành phần khá quan trọng trong mỗi hệ thống cần thu thập
+    thông tin của người dùng. Vậy trong trường hợp người dùng nhập các thông tin đó không chính xác thì sao? Chúng ta có
+    cần kiểm tra tính đúng đắn của dữ liệu được nhập hay không? Câu trả lời cho vấn đề trên chính là việc validate data.
+    Ví dụ, người nhân viên ngân hàng khi nhận được form mở tài khoản của một người dùng, người tiếp viên đó sẽ phải kiểm
+    tra những thông tin như tên, ngày tháng năm sinh có chính xác như thông tin được in trên hộ chiếu (hoặc các giấy tờ
+    tương tự) hay không.</p>
+  <p>Vậy đối với Template-driven Forms Trong Angular thì sao, nó có giúp ích gì cho chúng ta - những lập trình viên - có
+    thể dễ dàng validate input data hay không?</p>
+  <p>Ví dụ đối với form Sign In dưới đây sẽ có khá nhiều chi tiết chúng ta cần/nên kiểm tra theo yêu cầu của từng
+    project cụ thể. Có thể là field username không được bỏ trống, có độ dài từ 6 đến 32 ký tự chẳng hạn.</p>
+  <br>
+
+  <!-- Angular Forms Validation -->
+  <span style="font-size: 2rem;" class="pb-0">Angular Forms Validation</span>
+  <div class="border-b1"></div>
+  <br>
+  <p>Lưu ý rằng, do Angular application là một frontend app, nên việc validation ở frontend khá dễ dàng để bypass, do đó
+    backend của các bạn sẽ luôn phải validate những dữ liệu gửi từ frontend lên, kể cả nó có được validate ở frontend
+    hay chưa. Backend phải tuyệt đối không tin tưởng vào dữ liệu từ nơi khác đến.
+  </p>
+  <p>Validation status cho một control sẽ bao gồm các status sau:</p>
+  <ul>
+    <li>touched: true nếu người dùng đã focus vào control (như là input, textarea, etc) rồi sau đó blur khỏi control đó.
+      Hoặc khi gọi markAsTouched.
+    </li>
+    <li>untouched: true nếu người dùng chưa đụng chạm gì đến control hoặc lần đầu tiên focus và chưa bị mất focus (ngược
+      lại với touched)</li>
+    <li>dirty: true nếu người dùng đã thay đổi value của control – nhập một ký tự vào input text chẳng hạn, kể cả việc
+      nhập vào rồi xóa đi thì cũng tính là đã thay đổi.</li>
+    <li>pristine: true nếu người dùng chưa thay đổi value của control, mặc dù có thể đã touched, nhưng chưa sửa đổi gì.
+    </li>
+  </ul>
+  <p>Với mỗi validation status như trên chúng ta sẽ có các CSS class tương ứng cho control/form. Bạn hoàn toàn có thể
+    style cho component dựa vào các class này.</p>
+  <ul>
+    <li>.ng-valid</li>
+    <li>.ng-invalid</li>
+    <li>.ng-pending</li>
+    <li>.ng-pristine</li>
+    <li>.ng-dirty</li>
+    <li>.ng-untouched</li>
+    <li>.ng-touched</li>
+  </ul>
+  <br>
+
+  <!--Template-driven Forms Validation-->
+  <span style="font-size: 2rem;" class="pb-0">Template-driven Forms Validation</span>
+  <div class="border-b1"></div>
+  <br>
+  <p>Angular Template-driven Forms có cung cấp sẵn một số directives cơ bản để thực hiện việc validation.</p>
+  <ul>
+    <li>required: Yêu cầu form control không được phép bỏ trống.</li>
+    <li>minlength: Yêu cầu form control phải có value có length ít nhất bằng một giá trị nào đó.</li>
+    <li>maxlength: Yêu cầu form control phải có value có length không vượt quá một giá trị nào đó.</li>
+    <li>pattern: Yêu cầu form control phải có value thỏa mãn một pattern nào đó (RegEx).</li>
+    <li>email: Yêu cầu form control phải có value thỏa mãn pattern của một email</li>
+  </ul>
+  <br>
+
+  <!--Validate Forms-->
+  <span style="font-size: 2rem;" class="pb-0">Validate Forms</span>
+  <div class="border-b1"></div>
+  <br>
+  <p>Đối với form Sign In như đã đề cập từ Day 33, giả sử theo dự án yêu cầu:</p>
+  <ul>
+    <li>Username không được bỏ trống, có độ dài từ 6 đến 32 ký tự, chỉ chứa ký tự alphabet.</li>
+    <li>Password không được bỏ trống, có độ dài từ 6 đến 32 ký tự, chỉ chưa các ký tự alphabet, digit, và phải chứa ít
+      nhất một ký tự đặc biệt trong list: !@#$%^&*.</li>
+  </ul>
+  <p>Với yêu cầu trên chúng ta sẽ làm thế nào để hiển thị cho người dùng biết khi họ nhập chưa chính xác.</p>
+  <pre>
+      <code>{{text1}}</code>
+  </pre>
+  <strong>Username input</strong>
+  <p>Chúng ta sẽ lần lượt thêm các directives vào để validate như sau:</p>
+  <br>
+  <pre>
+        <code>{{text2}}</code>
+    </pre>
+  <pre>
+    <code>{{text3}}</code>
+  </pre>
+  <p>Chỉ với việc thêm vào một số directives có sẵn, chúng ta đã có kết quả rất khả quan. Các bạn hãy để ý phần html bị
+    thay đổi khi typing như sau:</p>
+  <p>Nếu chúng ta muốn hiển thị message báo lỗi tùy thuộc vào từng loại lỗi thì sao? Điều này hoàn toàn có thể giải
+    quyết bằng cách lấy ra instance của ngModel, sau đó bạn có thể truy cập vào property errors như sau:</p>
+  <pre>
+      <code>{{text4}}</code>
+  </pre>
+  <p>Giờ đây chúng ta có thể sử dụng NgIf để hiển thị được lỗi tương ứng:</p>
+  <pre>
+    <code>{{text5}}</code>
+</pre>
+  <p>Nhưng khi chạy bạn sẽ thấy có một lỗi runtime như sau:</p>
+  <p>TypeError: Cannot read property 'required' of null at SignInComponent_Template (sign-in.component.html:17)</p>
+  <p>Điều này xảy ra vì ở thời điểm ban đầu khi control mới được khởi tạo, hoặc trong trường hợp control ở trạng thái
+    valid thì nó sẽ có errors là null, do đó chúng ta cần check null hoặc dùng safe navigation operator (trong template
+    của Angular component có operator đặc biệt này).</p>
+  <pre>
+      <code>{{text6}}</code>
+  </pre>
+  <p>Nếu bạn sử dụng Angular Material như ở trên, nó sẽ check một cách khá thông minh là khi người dùng touched rồi thì
+    nó mới hiển thị error message. Nên nếu bạn không sử dụng Angular Material thì bạn hoàn toàn có thể áp dụng tương tự
+    bằng cách check thêm điều kiện có touched/dirty hay chưa chẳng hạn.</p>
+  <pre>
+      <code>{{text7}}</code>
+  </pre>
+  <p>Giờ đây bạn sẽ có thể có những validation giúp UX được nâng cao hơn trước đây.</p>
+  <br>
+  <strong>Password input</strong>
+  <p>Tương tự như Username input, bạn cũng có thể làm cho Password input với cách thức như đã được đề cập.</p>
+  <pre>
+    <code>{{text8}}</code>
+</pre>
+  <br>
+</div>

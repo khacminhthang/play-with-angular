@@ -156,6 +156,22 @@ export const menuAngular = [
         "routerLink": "guards-and-resolvers-part3"
       },
     ]
+  },
+  {
+    "text": "Form",
+    "icon": "inventory_2",
+    "children": [
+      {
+        "text": "Template driven form",
+        "icon": "all_inbox",
+        "routerLink": "template-driven-form-1"
+      },
+      {
+        "text": "Template driven form part 2",
+        "icon": "all_inbox",
+        "routerLink": "template-driven-form-2"
+      },
+    ]
   }
 ];
 export const menuDotNetCore = [

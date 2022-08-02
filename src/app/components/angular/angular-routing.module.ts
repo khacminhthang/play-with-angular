@@ -26,6 +26,8 @@ import { RxjsFilteringOperatorsComponent } from './rxjs-filtering-operators/rxjs
 import { RxjsHoosComponent } from './rxjs-hoos/rxjs-hoos.component';
 import { RxjsSubjectComponent } from './rxjs-subject/rxjs-subject.component';
 import { StructureDirectiveComponent } from './structure-directive/structure-directive.component';
+import { TemplateDrivenFormComponent } from './template-driven-form/template-driven-form.component';
+import { TemplateDrivenForm2Component } from './template-driven-form2/template-driven-form2.component';
 import { TemplateVariableComponent } from './template-variable/template-variable.component';
 import { TransformationOperatorsComponent } from './transformation-operators/transformation-operators.component';
 import { TypescriptAdvTypeComponent } from './typescript-adv-type/typescript-adv-type.component';
@@ -147,6 +149,14 @@ const angularRoutes: Routes = [
       {
         path: 'guards-and-resolvers-part3',
         component: GuardsAndResolversPart3Component
+      },
+      {
+        path: 'template-driven-form-1',
+        component: TemplateDrivenFormComponent
+      },
+      {
+        path: 'template-driven-form-2',
+        component: TemplateDrivenForm2Component
       },
     ]
   }]
