@@ -40,6 +40,10 @@ import { GuardsAndResolversPart2Component } from './guards-and-resolvers-part2/g
 import { GuardsAndResolversPart3Component } from './guards-and-resolvers-part3/guards-and-resolvers-part3.component';
 import { TemplateDrivenFormComponent } from './template-driven-form/template-driven-form.component';
 import { TemplateDrivenForm2Component } from './template-driven-form2/template-driven-form2.component';
+import { ReactiveFormComponent } from './reactive-form/reactive-form.component';
+import { ReactiveForm2Component } from './reactive-form2/reactive-form2.component';
+import { AsyncValidatorComponent } from './async-validator/async-validator.component';
+import { DynamicComponentComponent } from './dynamic-component/dynamic-component.component';
 
 @NgModule({
   declarations: [
@@ -75,7 +79,11 @@ import { TemplateDrivenForm2Component } from './template-driven-form2/template-d
     GuardsAndResolversPart2Component,
     GuardsAndResolversPart3Component,
     TemplateDrivenFormComponent,
-    TemplateDrivenForm2Component
+    TemplateDrivenForm2Component,
+    ReactiveFormComponent,
+    ReactiveForm2Component,
+    AsyncValidatorComponent,
+    DynamicComponentComponent
   ],
   entryComponents: [
     ToggleComponent

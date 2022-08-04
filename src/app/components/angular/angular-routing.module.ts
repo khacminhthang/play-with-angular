@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { MainShellComponent } from 'src/app/layout/fragments/main-shell/main-shell.component';
 import { HomeComponent } from '../home/home.component';
+import { AsyncValidatorComponent } from './async-validator/async-validator.component';
 import { AttributeDirectiveComponent } from './attribute-directive/attribute-directive.component';
 import { ComponentInteractionP2Component } from './component-interaction-p2/component-interaction-p2.component';
 import { ComponentInteractionComponent } from './component-interaction/component-interaction.component';
@@ -9,6 +10,7 @@ import { ContentChildComponent } from './content-child/content-child.component';
 import { ContentProjectionComponent } from './content-projection/content-projection.component';
 import { DataBindingComponent } from './data-binding/data-binding.component';
 import { DependenceInjectionComponent } from './dependence-injection/dependence-injection.component';
+import { DynamicComponentComponent } from './dynamic-component/dynamic-component.component';
 import { GuardsAndResolversPart1Component } from './guards-and-resolvers-part1/guards-and-resolvers-part1.component';
 import { GuardsAndResolversPart2Component } from './guards-and-resolvers-part2/guards-and-resolvers-part2.component';
 import { GuardsAndResolversPart3Component } from './guards-and-resolvers-part3/guards-and-resolvers-part3.component';
@@ -17,6 +19,8 @@ import { IntroRxjsObservableComponent } from './intro-rxjs-observable/intro-rxjs
 import { LazyLoadComponent } from './lazy-load/lazy-load.component';
 import { NgTemplateComponent } from './ng-template/ng-template.component';
 import { PipeComponent } from './pipe/pipe.component';
+import { ReactiveFormComponent } from './reactive-form/reactive-form.component';
+import { ReactiveForm2Component } from './reactive-form2/reactive-form2.component';
 import { RouterPart2Component } from './router-part2/router-part2.component';
 import { RouterComponent } from './router/router.component';
 import { RxjsCombinationOperatorsComponent } from './rxjs-combination-operators/rxjs-combination-operators.component';
@@ -157,6 +161,22 @@ const angularRoutes: Routes = [
       {
         path: 'template-driven-form-2',
         component: TemplateDrivenForm2Component
+      },
+      {
+        path: 'reactive-form',
+        component: ReactiveFormComponent
+      },
+      {
+        path: 'reactive-form-2',
+        component: ReactiveForm2Component
+      },
+      {
+        path: 'async-validator',
+        component: AsyncValidatorComponent
+      },
+      {
+        path: 'dynamic-component',
+        component: DynamicComponentComponent
       },
     ]
   }]

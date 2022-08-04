@@ -1,0 +1,147 @@
+<div>
+  <h1 style="font-size: 3rem;">Reactive Forms Trong Angular</h1>
+  <br>
+  <p>Trong Day 33 và Day 34 chúng ta đã tìm hiểu về Template-driven Forms trong Angular. Ngoài cách tạo form như đã học,
+    Angular còn cung cấp cho chúng ta một dạng form khác khá mạnh mẽ đó là Reactive Forms hay Model-driven Forms.</p>
+  <p>Vậy dạng form này có gì khác biệt so với Template-driven Forms đã học, nó có thể tạo các form phức tạp được hay
+    không? Trong những ngày tới đây chúng ta sẽ cùng tìm hiểu để trả lời câu hỏi đó.</p>
+  <br>
+
+  <!-- Reactive Forms -->
+  <span style="font-size: 2rem;" class="pb-0">Reactive Forms</span>
+  <div class="border-b1"></div>
+  <br>
+  <p>Thuật ngữ Reactive Forms hay còn được gọi là Model-driven Forms, là một phương pháp để tạo form trong Angular,
+    phương pháp này tránh việc sử dụng các directive ví dụ như ngModel, required, etc, thay vào đó tạo các Object Model
+    ở trong các Component, rồi tạo ra form từ chúng. Một điều lưu ý đó là Template-driven Forms là async còn Reactive
+    Forms là sync.
+  </p>
+  <p>Trong Reactive Forms, chúng ta tạo toàn bộ form control tree ở trong code (khởi tạo ngay, khởi tạo trong
+    constructor, hoặc khởi tạo trong ngOnInit), nên có thể dễ dàng truy cập các phần tử của form ngay tức thì.</p>
+  <p>Form state ở trong Reactive Forms là immutable, mỗi sự thay đổi của form state sẽ đều tạo ra một state mới.</p>
+  <p>Reactive Forms sử dụng khá nhiều Observable streams, ví dụ như valueChanges, statusChanges chẳng hạn. Bạn hoàn toàn
+    có thể combine, manipulate stream đó như những Observable thông thường.
+  </p>
+  <p>Validation ở trên Reactive Forms cũng rất dễ dàng, nó chỉ là một function, và bạn hoàn toàn có thể thay đổi trong
+    khi application đang chạy.</p>
+  <br>
+
+  <!--Sign In Reactive Forms Component-->
+  <span style="font-size: 2rem;" class="pb-0">Sign In Reactive Forms Component</span>
+  <div class="border-b1"></div>
+  <br>
+  <p>Ví dụ như form Sign in chúng ta đã quen thuộc trong những ngày qua, làm thế nào để chúng ta tạo ra được một form
+    như thế?</p>
+  <p>Chúng ta sẽ tạo mới một component để tiến hành bài học:</p>
+  <br>
+  <pre>
+        <code>{{text1}}</code>
+    </pre>
+  <br>
+  <pre>
+          <code>{{text2}}</code>
+      </pre>
+  <p>Component của chúng ta sẽ có template như form từ những ngày đã qua.</p>
+  <pre>
+      <code>{{text3}}</code>
+    </pre>
+  <br>
+
+  <!--Integrate Angular Forms-->
+  <span style="font-size: 2rem;" class="pb-0">Integrate Angular Forms</span>
+  <div class="border-b1"></div>
+  <br>
+  <p>Để sử dụng được Reactive Forms ở trong ứng dụng, chúng ta cần imports một NgModule là ReactiveFormsModule vào
+    NgModule quản lý component của chúng ta - trong trường hợp của component hiện tại là AppModule.</p>
+  <br>
+  <pre>
+      <code>{{text4}}</code>
+  </pre>
+
+  <!--FormGroup, FormControl, FormArray-->
+  <span style="font-size: 2rem;" class="pb-0">FormGroup, FormControl, FormArray</span>
+  <div class="border-b1"></div>
+  <br>
+  <ul>
+    <li>AbstractControl đây là base class của 3 thành phần kể trên - chúng là các thành phần cơ bản của form.</li>
+    <li>FormControl là đơn vị nhỏ nhất của một form, dùng để track thông tin về value, validation của một form control
+      như là thông tin của một input, một checkbox, etc.</li>
+    <li>FormGroup là một tập hợp của các control/group/array (AbstractControl) khác. Dạng như một Object, nó có thể chứa
+      các value đơn lẻ, hoặc các Object khác.</li>
+    <li>FormArray cấu trúc dạng mảng, để quản lý các AbstractControl theo dạng mảng, dùng cho trường hợp cấu trúc có thể
+      thêm bớt phần tử một cách linh hoạt.</li>
+  </ul>
+  <p>Thông thường, mỗi một form sẽ bắt đầu bởi một FormGroup, nó sẽ đăng ký các AbstractControl khác bên trong nó.</p>
+  <p>Đối với Sign In form của chúng ta ở trên, chúng ta có thể khởi tạo nó như sau.</p>
+  <pre>
+        <code>{{text5}}</code>
+    </pre>
+  <br>
+
+  <!--Binding Form-->
+  <span style="font-size: 2rem;" class="pb-0">Binding Form</span>
+  <div class="border-b1"></div>
+  <br>
+  <p>Để binding giữa form model và template lại với nhau, chúng ta sẽ dùng directive [formGroup] như sau:</p>
+  <pre>
+    <code>{{text6}}</code>
+    </pre>
+  <br>
+  <p>Để binding các FormControl vào các form control như textbox, checkbox chúng ta sẽ dùng một directive đó là
+    formControlName. Đầu vào của nó sẽ là key mà chúng ta dùng để khai báo control trong FormGroup gần nhất:</p>
+  <pre>
+        <code>{{text7}}</code>
+    </pre>
+  <p>Như vậy, chỉ với một vài bước đơn giản, các bạn đã có thể có được form ưng ý.</p>
+  <br>
+
+
+  <!--FormBuilder Service-->
+  <span style="font-size: 2rem;" class="pb-0">FormBuilder Service</span>
+  <div class="border-b1"></div>
+  <br>
+  <p>Như các bạn có thể thấy là nếu form có số lượng control lớn mà cứ phải new như ở trên thì khá là vất vả. Vì thế
+    Angular Reactive Forms cung cấp luôn cho chúng ta một service là FormBuilder để các bạn có thể khởi tạo form nhanh
+    hơn.</p>
+  <p>Để sử dụng service này, bạn chỉ cần inject vào constructor là được.</p>
+  <pre>
+          <code>{{text8}}</code>
+      </pre>
+  <br>
+
+  <!--Cập nhật giá trị cho Reactive Forms qua pathValue hoặc setValue-->
+  <span style="font-size: 2rem;" class="pb-0">Cập nhật giá trị cho Reactive Forms qua pathValue hoặc setValue</span>
+  <div class="border-b1"></div>
+  <br>
+  <p>Có 2 phương thức để cập nhật giá trị cho form control được mô tả bởi class AbstractControl là setValue và
+    patchValue. Chúng là các abstract method, vậy nên các class dẫn xuất sẽ phải implement riêng cho chúng.</p>
+  <ul>
+    <li>Đối với class FormControl, không có gì khác biệt giữa 2 phương thức – thực chất patchValue gọi lại setValue.
+    </li>
+    <li>Đối với các class FormGroup và FormArray, patchValue sẽ cập nhật các giá trị được khai báo tương ứng trong
+      object value truyền vào. Nhưng setValue sẽ báo lỗi nếu một control nào bị thiếu hoặc thừa, tức là bạn phải truyền
+      chính xác object có cấu trúc giống như cấu trúc của form hay nói cách khác là không chấp nhận subset hoặc superset
+      của cấu trúc form hiện tại.</li>
+  </ul>
+  <p>Vậy nên nếu bạn muốn cập nhật một phần của form thì hãy dùng patchValue, nếu bạn muốn set lại tất cả và đảm bảo
+    không cái nào bị thiếu thì dùng setValue để tận dụng việc báo lỗi của nó.</p>
+  <p>Ngoài ra, còn có phương thức reset để bạn có thể reset lại trạng thái lúc khởi tạo của form hoặc control.</p>
+  <pre>
+      <code>{{text9}}</code>
+    </pre>
+  <br>
+
+  <!--Event Submit vs NgSubmit-->
+  <span style="font-size: 2rem;" class="pb-0">Event Submit vs NgSubmit</span>
+  <div class="border-b1"></div>
+  <br>
+  <p>Angular Reactive Forms cũng cung cấp event ngSubmit giống như Template-driven Forms, các bạn chỉ cần listen vào
+    event đó là được.</p>
+  <pre>
+                      <code>{{text10}}</code>
+                  </pre>
+  <pre>
+                      <code>{{text11}}</code>
+                  </pre>
+  <br>
+</div>

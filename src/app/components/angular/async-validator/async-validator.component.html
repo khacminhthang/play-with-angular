@@ -1,0 +1,159 @@
+<div>
+  <h1 style="font-size: 3rem;">Async Validator trong Angular Form</h1>
+  <br>
+  <p>Trong day 36, chúng ta đã tìm hiểu về validate reactive forms trong Angular, cũng như viết một custom validator đơn
+    giản để check xem input có dấu cách hay ko.</p>
+  <p>Day 37 này sẽ nó thêm về Async Validator trong Angular.</p>
+  <br>
+
+  <!-- Prerequisites -->
+  <span style="font-size: 2rem;" class="pb-0">Prerequisites</span>
+  <div class="border-b1"></div>
+  <br>
+  <p>Vi dụ hôm nay sẽ hơi khác ví dụ từ các bài trước, tuy vẫn có đôi chút quen thuộc.
+  </p>
+  <p>Mình sẽ build một form đăng kí user - registerForm bao gồm:</p>
+  <p>1. Username textbox</p>
+  <ul>
+    <li>Không được bỏ trống, có độ dài từ 6 đến 32 ký tự, chỉ chứa ký tự alphabet.</li>
+    <li>Giả sử như có username: trungvo, tieppt, chautran đã tồn tại trong hệ thống. Khi người dùng nhập một trong ba
+      user kể trên thì sẽ ko cho phép đăng kí.</li>
+  </ul>
+  <p>2. Password textbox
+  </p>
+  <ul>
+    <li>Không được bỏ trống, có độ dài từ 6 đến 32 ký tự, chỉ chưa các ký tự alphabet, digit, và phải chứa ít nhất một
+      ký tự đặc biệt trong list: !@#\$%^&\*</li>
+  </ul>
+  <p>3. Retype password</p>
+  <ul>
+    <li>Cùng yêu cầu như password kể trên.</li>
+    <li>Để đảm bảo chắc chắn user nhập đúng password. Giá trị của textbox này phải giống hệt giá trị textbox password ở
+      trên.</li>
+  </ul>
+  <p>Mình sẽ setup form như ở dưới nhé.</p>
+  <br>
+  <pre>
+      <code>{{text1}}</code>
+  </pre>
+  <p>Phần HTML của form sẽ có dạng như sau.</p>
+  <pre>
+    <code>{{text2}}</code>
+</pre>
+  <br>
+
+  <!--Custom Validators-->
+  <span style="font-size: 2rem;" class="pb-0">Custom Validators</span>
+  <div class="border-b1"></div>
+  <br>
+  <p>Dựa vào requirements, ta cần viết 2 custom validator:</p>
+  <p>1. Async validator để gọi API check xem username đã tồn tại trong hệ thống hay chưa</p>
+  <p>2. Sync validator để check xem password type lần hai có trùng khớp với password đầu tiên hay ko.</p>
+  <br>
+
+  <!--1. Async Validator để validate username-->
+  <span style="font-size: 2rem;" class="pb-0">1. Async Validator để validate username</span>
+  <div class="border-b1"></div>
+  <br>
+  <p>Để sử dụng được Reactive Forms ở trong ứng dụng, chúng ta cần imports một NgModule là ReactiveFormsModule vào
+    NgModule quản lý component của chúng ta - trong trường hợp của component hiện tại là AppModule.</p>
+  <p>Nhắc lại một chút về Async Validator. Đây là các validate function sẽ trả về Promise hoặc Observable. Ví dụ như bạn
+    muốn validate xem username nhập vào đã có trong hệ thống hay chưa. Thông thường bắt buộc bạn phải gửi một yêu cầu
+    lên server để làm việc này, HTTP request thường sẽ trả về Promise/Observable.</p>
+  <p>Vì ko có API nên mình sẽ mock một hàm để check username và sẽ trả về false nếu như input là một trong 3 giá trị:
+    trungvo, tieppt, chautran, nếu ko sẽ trả lại true. Mỗi khi validateUsername dc gọi mình cũng sẽ in ra console một
+    dòng text Trigger API call để tiện cho việc demo ở dưới.</p>
+  <pre>
+      <code>{{text3}}</code>
+    </pre>
+  <p>Giờ mình sẽ tiến hành viết custom async validator để validate username trùng khớp. Để viết đc một async validator,
+    các bạn có hai lựa chọn:</p>
+  <ul>
+    <li>Viết một function, nhận vào là một AbstractControl và output trả về dạng Promise ValidationErrors | null> |
+      Observable ValidationErrors | null>. Cả function sẽ có signature dạng validate(control: AbstractControl):
+      Promise ValidationErrors | null> | Observable ValidationErrors | null>.</li>
+    <li>Implement interface AsyncValidator, trong đó có định nghĩa sẵn là bạn phải implement function validate.</li>
+  </ul>
+  <strong>validateUserNameFromAPI</strong>
+  <p>Mình sẽ làm theo cách thứ nhất. Nếu làm theo cách thứ hai phải truyền thêm một số thông tin như API service vào
+    contructor khi khởi tạo async validator.</p>
+  <ul>
+    <li>Nếu API trả về là true, thì hàm validateUserNameFromAPI sẽ trả về null, tức là input này hoàn toàn ko có lỗi gì.
+    </li>
+    <li>Còn nếu API trả về false, thì hàm validateUserNameFromAPI sẽ trả về một object với data là bất cứ gì bạn muốn,
+      nhưng thông tin nên có giá trị một chút để sau này còn dùng hiển thị thông báo lỗi cho user chẳng hạn</li>
+  </ul>
+  <br>
+  <pre>
+    <code>{{text4}}</code>
+</pre>
+  <p>Sau khi viết xong function, chúng ta cần config control để sử dụng validator đó.</p>
+  <pre>
+    <code>{{text5}}</code>
+</pre>
+  <p>Tại sao phải có bind(this) thì đây là một chủ đề khá dài dòng 😂 Mình sẽ giải thích sau nhé.</p>
+  <p>Kết quả như hình dưới. Khi điền đủ 6 kí tự alpha, khi đó username đã pass toàn bộ sync validator thì async
+    validator sẽ đc trigger ngay sau khi bạn điền kí tự thứ 6. Sau đó, mỗi kí tự khi được nhập từ bàn phím vào sẽ
+    trigger một API lên server để validate, như ta đã thấy có console.log "Trigger API call".</p>
+  <strong>validateUserNameFromAPIDebounce</strong>
+  <p>Bạn có thấy screenshot có điểm nào quen quen ko? Use case khi điền vào searchbox ko trigger API call ngay lập tức
+    mà chỉ call API nếu như giữa hai keystroke cách nhau một khoảng thời gian, thường là 300ms. Chúng ta cũng có thể
+    implement behavior đó tương tự như dùng async validator. Sửa đoạn code ở trên có dùng timer như ở dưới:</p>
+  <pre>
+      <code>{{text6}}</code>
+      </pre>
+  <p>Sau đó config control để dùng validateUserNameFromAPIDebounce.</p>
+  <pre>
+    <code>{{text7}}</code>
+    </pre>
+  <p>Kết quả đây, sau khi đã type chautr đủ 6 kí tự. Mình sẽ type ba lăng nhăng và sau khi dừng ko type nữa thì API sẽ
+    được trigger sau 300ms, chứ ko phải sau mỗi keystroke.
+  </p>
+  <br>
+
+  <!--Chú ý!-->
+  <span style="font-size: 2rem;" class="pb-0">Chú ý!</span>
+  <div class="border-b1"></div>
+  <br>
+  <p>Ở form Register, sau khi mình đã điền đúng hai password và giờ mình mới điền username. Trong khoảng thời gian delay
+    1 giây khi async validator đang đợi kết quả kiểm trả từ API thì nút Register đã được enable trở lại. Nếu user nhanh
+    tay bấm Register thì ngSubmit vẫn dc trigger và bạn vẫn sẽ thực hiện phần phần code cho submit form. Sau 1 giây sau
+    khi đã validate xong, nếu username bị trùng lặp thì nút Register mới lại đc vô hiệu hóa.</p>
+  <br>
+  <p>Để chứng minh thì mình sẽ add thêm hàm onSubmit:</p>
+  <pre>
+      <code>{{text8}}</code>
+  </pre>
+  <p>Có thể thấy là mình vẫn bấm được nút Register trong khi đang validate username 😂 Để fix lỗi này thì mình có tham
+    khảo một câu trả lời trên stackoveflow.</p>
+  <p>Ý tưởng là thay vì ngSubmit sẽ trigger thẳng hàm submit, thay vào đó mình sẽ tạo ra một Subject tên là formSubmit$
+    và handle chỉ khi nào status của form chuyển thành VALID thì formSubmit$ mới emit một value, từ đó mới call hàm
+    submitForm.</p>
+  <pre>
+      <code>{{text8}}</code>
+  </pre>
+  <pre>
+    <code>{{text9}}</code>
+  </pre>
+  <p>Test thôi anh em. Như trong hình thì trong khoảng thời gian đang validate mà nút Register đc enable thì có bấm nút
+    cũng sẽ ko trigger hàm submitForm và ko có console hiện ra.</p>
+  <strong>2. Bonus: Validate confirm password</strong>
+  <p>Use case để validate confirm password trùng với password thì chúng ta chỉ cần viết một hàm custom validator đơn
+    giản hơn, nhưng hàm này vì cần value của 2 controls nên mình sẽ apply validator này cho formGroup nhé. Code của
+    function validateControlsValue sẽ như sau:</p>
+  <pre>
+      <code>{{text10}}</code>
+  </pre>
+  <ul>
+    <li>Mình tạo ra hàm validateControlsValue và truyền vào tên của 2 controls. Function này sẽ return lại một function
+      làm nhiệm vụ validate.</li>
+    <li>Function validate sẽ nhận vào một formGroup và get value từ hai control.</li>
+    <li>Nếu hai control này có giá trị giống nhau thì return null, tức là ko có lỗi. Nếu ko sẽ return một object thông
+      báo lỗi để dựa vào đó ta có thể hiển thị lên UI.</li>
+  </ul>
+  <p>Sau đó mình apply validator này vào form group.</p>
+  <pre>
+    <code>{{text11}}</code>
+</pre>
+  <br>
+</div>

@@ -1,0 +1,130 @@
+<div>
+  <h1 style="font-size: 3rem;">Reactive Forms Part 2</h1>
+  <br>
+  <p>Trong day 35, chúng ta đã tìm hiểu về Reactive Forms trong Angular. Day 36 chúng ta sẽ nói thêm về validate input
+    của Reactive Forms.</p>
+  <br>
+
+  <!-- Prerequisites -->
+  <span style="font-size: 2rem;" class="pb-0">Prerequisites</span>
+  <div class="border-b1"></div>
+  <br>
+  <p>SignIn form mình sẽ tạo bằng FormBuilder cho ngắn gọn như ví dụ trước. Sẽ có hai textbox là username/password và
+    một checkbox.
+  </p>
+  <br>
+  <pre>
+        <code>{{text1}}</code>
+    </pre>
+  <p>Phần HTML của form sẽ có dạng như sau.</p>
+  <br>
+  <pre>
+          <code>{{text2}}</code>
+      </pre>
+
+  <ul>
+    <li>Đầu tiên, set formGroup input của thẻ form tới signInForm mình đã tạo bằng FormBuilder</li>
+    <li>Với mỗi control của form, thêm directive formControlName tới phần key của signInForm. Bởi vì input là string và
+      ko có auto suggestion nên các bạn chú ý điền đúng giá trị và có phân biệt chữ hoa chữ thường. Ví dụ nếu trong form
+      setup là username mà set formControlName="userName" thì sẽ ko chạy nhé.</li>
+  </ul>
+  <br>
+
+  <!--Yêu cầu validate data-->
+  <span style="font-size: 2rem;" class="pb-0">Yêu cầu validate data</span>
+  <div class="border-b1"></div>
+  <br>
+  <p>Như trong ví dụ của day 34, giả sử chúng ta có yêu cầu như sau:</p>
+  <ul>
+    <li>Username không được bỏ trống, có độ dài từ 6 đến 32 ký tự, chỉ chứa ký tự alphabet.</li>
+    <li>Password không được bỏ trống, có độ dài từ 6 đến 32 ký tự, chỉ chưa các ký tự alphabet, digit, và phải chứa ít
+      nhất một ký tự đặc biệt trong list: !@#\$%^&\*.</li>
+  </ul>
+  <br>
+
+  <!--Validate Forms with Reactive Forms-->
+  <span style="font-size: 2rem;" class="pb-0">Validate Forms with Reactive Forms</span>
+  <div class="border-b1"></div>
+  <br>
+  <p>Bởi vì với Reactive Forms, chúng ta set up form ở trong component và từ đó link đến phần template HTML. Nên phần
+    validators thay vì dùng các attribute trên template như template form có nói trong day 34, phần code này sẽ được
+    định nghĩa khi bạn setup form thông qua FormBuilder. Phần validate này sẽ đều là các function.</p>
+
+  <strong>Validator functions</strong>
+  <p>Có 2 loại validator function:</p>
+  <strong>1. Sync validators (đồng bộ)</strong>
+  <p>Đây là các function để validate thường gặp, sẽ nhận đầu vào là một form control và trả về:</p>
+  <ul>
+    <li>Một danh sách các validation errors.</li>
+    <li>Hoặc null tức là control này ko có lỗi gì.</li>
+  </ul>
+  <p>Ví dụ như input cần có độ dài tối thiểu là 6, thì function validate khi nhận control đầu vào sẽ check ngay giá trị
+    của control đó xem có đủ độ dài hay ko, đơn giản như control.value.length 6 ? "notValid" : "input too short!" }
+    : null</p>
+  <p>Khi khởi tạo FormControl thì Sync validators sẽ được truyền vào ở argument số 2. Argument số 1 sẽ là giá trị mặc
+    định khi khởi tạo form nhé.</p>
+  <pre>
+      <code>{{text3}}</code>
+    </pre>
+  <strong>2. Async validators (bất đồng bộ)</strong>
+  <p>Đây là các validate function sẽ trả về Promise hoặc Observable. Ví dụ như bạn muốn validate xem username nhập vào
+    đã có trong hệ thống hay chưa. Thì bắt buộc bạn phải gửi một yêu cầu lên server để làm việc này, HTTP request thường
+    sẽ trả về Promise/Observable.</p>
+  <p>Khi khởi tạo FormControl thì async validators sẽ được truyển vào ở argument số 3.</p>
+  <pre>
+    <code>{{text4}}</code>
+</pre>
+  <strong>Implement validate function</strong>
+  <p>Angular có cung cấp một set các validate function trong class Validators, cụ thể:</p>
+  <pre>
+    <code>{{text5}}</code>
+</pre>
+  <p>Mình sẽ cần dùng Validators.required, Validators.minLength và Validators.pattern cho yêu cầu như đã nói kể trên.
+    Phần code khởi tạo form với validators sẽ trông như sau.</p>
+  <pre>
+      <code>{{text6}}</code>
+  </pre>
+  <p>Mình dùng Validators.compose và truyển vào một mảng các validators để có thể kết hợp được nhiều loại validators với
+    nhau. Pattern cho username và password mình copy từ code của anh Tiệp trong Day 34 nhé, có gì cứ blame anh ấy 😂.
+  </p>
+  <p>Cú pháp khi khởi tạo FormControl trong form group bằng FormBuilder sẽ hơi khác, thay vì 3 argument riêng biệt thì
+    bạn sẽ truyền vào một mảng có 3 phần tử, đầu tiên là giá trị mặc định, thứ 2 là sync validator và cuối cùng là async
+    validator.</p>
+  <p>Kết quả thì như ở dưới, mình show trên UI phần error để các bạn dễ hình dung. Dưới đây là requirement như trong
+    screenshot.</p>
+  <ul>
+    <li>Username: Nếu điền dưới 6 sẽ báo lỗi, hoặc bỏ trống, hoặc có số, hoặc điền kí tự đặc biệt.</li>
+    <li>Password: Nếu ko có kí tự đặc biệt hoặc dưới 6 kí tự sẽ báo lỗi.</li>
+    <li>Nút Sign in chỉ đc enable nếu form valid.</li>
+  </ul>
+
+  <strong>Your first custom validator</strong>
+  <p>Các bạn để ý là Validators.require chỉ check là input có value thì validator này sẽ trả về null, tức là control đã
+    valid. Nếu bạn thử điền chỉ toàn dấu cách thì control này cũng sẽ được pass Validators.require.</p>
+  <p>Như ví dụ ở trên thì sau khi mình điền đủ 6 kí tự khoảng trắng, thì Validators.required và Validators.minLength đã
+    pass. Nhưng vì có Validators.pattern nên control vẫn invalid. Ví dụ bây giờ username sẽ cho phép điền toàn bộ kí tự.
+    Để minh họa thì mình sẽ tạm bỏ Validators.pattern(/^[a-z]6,32}$/i) đi nhé.</p>
+  <pre>
+      <code>{{text6}}</code>
+  </pre>
+  <p>Bây giờ khi điền dủ 6 dấu cách thì input đã pass validators!</p>
+  <p>Để xử lý trường hợp trên mà ko dùng thêm tới Validators.pattern(/^[a-z]6,32}$/i), mình sẽ viết một custom
+    validator có tên là</p>
+  <pre>
+      <code>{{text7}}</code>
+  </pre>
+  <p>Phần code khá đơn giản</p>
+  <ul>
+    <li>1. Lấy giá trị của control</li>
+    <li>2. Check xem nếu giá trị là số (vì bạn có thể dùng ở input type="number") thì convert giá trị đó sang string.
+    </li>
+    <li>3. Check độ dài của string sau khi đã trim, nếu độ dài vẫn băng 0 thì chắc chắn input chỉ toàn dấu cách.</li>
+    <li>4. Dựa vào đó và return lại errors hay null.</li>
+  </ul>
+  <p>Giờ thì mình sẽ bỏ Validators.required và thay bằng NoWhitespaceValidator.</p>
+  <pre>
+    <code>{{text9}}</code>
+</pre>
+  <p>Test thử thì thấy hoạt động khá mượt mà như ý muốn. Vậy là đã xong custom validator đầu tiên rồi đấy 😂</p>
+  <br>
+</div>

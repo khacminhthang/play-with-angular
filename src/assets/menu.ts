@@ -171,6 +171,32 @@ export const menuAngular = [
         "icon": "all_inbox",
         "routerLink": "template-driven-form-2"
       },
+      {
+        "text": "Reactive Forms",
+        "icon": "all_inbox",
+        "routerLink": "reactive-form"
+      },
+      {
+        "text": "Reactive Forms 2",
+        "icon": "all_inbox",
+        "routerLink": "reactive-form-2"
+      },
+      {
+        "text": "Async Validator",
+        "icon": "all_inbox",
+        "routerLink": "async-validator"
+      }
+    ]
+  },
+  {
+    "text": "Other",
+    "icon": "inventory_2",
+    "children": [
+      {
+        "text": "Dynamic Component",
+        "icon": "all_inbox",
+        "routerLink": "dynamic-component"
+      },
     ]
   }
 ];
