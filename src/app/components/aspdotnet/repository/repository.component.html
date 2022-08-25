@@ -1,0 +1,40 @@
+<div>
+  <h1 style="font-size: 3rem;">Tìm hiểu về Repository Pattern và Generic Repository Pattern</h1>
+  <br>
+  <p>Nhiều khi dự án đòi hỏi chúng ta phải định nghĩa các nghiệp vụ giữa tầng business(Business Service Layer) và tầng
+    truy xuất dữ liệu (DAL). Những logic đó có thể được định nghĩa sử dụng Repository Pattern. Về cơ bản Repository là
+    một lớp trung gian giữa hai tầng này. Trong project sử dụng Entity Framework với ASP.NET MVC thì Data chính là tầng
+    chứa các lớp dbContext và class enttiy. Còn business logic chính là tầng xử lý nghiệp vụ của dự án. Repository hầu
+    hết được sử dụng những chỗ cần điều chỉnh dữ liệu trước khi truyền xuống tầng data hoặc truyền lên trên business
+    logic.</p>
+  <br>
+
+  <!-- Prerequisites -->
+  <span style="font-size: 2rem;" class="pb-0">Lợi ích của việc sử dụng Repository Pattern</span>
+  <div class="border-b1"></div>
+  <br>
+  <p>1. Tập trung hóa được các logic về xử lý dữ liệu hoặc business logic.
+  </p>
+  <p>2. Dễ dàng unit test
+  </p>
+  <p>3. Đưa ra kiến trúc linh hoạt
+  </p>
+  <p>4. Khi thay đổi logic của tầng data hoặc business logic, không cần thay đổi Repository
+  </p>
+  <br>
+
+  <!-- Generic Repository Pattern  -->
+  <span style="font-size: 2rem;" class="pb-0">Lợi ích của việc sử dụng Repository Pattern</span>
+  <div class="border-b1"></div>
+  <br>
+  <p>Trong các trường hợp khác, dự án lại đòi hỏi một cách tốt nhất để tạo ra tất cả các repository logic ở cùng một
+    nơi. Chúng ta cần tạo 1 và chỉ 1 repository cho việc thao tác với toàn bộ các class entity. Vậy để giải quyết điều
+    này chúng ta phải sử dụng Generic Repository Pattern.
+  </p>
+  <strong>Lợi ích của Generic Repository Pattern:</strong>
+  <p>1. Giảm thiểu sự trùng lặp code</p>
+  <p>2. Đảm bảo các coder dùng chung 1 pattern</p>
+  <p>3. Ít lỗi hơn</p>
+  <p>4. Dễ dàng bảo trì sau này</p>
+  <br>
+</div>

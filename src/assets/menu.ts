@@ -201,7 +201,22 @@ export const menuAngular = [
   }
 ];
 export const menuDotNetCore = [
-
+  {
+    "text": "design pattern",
+    "icon": "inventory_2",
+    "children": [
+      {
+        "text": "Repository",
+        "icon": "all_inbox",
+        "routerLink": "repository"
+      },
+      {
+        "text": "Unit of work",
+        "icon": "all_inbox",
+        "routerLink": "unit-of-work"
+      },
+    ]
+  }
 ];
 
 export const menuCSharp = [

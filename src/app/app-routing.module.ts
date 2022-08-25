@@ -16,6 +16,11 @@ const routes: Routes = [
     path: 'csharp',
     loadChildren: () =>
       import("src/app/components/csharp/csharp.module").then((m) => m.CsharpModule),
+  },
+  {
+    path: 'dotnetcore',
+    loadChildren: () =>
+      import("src/app/components/aspdotnet/aspdotnet.module").then((m) => m.AspdotnetModule),
   }
 ]
 
