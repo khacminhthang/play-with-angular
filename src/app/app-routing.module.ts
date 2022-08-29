@@ -21,6 +21,11 @@ const routes: Routes = [
     path: 'dotnetcore',
     loadChildren: () =>
       import("src/app/components/aspdotnet/aspdotnet.module").then((m) => m.AspdotnetModule),
+  },
+  {
+    path: 'efcore',
+    loadChildren: () =>
+      import("src/app/components/efcore/efcore.module").then((m) => m.EFCoreModule),
   }
 ]
 

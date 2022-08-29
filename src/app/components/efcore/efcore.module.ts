@@ -12,6 +12,8 @@ import { InstallComponent } from './install/install.component';
 import { ExistingDatabaseComponent } from './existing-database/existing-database.component';
 import { DbContextComponent } from './db-context/db-context.component';
 import { QueryingComponent } from './querying/querying.component';
+import { SavingDataComponent } from './saving-data/saving-data.component';
+import { ConventionsComponent } from './conventions/conventions.component';
 
 @NgModule({
   declarations: [
@@ -19,7 +21,9 @@ import { QueryingComponent } from './querying/querying.component';
     InstallComponent,
     ExistingDatabaseComponent,
     DbContextComponent,
-    QueryingComponent
+    QueryingComponent,
+    SavingDataComponent,
+    ConventionsComponent
   ],
   imports: [
     CommonModule,

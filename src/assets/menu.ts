@@ -219,6 +219,44 @@ export const menuDotNetCore = [
   }
 ];
 
+export const menuEFCore = [
+  {
+    "text": "Intro",
+    "icon": "inventory_2",
+    "routerLink": "intro"
+  },
+  {
+    "text": "Install",
+    "icon": "inventory_2",
+    "routerLink": "install"
+  },
+  {
+    "text": "Existing Database",
+    "icon": "inventory_2",
+    "routerLink": "existing-database"
+  },
+  {
+    "text": "DbContext",
+    "icon": "inventory_2",
+    "routerLink": "dbcontext"
+  },
+  {
+    "text": "Querying",
+    "icon": "inventory_2",
+    "routerLink": "querying"
+  },
+  {
+    "text": "Saving Data",
+    "icon": "inventory_2",
+    "routerLink": "saving-data"
+  },
+  {
+    "text": "Conventions",
+    "icon": "inventory_2",
+    "routerLink": "conventions"
+  },
+];
+
 export const menuCSharp = [
   {
     "text": "Basic",
