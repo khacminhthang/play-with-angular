@@ -1,144 +1,110 @@
 <div>
   <h1 style="font-size: 3rem;">Querying in Entity Framework Core</h1>
   <br>
-  <p>The DbContext class is an integal part of Entity Framework. An instance of DbContext represents a sesssion with the
-    database which can be used to query and save instances of your entities to a database. DbContext is a combination of
-    the Unit Of Work and Repository patterns.
+  <p>Querying in Entity Framework Core remains the same as in EF 6.x, with more optimized SQL queries and the ability to
+    include C#/VB.NET functions into LINQ-to-Entity queries
   </p>
-  <p>DbContext in EF Core allows us to perform following tasks:</p>
-  <p>1. Manage database connection</p>
-  <p>2. Configure model & relationship</p>
-  <p>3. Querying database</p>
-  <p>4. Saving data to the database</p>
-  <p>5. Configure change tracking</p>
-  <p>6. Caching</p>
-  <p>7. Transaction management</p>
   <br>
 
-  <p>To use DbContext in our application, we need to create the class that derives from DbContext, also known as context
-    class.
-    This context class typically includes DbSet TEntity> properties for each entity in the model.
-  </p>
-
-  <!-- DbContext Methods  -->
-  <span style="font-size: 2rem;" class="pb-0">DbContext Methods</span>
+  <!-- C#/VB.NET Functions in Queries  -->
+  <span style="font-size: 2rem;" class="pb-0">C#/VB.NET Functions in Queries</span>
   <div class="border-b1"></div>
-  <table>
-    <thead>
-      <th>Method</th>
-      <th>Usage</th>
-    </thead>
-    <tbody>
-      <tr>
-        <td>Add</td>
-        <td>Adds a new entity to DbContext with Added state and start tracking it. This new entity data will be inserted
-          into the database when SaveChanges() is call</td>
-      </tr>
-      <tr>
-        <td>AddAsync</td>
-        <td>Asynchronous method for adding a new entity to DbContext with Added state and starts tracking it. This new
-          entity data will be inserted into database when SaveChangesAsync() is called.</td>
-      </tr>
-      <tr>
-        <td>AddRange</td>
-        <td>Adds a collection of new entities to DbContext with Added state and starts tracking it. This new entity data
-          will be inserted into database whrn SaveChanges() is called.</td>
-      </tr>
-      <tr>
-        <td>AddRangeAsync</td>
-        <td>Asynchronous method for adding a collection of new entities which will be saved on SaveChangesAsync() is
-          called.</td>
-      </tr>
-      <tr>
-        <td>Attach</td>
-        <td>Attaches a new or existing entity to DbContext with Unchanged state and starts tracking it.</td>
-      </tr>
-      <tr>
-        <td>AttachRange</td>
-        <td>Attches a collection of new or existing entities to DbContext with Unchanged state and starts tracking it.
-        </td>
-      </tr>
-      <tr>
-        <td>Entry</td>
-        <td>Gets an EntityEntry for the given entity. The entry provides access to change tracking information and
-          operations for the entites.</td>
-      </tr>
-      <tr>
-        <td>Find</td>
-        <td>Find an Entity with the given primary key values</td>
-      </tr>
-      <tr>
-        <td>FindAsync</td>
-        <td>Asynchronous method for finding an entity with the given primary key values.</td>
-      </tr>
-      <tr>
-        <td>Remove</td>
-        <td>Sets Deleted state to the specified entity which will delete the data when SaveChanges() is called.</td>
-      </tr>
-      <tr>
-        <td>RemoveRange</td>
-        <td>Sets Deleted state to a collection of entities which will delete the data in a single DB round trip when
-          SaveChanges() is called.</td>
-      </tr>
-      <tr>
-        <td>SaveChanges</td>
-        <td>Execute INSERT, UPDATE or DELETE command to the database for the entities with Added, Modified or Deleted
-          state.</td>
-      </tr>
-      <tr>
-        <td>SaveChangesAsync</td>
-        <td>Asynchronous method of SaveChanges()</td>
-      </tr>
-      <tr>
-        <td>Set</td>
-        <td>Creates a DbSet TEntity> that can be used to query and save instances of TEntity</td>
-      </tr>
-      <tr>
-        <td>Update</td>
-        <td>Attaches disconnected entity with Modified state and start tracking it. The data will be saved when
-          SaveChanges() is called.</td>
-      </tr>
-      <tr>
-        <td>UpdateRange</td>
-        <td>Attaches a collection of disconnected entities with Modified state and start tracking it. The data will be
-          saved when SaveChanes() is called</td>
-      </tr>
-      <tr>
-        <td>OnConfiguring</td>
-        <td>Override this method to configure the database (and other options) to be used for this context. This method
-          is called for each instance of the context that is created</td>
-      </tr>
-      <tr>
-        <td>OnModelCreating</td>
-        <td>Override this method to further configure the model that was discovered by convention from the entity types
-          exposed in DbSet TEntity> properties on your derived context</td>
-      </tr>
-    </tbody>
-  </table>
+  <p>EF Core has a new feature in LINQ-to-Entities where we can include C# or VB.NET functions in the query. This was
+    not possible in EF 6.</p>
+  <pre>
+      {{text1}}
+    </pre>
+  <p>In the above L2E query, we have included the GetName() C# function in the Where clause. This will execute the
+    following query in the database</p>
+  <pre>
+      {{text2}}
+    </pre>
   <br>
 
-  <!-- DbContext Methods  -->
-  <span style="font-size: 2rem;" class="pb-0">DbContext Methods</span>
+  <!-- Eager Loading
+  -->
+  <span style="font-size: 2rem;" class="pb-0">Eager Loading
+  </span>
   <div class="border-b1"></div>
-  <table>
-    <thead>
-      <th>Method</th>
-      <th>Usage</th>
-    </thead>
-    <tbody>
-      <tr>
-        <td>ChangeTracker</td>
-        <td>Provides access to information and operations for entity instances this context is tracking</td>
-      </tr>
-      <tr>
-        <td>Database</td>
-        <td>Provides access to database related information and operations for this context</td>
-      </tr>
-      <tr>
-        <td>Model</td>
-        <td>Returns the metadata about the shape of entities, the relationship between them, and how they map to the
-          database</td>
-      </tr>
-    </tbody>
-  </table>
+  <p>Entity Framework Core supports eager loading of related entities, same as EF 6, using the Include() extension
+    method and projection query. In addition to this. it also provides the ThenInclude() extension method to load
+    multiple levels of related entities.</p>
+
+  <!-- Include
+  -->
+  <span style="font-size: 2rem;" class="pb-0">Include
+  </span>
+  <div class="border-b1"></div>
+  <p>Unlike EF 6, we can spectify a lambda expression as a parameter in the Include() method to specify a navigation
+    property as shown below.</p>
+  <pre>
+      {{text3}}
+    </pre>
+  <p>In the above example, .Include(s=> s.Grade) passes the lambda expression s=> s.Grade to specify a reference
+    property to be loaded with Student entity data from the database in a single SQL query.
+    The above query executes the following SQL query in the database</p>
+  <pre>
+      {{text4}}
+    </pre>
+  <p>We can also spectify property name as a string in the Include() method, same as in EF 6.</p>
+  <pre>
+    {{text5}}
+  </pre>
+  <p>The example above is not recommend because it will throw a runtime exception if a property name is misspelled or
+    does not exist. Always use the Include() method with a lambda expression, so that the error can be detected during
+    complie time.</p>
+  <p>The Include() extention method can also be used after the FromSql() method, as showm below</p>
+  <pre>
+    {{text6}}
+  </pre>
+  <strong>Note:</strong>
+  <p>The Include() extension method cannot be used after the DbSet.Find() method. E.g.
+    context.Students.Find(1).Include() is not possible in EF Core 2.0. This may be possible in future versions.</p>
+
+  <!-- Multiple Include -->
+  <span style="font-size: 2rem;" class="pb-0">Multiple Include
+  </span>
+  <div class="border-b1"></div>
+  <p>Use the Include() method multiple times to load multiple navigation properties of the same entity. For example, the
+    following code loads Grade and StudentCourses related entities of Student</p>
+  <pre>
+      {{text7}}
+    </pre>
+  <p>The above query will execute two SQL queries in a single database round trip.</p>
+  <pre>
+    {{text8}}
+  </pre>
+
+  <!-- ThenInclude -->
+  <span style="font-size: 2rem;" class="pb-0">ThenInclude
+  </span>
+  <div class="border-b1"></div>
+  <p>EF Core introduced the new ThenInclude() extension method to load multiple levels of related entities. Consider the
+    following example</p>
+  <pre>
+    {{text9}}
+  </pre>
+  <p>In the above example, .Include(s=> s.Grade) will load the Grade reference navigation property of the Student
+    entity.
+    ThenInclude(g => g.Teachers) will load the Teacher collection property of the Grade entity. The ThenInclude method
+    must be called after the Include method. The above will execute the following SQL queries in the database
+  </p>
+  <pre>
+    {{text10}}
+  </pre>
+
+  <!-- Projection Query -->
+  <span style="font-size: 2rem;" class="pb-0">Projection Query
+  </span>
+  <div class="border-b1"></div>
+  <p>We can also load multiple related entities by using the projection query instead of Include() or ThenInclude()
+    methods. The following example demonstrates the projection query to load the Student, Grade, and Teacher entities
+  </p>
+  <pre>
+    {{text11}}
+  </pre>
+  <p>In the above example, the .Select extension methof is used to include the Student, Grade, and Teacher entities in
+    the result.
+    This will execute the same SQL query as the above ThenInclude() method.
+  </p>
 </div>
