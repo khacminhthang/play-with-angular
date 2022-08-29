@@ -1,0 +1,78 @@
+<div>
+  <h1 style="font-size: 3rem;">Entity Framework Core</h1>
+  <br>
+  <p>Entity Framework core is the new version of Entity Framework after EF 6.x. It is open-source, lightweight,
+    extensible and a cross-platform version of Entity Framework data access technology.</p>
+  <p>Entity Framework is an Object/Relational Mapping (OR/M) framework. It is an enhancament to ADO.NET that gives
+    developers an automated mechanism for accessing & storing the data in the database</p>
+  <p>EF Core is intended to be used with .NET Core applications. However, it can also be used with standard .NET 4.5 +
+    framwork based applications.</p>
+  <br>
+
+  <!-- EF Core Development Approaches -->
+  <span style="font-size: 2rem;" class="pb-0">EF Core Development Approaches</span>
+  <div class="border-b1"></div>
+  <br>
+  <p>EF Core supports two development approachs 1, Code Frist 2, Database First. EF Core mainly targets the code-first
+    approach and provides little support for the database-first approch because the visual designer or wizard for DB
+    model is not supported as of EF Core 2.0</p>
+  <p>In the code-first approach, EF Core API creates the database and tables using migration based on the conventions
+    and configuration provided in your domain classes. This approach is useful in Domain Driven Design (DDD).</p>
+  <p>In the Database First approach, EF Core creats the domain and context classes based on your existing database using
+    EF Core commands. This has limited support in EF Core as It does not support visual designer or wizard</p>
+  <br>
+
+  <!-- EF Core vs EF 6  -->
+  <span style="font-size: 2rem;" class="pb-0">EF Core vs EF 6</span>
+  <div class="border-b1"></div>
+  <p>Entity Framework Core is the new and improved version of Entity Framework for .NET Core applications. EF Core is
+    new, so still not as mature as EF 6.</p>
+  <p>EF Core continues to support the following features and concepts, same as EF 6</p>
+  <p>1. DbContext & DbSet</p>
+  <p>2. Data Model</p>
+  <p>3. Querying using Linq-to-Entities</p>
+  <p>4. Change Tracking</p>
+  <p>5. SaveChanges</p>
+  <p>6. Migrations</p>
+  <br>
+
+  <!-- EF Core Database Providers  -->
+  <span style="font-size: 2rem;" class="pb-0">EF Core Database Providers</span>
+  <div class="border-b1"></div>
+  <p>Etity Framework Core uses a provider model to access many different databases. EF Core includes providers as NuGet
+    packages which you need to install</p>
+  <p>The following table lists database providers and NuGet packages for EF Core.</p>
+  <table>
+    <thead>
+      <th>Database</th>
+      <th>NuGet Package</th>
+    </thead>
+    <tbody>
+      <tr>
+        <td>SQL Server</td>
+        <td>Microsoft.EntityFrameworkCore.SqlServer</td>
+      </tr>
+      <tr>
+        <td>MySQL</td>
+        <td>MySql.Data.EntityFrameworkCore</td>
+      </tr>
+      <tr>
+        <td>PostgreSQL</td>
+        <td>Npgsql.EntityFrameworkCore.PostgreSQL</td>
+      </tr>
+      <tr>
+        <td>SQLite</td>
+        <td>Microsoft.EntityFrameworkCore.SQLite</td>
+      </tr>
+      <tr>
+        <td>SQL Compact</td>
+        <td>EntityFrameworkCore.SqlServerCompact40</td>
+      </tr>
+      <tr>
+        <td>In-memory</td>
+        <td>Microsoft.EntityFrameworkCore.InMemory</td>
+      </tr>
+    </tbody>
+  </table>
+  <br>
+</div>

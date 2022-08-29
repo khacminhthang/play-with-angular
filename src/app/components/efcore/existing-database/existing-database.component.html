@@ -1,0 +1,31 @@
+<div>
+  <h1 style="font-size: 3rem;">Creating a Model for an Existing Database in Entity Framework Core</h1>
+  <br>
+  <p>Here you will learn how to create the context and entity classes for an existing database in Entity Framework Core.
+    Creating entity & context classes for an existing database is called Database-First approach.
+  </p>
+  <p>EF Core does not support visual designer for DB model and wizard to create the entity and context classes similar
+    to EF 6. So we need to do reserve engineering using the Scafford-DBContext command. This reverse engineering command
+    creates entity and context classes(by deriving DbContext) based on schema of existing database.</p>
+  <p>1. EF Core DB provider</p>
+  <p>2. EF Core tools</p>
+  <p>EF Core is intended to be used with .NET Core applications. However, it can also be used with standard .NET 4.5 +
+    framwork based applications.</p>
+  <br>
+
+  <!-- Scaffold-DbContext Command  -->
+  <span style="font-size: 2rem;" class="pb-0">Scaffold-DbContext Command</span>
+  <div class="border-b1"></div>
+  <p></p>
+  <p>Use Scaffold-DbContext to create a model based on your existing database. The following parameters can be specified
+    with Scaffold-DbContext in Pakage Manager Console:
+  </p>
+  <p>Scaffold-DbContext [-Connection] [-Provider] [-OutputDir] [-Context] [-Schemas>] [-Table>]
+    [-DataAnnotations] [-Force] [-Project] [-StartupProject] [CommonParameters]
+  </p>
+  <p>In Visual Studio, select menu Tools -> NuGet Package Manger -> Package Manager Console and run the following
+    command:</p>
+  <p>Scaffold-DbContext "Server=.\SQLExpress;Database=SchoolDB;Trusted_Connection=True;"
+    Microsoft.EntityFrameworkCore.SqlServer -OutputDir Models</p>
+  <br>
+</div>
