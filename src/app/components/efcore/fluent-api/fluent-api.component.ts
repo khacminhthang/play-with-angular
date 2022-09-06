@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-configurations',
-  templateUrl: './configurations.component.html',
-  styleUrls: ['./configurations.component.css']
+  selector: 'app-fluent-api',
+  templateUrl: './fluent-api.component.html',
+  styleUrls: ['./fluent-api.component.css']
 })
-export class ConfigurationsComponent implements OnInit {
+export class FluentApiComponent implements OnInit {
 
   text1: any;
   text2: any;
@@ -82,43 +82,35 @@ export class ConfigurationsComponent implements OnInit {
       complete: () => console.log('complete'),
     };
     this.text1 = `
-    [Table("StudentInfo")]
-    public class Student
+    public class SchoolDBContext: DbContext 
     {
-        public Student() { }
+        public DbSet<Student> Students { get; set; }
             
-        [Key]
-        public int SID { get; set; }
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            //Write Fluent API configurations here
     
-        [Column("Name", TypeName="ntext")]
-        [MaxLength(20)]
-        public string StudentName { get; set; }
-    
-        [NotMapped]
-        public int? Age { get; set; }
-            
-            
-        public int StdId { get; set; }
-    
-        [ForeignKey("StdId")]
-        public virtual Standard Standard { get; set; }
+            //Property Configurations
+            modelBuilder.Entity<Student>()
+                    .Property(s => s.StudentId)
+                    .HasColumnName("Id")
+                    .HasDefaultValue(0)
+                    .IsRequired();
+        }
     }
     `;
     this.text2 = `
-    public class Student
-    {
-        public int Id { get; set; }
-        public string Name { get; set; }
-       
-        public Grade Grade { get; set; }
-    }
+    //Fluent API method chained calls
+    modelBuilder.Entity<Student>()
+            .Property(s => s.StudentId)
+            .HasColumnName("Id")
+            .HasDefaultValue(0)
+            .IsRequired();
     
-    public class Grade
-    {
-        public int GradeId { get; set; }
-        public string GradeName { get; set; }
-        public string Section { get; set; }
-    }
+    //Separate method calls
+    modelBuilder.Entity<Student>().Property(s => s.StudentId).HasColumnName("Id");
+    modelBuilder.Entity<Student>().Property(s => s.StudentId).HasDefaultValue(0);
+    modelBuilder.Entity<Student>().Property(s => s.StudentId).IsRequired();
     `;
     this.text3 = `
     public class Student

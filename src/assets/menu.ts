@@ -270,6 +270,11 @@ export const menuEFCore = [
     "icon": "inventory_2",
     "routerLink": "configurations"
   },
+  {
+    "text": "Fluent API",
+    "icon": "inventory_2",
+    "routerLink": "fluent-api"
+  },
 ];
 
 export const menuCSharp = [
