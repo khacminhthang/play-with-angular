@@ -1,0 +1,20 @@
+<div>
+  <h1 style="font-size: 3rem;">One-to-One Relationship Conventions in Entity Framework Core</h1>
+  <br>
+  <p>Entities Framework Core introduced default conventions which automaticallly configure a One-to-One relationship
+    between two entities.
+  </p>
+  <p>In EF Core, a one-to-one relationship requires a reference navigation property at both sides. The following Student
+    and StudentAddress entities follow the convention for the one-to-one relationship.</p>
+  <pre>
+        {{text1}}
+      </pre>
+  <p>In the example above, the Student entity includes a reference navigation property type StudentAddress and the
+    StudentAddress entoty includes a foreign key property StudentId and its corresponding reference property Student.
+    This will result in a one-to-one relationship in corresponding tables Students and StudentAddresses in the database,
+    as shown below.</p>
+  <p>EF Core creates a unique index on the NotNull foreign key column StudentId in the StudentAddresses table, as shown
+    above. This ensures that the value of the foreign key column StudentId must be unique in the StudentAddress table,
+    which is necessary of ta one-to-one relationship.</p>
+  <br>
+</div>

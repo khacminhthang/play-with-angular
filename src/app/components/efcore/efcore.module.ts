@@ -14,6 +14,9 @@ import { DbContextComponent } from './db-context/db-context.component';
 import { QueryingComponent } from './querying/querying.component';
 import { SavingDataComponent } from './saving-data/saving-data.component';
 import { ConventionsComponent } from './conventions/conventions.component';
+import { OneToManyConventionsComponent } from './one-to-many-conventions/one-to-many-conventions.component';
+import { OneToOneConventionsComponent } from './one-to-one-conventions/one-to-one-conventions.component';
+import { ConfigurationsComponent } from './configurations/configurations.component';
 
 @NgModule({
   declarations: [
@@ -23,7 +26,10 @@ import { ConventionsComponent } from './conventions/conventions.component';
     DbContextComponent,
     QueryingComponent,
     SavingDataComponent,
-    ConventionsComponent
+    ConventionsComponent,
+    OneToManyConventionsComponent,
+    OneToOneConventionsComponent,
+    ConfigurationsComponent
   ],
   imports: [
     CommonModule,

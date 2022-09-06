@@ -255,6 +255,21 @@ export const menuEFCore = [
     "icon": "inventory_2",
     "routerLink": "conventions"
   },
+  {
+    "text": "One-to-Many Conventions",
+    "icon": "inventory_2",
+    "routerLink": "one-to-many"
+  },
+  {
+    "text": "One-to-One Conventions",
+    "icon": "inventory_2",
+    "routerLink": "one-to-one"
+  },
+  {
+    "text": "Configurations",
+    "icon": "inventory_2",
+    "routerLink": "configurations"
+  },
 ];
 
 export const menuCSharp = [

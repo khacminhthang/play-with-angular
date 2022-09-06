@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-conventions',
-  templateUrl: './conventions.component.html',
-  styleUrls: ['./conventions.component.css']
+  selector: 'app-one-to-many-conventions',
+  templateUrl: './one-to-many-conventions.component.html',
+  styleUrls: ['./one-to-many-conventions.component.css']
 })
-export class ConventionsComponent implements OnInit {
+export class OneToManyConventionsComponent implements OnInit {
 
   text1: any;
   text2: any;
@@ -85,12 +85,70 @@ export class ConventionsComponent implements OnInit {
     public class Student
     {
         public int StudentId { get; set; }
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
-        public DateTime DateOfBirth { get; set; }
-        public byte[] Photo { get; set; }
-        public decimal Height { get; set; }
-        public float Weight { get; set; }
+        public string StudentName { get; set; }
+    }
+           
+    public class Grade
+    {
+        public int GradeId { get; set; }
+        public string GradeName { get; set; }
+        public string Section { get; set; }
+    }
+    `;
+    this.text2 = `
+    public class Student
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+       
+        public Grade Grade { get; set; }
+    }
+    
+    public class Grade
+    {
+        public int GradeId { get; set; }
+        public string GradeName { get; set; }
+        public string Section { get; set; }
+    }
+    `;
+    this.text3 = `
+    public class Student
+    {
+        public int StudentId { get; set; }
+        public string StudentName { get; set; }
+    }
+    
+    public class Grade
+    {
+        public int GradeId { get; set; }
+        public string GradeName { get; set; }
+        public string Section { get; set; }
+    
+        public ICollection<Student> Students { get; set; } 
+    }
+      `;
+    this.text4 = `
+    public class Student
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+        
+        public Grade Grade { get; set; }
+    }
+    
+    public class Grade
+    {
+        public int GradeID { get; set; }
+        public string GradeName { get; set; }
+        
+        public ICollection<Student> Students { get; set; }
+    }
+      `;
+    this.text5 = `
+    public class Student
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
     
         public int GradeId { get; set; }
         public Grade Grade { get; set; }
@@ -98,61 +156,21 @@ export class ConventionsComponent implements OnInit {
     
     public class Grade
     {
-        public int Id { get; set; }
+        public int GradeId { get; set; }
         public string GradeName { get; set; }
-        public string Section { get; set; }
     
-        public IList<Student> Students { get; set; }
+        public ICollection<Student> Students { get; set; }
     }
-    
-    public class SchoolContext : DbContext
-    {
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        { 
-            optionsBuilder.UseSqlServer(@"Server=.\SQLEXPRESS;Database=SchoolDB;Trusted_Connection=True;");
-        }
-    
-        public DbSet<Student> Students { get; set; }
-    }
-    `;
-    this.text2 = `
-    exec sp_executesql N'SELECT [s].[StudentId], [s].[DoB], [s].[FirstName], 
-    [s].[GradeId], [s].[LastName], [s].[MiddleName]
-FROM [Students] AS [s]
-WHERE [s].[FirstName] = @__GetName_0',N'@__GetName_0 nvarchar(4000)',
-    @__GetName_0=N'Bill'
-Go
-    `;
-    this.text3 = `
-    var context = new SchoolContext();
-
-    var studentWithGrade = context.Students
-                               .Where(s => s.FirstName == "Bill")
-                               .Include(s => s.Grade)
-                               .FirstOrDefault();
-      `;
-    this.text4 = `
-    SELECT TOP(1) [s].[StudentId], [s].[DoB], [s].[FirstName], [s].[GradeId],[s].[LastName], 
-    [s].[MiddleName], [s.Grade].[GradeId], [s.Grade].[GradeName], [s.Grade].[Section]
-FROM [Students] AS [s]
-LEFT JOIN [Grades] AS [s.Grade] ON [s].[GradeId] = [s.Grade].[GradeId]
-WHERE [s].[FirstName] = N'Bill'
-      `;
-    this.text5 = `
-    var context = new SchoolContext();
-
-    var studentWithGrade = context.Students
-                            .Where(s => s.FirstName == "Bill")
-                            .Include("Grade")
-                            .FirstOrDefault();
       `;
     this.text6 = `
-    var context = new SchoolContext();
-
-    var studentWithGrade = context.Students
-                            .FromSql("Select * from Students where FirstName ='Bill'")
-                            .Include(s => s.Grade)
-                            .FirstOrDefault();  
+    public class Student
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+    
+        public int? GradeId { get; set; } 
+        public Grade Grade { get; set; }
+    }
       `;
     this.text7 = `
     var context = new SchoolContext();

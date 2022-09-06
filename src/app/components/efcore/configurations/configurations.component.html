@@ -1,0 +1,84 @@
+<div>
+  <h1 style="font-size: 3rem;">Configurations in Entity Framework Core</h1>
+  <br>
+  <p>You learned about default Conventions in EF COre in the previous chapter. Many times we want to customize the
+    entity to table mapping and do not want to follow default conventions. EF Core allows us to configure domanin
+    classes in order to customize the EF model to database mappings. This programming pattern is referred to as
+    Convention over Configuration.
+  </p>
+  <p>There are two ways to configure domain classes in EF Core.</p>
+  <p>
+    1. By using Data Annotation Attributes
+  </p>
+  <p>2. By using Fluent API</p>
+  <br>
+
+  <!-- Data Annotation Attributes -->
+  <span style="font-size: 2rem;" class="pb-0">Data Annotation Attributes
+  </span>
+  <div class="border-b1"></div>
+  <p>We want to establish a one-to-many relationship where many students are associated with one grade. This can be
+    achieved by inculding a reference navigation property in the dependent entity as shown below.(here, the Student
+    entity is the dependent entity and the Grade entity is the principal entity)</p>
+  <pre>
+        {{text2}}
+      </pre>
+  <p>In the example above, the Student entity class includes a reference navigation property of Grade type. This allows
+    us to link the same Grade to many different Student entities, which creates a one-to-many relationship between them.
+    This will produce a one-to-many relationship between the Students and Grades tables in the database, where Students
+    table includes a nullable foreign key GradeId, as shown below. EF Core will create a shadow peoperty for the foreign
+    key named GradeId in the conceptual model, which will be mapped to the GradeId foreign key column in the Students
+    table.</p>
+  <strong>Note:</strong>
+  <p>The reference property Grade is nullable, so it creates a nullable ForeignKey GrandeId in the Students table. You
+    can configure NotNull foreign keys using fluent API</p>
+  <br>
+
+  <!-- Convention 2 -->
+  <span style="font-size: 2rem;" class="pb-0">Convention 2
+  </span>
+  <div class="border-b1"></div>
+  <p>Another convention is to include a collection navigation property in the principal entity as shown below</p>
+  <pre>
+      {{text3}}
+    </pre>
+  <p>In the example above, the Grade entity includes a collection navigation property of type ICollection student>. This
+    will allow us to add multiple Student entities to a Grade entity, which results in a one-to-many relationship
+    between Grades tables in the database.</p>
+  <br>
+
+  <!-- Convention 3 -->
+  <span style="font-size: 2rem;" class="pb-0">Convention 3
+  </span>
+  <div class="border-b1"></div>
+  <p>Another EF convention for the one-to-many relationship is to include navigation property at both ends, which will
+    also result in a one-to-many relationship</p>
+  <pre>
+        {{text4}}
+      </pre>
+  <p>In the example above, the Student entity includes a reference navigation property of Grade type and the Grade
+    entity class includes a collection navigation property ICollection Student>, which result in a one-to-many
+    relationship between corresponding database tables Students and Grades, same as in convention 1.</p>
+
+  <!-- Convention 4 -->
+  <span style="font-size: 2rem;" class="pb-0">Convention 4
+  </span>
+  <div class="border-b1"></div>
+  <p>Defining the relationship fully at both ends with the foreign key property in the dependent entity creates a
+    one-to-many relationship.</p>
+  <pre>
+        {{text5}}
+      </pre>
+  <p>In the above example, the Student entity includes a foreign key property GradeId of type int and its reference
+    navigation property Grade. At the other end, the Grade entity also includes a collection navigation property
+    ICollection Student>. This will create a one-to-many relationship with the NotNull foreign key column in the
+    Students table, as shown below</p>
+  <p>If you want to make the foreign key GradedId as nullable, then use nullable int data type (Nullable int> or int?),
+    as shown below</p>
+  <pre>
+        {{text6}}
+      </pre>
+  <p>Therefore, these are the conventions which automatically create a one-to-many relationship in the corresponding
+    database tables. If entities do not follow the above conventions, then you can use Fluent API to configure the
+    one-to-many relationship.</p>
+</div>

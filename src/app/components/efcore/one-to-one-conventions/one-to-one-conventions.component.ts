@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-conventions',
-  templateUrl: './conventions.component.html',
-  styleUrls: ['./conventions.component.css']
+  selector: 'app-one-to-one-conventions',
+  templateUrl: './one-to-one-conventions.component.html',
+  styleUrls: ['./one-to-one-conventions.component.css']
 })
-export class ConventionsComponent implements OnInit {
+export class OneToOneConventionsComponent implements OnInit {
 
   text1: any;
   text2: any;
@@ -84,35 +84,22 @@ export class ConventionsComponent implements OnInit {
     this.text1 = `
     public class Student
     {
-        public int StudentId { get; set; }
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
-        public DateTime DateOfBirth { get; set; }
-        public byte[] Photo { get; set; }
-        public decimal Height { get; set; }
-        public float Weight { get; set; }
-    
-        public int GradeId { get; set; }
-        public Grade Grade { get; set; }
-    }
-    
-    public class Grade
-    {
         public int Id { get; set; }
-        public string GradeName { get; set; }
-        public string Section { get; set; }
-    
-        public IList<Student> Students { get; set; }
+        public string Name { get; set; }
+           
+        public StudentAddress Address { get; set; }
     }
     
-    public class SchoolContext : DbContext
+    public class StudentAddress
     {
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        { 
-            optionsBuilder.UseSqlServer(@"Server=.\SQLEXPRESS;Database=SchoolDB;Trusted_Connection=True;");
-        }
+        public int StudentAddressId { get; set; }
+        public string Address { get; set; }
+        public string City { get; set; }
+        public string State { get; set; }
+        public string Country { get; set; }
     
-        public DbSet<Student> Students { get; set; }
+        public int StudentId { get; set; }
+        public Student Student { get; set; }
     }
     `;
     this.text2 = `
