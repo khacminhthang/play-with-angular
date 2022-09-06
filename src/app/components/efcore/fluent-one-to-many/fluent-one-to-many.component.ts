@@ -82,41 +82,13 @@ export class FluentOneToManyComponent implements OnInit {
       complete: () => console.log('complete'),
     };
     this.text1 = `
-    public class SchoolDBContext: DbContext 
-    {
-        public DbSet<Student> Students { get; set; }
-            
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            //Write Fluent API configurations here
-    
-            //Property Configurations
-            modelBuilder.Entity<Student>()
-                    .Property(s => s.StudentId)
-                    .HasColumnName("Id")
-                    .HasDefaultValue(0)
-                    .IsRequired();
-        }
-    }
-    `;
-    this.text2 = `
-    //Fluent API method chained calls
-    modelBuilder.Entity<Student>()
-            .Property(s => s.StudentId)
-            .HasColumnName("Id")
-            .HasDefaultValue(0)
-            .IsRequired();
-    
-    //Separate method calls
-    modelBuilder.Entity<Student>().Property(s => s.StudentId).HasColumnName("Id");
-    modelBuilder.Entity<Student>().Property(s => s.StudentId).HasDefaultValue(0);
-    modelBuilder.Entity<Student>().Property(s => s.StudentId).IsRequired();
-    `;
-    this.text3 = `
     public class Student
     {
-        public int StudentId { get; set; }
-        public string StudentName { get; set; }
+        public int Id { get; set; }
+        public string Name { get; set; }
+    
+        public int CurrentGradeId { get; set; }
+        public Grade Grade { get; set; }
     }
     
     public class Grade
@@ -125,8 +97,34 @@ export class FluentOneToManyComponent implements OnInit {
         public string GradeName { get; set; }
         public string Section { get; set; }
     
-        public ICollection<Student> Students { get; set; } 
+        public ICollection<Student> Students { get; set; }
     }
+    `;
+    this.text2 = `
+    public class SchoolContext : DbContext
+    {
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.UseSqlServer("Server=.\\SQLEXPRESS;Database=EFCore-SchoolDB;Trusted_Connection=True");
+        }
+    
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Student>()
+                .HasOne<Grade>(s => s.Grade)
+                .WithMany(g => g.Students)
+                .HasForeignKey(s => s.CurrentGradeId);
+        }
+    
+        public DbSet<Grade> Grades { get; set; }
+        public DbSet<Student> Students { get; set; }
+    }
+    `;
+    this.text3 = `
+    modelBuilder.Entity<Student>()
+    .HasOne<Grade>(s => s.Grade)
+    .WithMany(g => g.Students)
+    .HasForeignKey(s => s.CurrentGradeId);
       `;
     this.text4 = `
     public class Student
