@@ -275,6 +275,21 @@ export const menuEFCore = [
     "icon": "inventory_2",
     "routerLink": "fluent-api"
   },
+  {
+    "text": "Fluent One-To-Many",
+    "icon": "inventory_2",
+    "routerLink": "fluent-one-to-many"
+  },
+  {
+    "text": "Fluent One-to-One",
+    "icon": "inventory_2",
+    "routerLink": "fluent-one-to-one"
+  },
+  {
+    "text": "Fluent Many-To-Many",
+    "icon": "inventory_2",
+    "routerLink": "fluent-many-to-many"
+  },
 ];
 
 export const menuCSharp = [

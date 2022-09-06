@@ -1,0 +1,177 @@
+<div>
+  <h1 style="font-size: 3rem;">Configure One-to-Many Relationships using Fluent API in Entity Framework Core</h1>
+  <br>
+  <p>Entity Framework Fluent API is used to configure domain classes to override conventions. EF Fluent API is based on
+    a Fluent API design pattern (Fluent Interface) where the result is formulated by method chaining
+  </p>
+  <p>In Entity Framework Core, the ModelBuilder class acts as a Fluent API. By using it, we can configure many different
+    things, as it provides more configuration options than data annotation attributes.</p>
+  <p>Entity Framework Core Fluent API configures the following aspects of a model:</p>
+  <p>
+    1. Model Configuration: Configures an EF model to database mapping. Configures the default Schema, DB functions,
+    additional data annotation attributes and rntities to be excluded from mapping
+  </p>
+  <p>2. Entity Configuration: Configures entity to table and relationships mapping e.g. PrimaryKey, AlternateKey, Index,
+    table name, one-to-one, one-to-many, many-to-many relationships</p>
+  <p>3. Property Configuration: Configures property to column mapping column name, default value, nullability,
+    Foreignkey, data type, concurrency column etc</p>
+  <p>The following table lists important methods for each type of configuration</p>
+  <table>
+    <thead>
+      <th>Configurations</th>
+      <th>Flunet API Methods</th>
+      <th>Usage</th>
+    </thead>
+    <tbody>
+      <tr>
+        <td rowspan="4">Model Configurations</td>
+        <td>HasDbFunction()</td>
+        <td>Configures a database function when targeting a relational database.</td>
+      </tr>
+      <tr>
+        <td>HasDefaultSchema()</td>
+        <td>Specifies the database schema.</td>
+      </tr>
+      <tr>
+        <td>HasAnnotation()</td>
+        <td>Adds or updates data annotation attributes on the entity.</td>
+      </tr>
+      <tr>
+        <td>HasSequence()</td>
+        <td>Configures a database sequence when targeting a relational database.</td>
+      </tr>
+      <tr>
+        <td rowspan="8">Entity Configuration</td>
+        <td>HasAlternateKey()</td>
+        <td>Configures an alternate key in the EF model for the entity.</td>
+      </tr>
+      <tr>
+        <td>HasIndex()</td>
+        <td>Configures an index of the specified properties.</td>
+      </tr>
+      <tr>
+        <td>HasKey()</td>
+        <td>Configures the property or list of properties as Primary Key.</td>
+      </tr>
+      <tr>
+        <td>HasMany()</td>
+        <td> Configures the Many part of the relationship, where an entity contains the reference collection property of
+          other type for one-to-Many or many-to-many relationships.</td>
+      </tr>
+      <tr>
+        <td>HasOne()</td>
+        <td>Configures the One part of the relationship, where an entity contains the reference property of other type
+          for one-to-one or one-to-many relationships.</td>
+      </tr>
+      <tr>
+        <td>Ignore()</td>
+        <td>Configures that the class or property should not be mapped to a table or column.</td>
+      </tr>
+      <tr>
+        <td>OwnsOne()</td>
+        <td>Configures a relationship where the target entity is owned by this entity. The target entity key value is
+          propagated from the entity it belongs to.</td>
+      </tr>
+      <tr>
+        <td>ToTable()</td>
+        <td>Configures the database table that the entity maps to.</td>
+      </tr>
+      <tr>
+        <td rowspan="15">Property Configuration</td>
+        <td>HasColumnName()</td>
+        <td>Configures the corresponding column name in the database for the property.</td>
+      </tr>
+      <tr>
+        <td>HasColumnType()</td>
+        <td>Configures the data type of the corresponding column in the database for the property.</td>
+      </tr>
+      <tr>
+        <td>HasComputedColumnSql()</td>
+        <td>Configures the property to map to computed column in the database when targeting a relational database.</td>
+      </tr>
+      <tr>
+        <td>HasDefaultValue()</td>
+        <td>Configures the default value for the column that the property maps to when targeting a relational database.
+        </td>
+      </tr>
+      <tr>
+        <td>HasDefaultValueSql()</td>
+        <td>Configures the default value expression for the column that the property maps to when targeting relational
+          database.</td>
+      </tr>
+      <tr>
+        <td>HasField()</td>
+        <td>Specifies the backing field to be used with a property.
+        </td>
+      </tr>
+      <tr>
+        <td>HasMaxLength()</td>
+        <td>Configures the maximum length of data that can be stored in a property.
+        </td>
+      </tr>
+      <tr>
+        <td>IsConcurrencyToken()</td>
+        <td>onfigures the property to be used as an optimistic concurrency token.
+        </td>
+      </tr>
+      <tr>
+        <td>IsRequired()</td>
+        <td>Configures whether the valid value of the property is required or whether null is a valid value.
+        </td>
+      </tr>
+      <tr>
+        <td>IsRowVersion()</td>
+        <td>Configures the property to be used in optimistic concurrency detection.
+        </td>
+      </tr>
+      <tr>
+        <td>IsUnicode()</td>
+        <td>Configures the string property which can contain unicode characters or not.
+        </td>
+      </tr>
+      <tr>
+        <td>ValueGeneratedNever()</td>
+        <td>Configures a property which cannot have a generated value when an entity is saved.
+        </td>
+      </tr>
+      <tr>
+        <td>ValueGeneratedOnAdd()</td>
+        <td>Configures that the property has a generated value when saving a new entity.
+        </td>
+      </tr>
+      <tr>
+        <td>ValueGeneratedOnAddOrUpdate()</td>
+        <td>Configures that the property has a generated value when saving new or existing entity.
+        </td>
+      </tr>
+      <tr>
+        <td>ValueGeneratedOnUpdate()</td>
+        <td>Configures that a property has a generated value when saving an existing entity.
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <br>
+
+  <!-- Fluent API Configurations -->
+  <span style="font-size: 2rem;" class="pb-0">Fluent API Configurations
+  </span>
+  <div class="border-b1"></div>
+  <p>Override the OnModeCreating method and use a parameter modelBuilder of type ModelBuilder to configure domain
+    classes, as shown below</p>
+  <pre>
+          {{text1}}
+        </pre>
+  <br>
+  <p>In the above example, the ModelBuilder Fluent API instance is used to configure a property by calling multiple
+    methods in chain. It configures the StudentId property of the Student entity; It configures the name using
+    HasCloumnName, the default value using HasDefaultValue and nullability using IsRequired method in a single statement
+    instead of multiple statements. This increases the readability and also takes less time to write compare to multiple
+    statements, as shown below</p>
+  <pre>
+        {{text2}}
+      </pre>
+
+  <strong>Note:</strong>
+  <p>Fluent API configurations have higher precedence than data annotation attributes</p>
+</div>

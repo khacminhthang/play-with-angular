@@ -6,6 +6,9 @@ import { ConventionsComponent } from './conventions/conventions.component';
 import { DbContextComponent } from './db-context/db-context.component';
 import { ExistingDatabaseComponent } from './existing-database/existing-database.component';
 import { FluentApiComponent } from './fluent-api/fluent-api.component';
+import { FluentManyToManyComponent } from './fluent-many-to-many/fluent-many-to-many.component';
+import { FluentOneToManyComponent } from './fluent-one-to-many/fluent-one-to-many.component';
+import { FluentOneToOneComponent } from './fluent-one-to-one/fluent-one-to-one.component';
 import { InstallComponent } from './install/install.component';
 import { IntroComponent } from './intro/intro.component';
 import { OneToManyConventionsComponent } from './one-to-many-conventions/one-to-many-conventions.component';
@@ -61,6 +64,18 @@ const efcoreRoutes: Routes = [
       {
         path: 'fluent-api',
         component: FluentApiComponent
+      },
+      {
+        path: 'fluent-one-to-many',
+        component: FluentOneToManyComponent
+      },
+      {
+        path: 'fluent-one-to-one',
+        component: FluentOneToOneComponent
+      },
+      {
+        path: 'fluent-many-to-many',
+        component: FluentManyToManyComponent
       },
     ]
   }]

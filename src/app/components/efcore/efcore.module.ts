@@ -18,6 +18,9 @@ import { OneToManyConventionsComponent } from './one-to-many-conventions/one-to-
 import { OneToOneConventionsComponent } from './one-to-one-conventions/one-to-one-conventions.component';
 import { ConfigurationsComponent } from './configurations/configurations.component';
 import { FluentApiComponent } from './fluent-api/fluent-api.component';
+import { FluentOneToManyComponent } from './fluent-one-to-many/fluent-one-to-many.component';
+import { FluentOneToOneComponent } from './fluent-one-to-one/fluent-one-to-one.component';
+import { FluentManyToManyComponent } from './fluent-many-to-many/fluent-many-to-many.component';
 
 @NgModule({
   declarations: [
@@ -31,7 +34,10 @@ import { FluentApiComponent } from './fluent-api/fluent-api.component';
     OneToManyConventionsComponent,
     OneToOneConventionsComponent,
     ConfigurationsComponent,
-    FluentApiComponent
+    FluentApiComponent,
+    FluentOneToManyComponent,
+    FluentOneToOneComponent,
+    FluentManyToManyComponent
   ],
   imports: [
     CommonModule,
