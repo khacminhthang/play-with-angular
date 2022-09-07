@@ -1,1 +1,40 @@
-<p>fluent-one-to-one works!</p>
+<div>
+  <h1 style="font-size: 3rem;">Configure One-to-One Relationships using Fluent API in Entity Framework Core</h1>
+  <br>
+  <p>Here you will learn how to configure one-to-one relationships between two entities using Fluent API, if they do not
+    follow EF Core conventions.
+  </p>
+  <p>Generally, you don't need to configure one-to-one relationships manually because EF Core includes Conventions for
+    One-to-One Relationships. However, if the key or foreign key properties do not follow the convention, then you can
+    use data annotation attributes or Fluent API to configure a one-to-one relationship between two entities.</p>
+  <p>Let's configure a one-to-one relationship between the following Student and StudentAddress entities, which do not
+    follow the foreign key convention</p>
+  <pre>
+        {{text1}}
+      </pre>
+  <p>To configure a one-to-one relationship using Fluent API in EF Core, use the HasOne, WithOne and HasForeignKey
+    methods, as shown below</p>
+  <pre>
+        {{text2}}
+      </pre>
+  <p>In the example above, the following code snippet configures the one-to-one relationships</p>
+  <pre>
+      {{text3}}
+    </pre>
+  <p>Let understand it step by step</p>
+  <p>modelBuilder.Entity Student>() starts configuring the Student Entity</p>
+  <p>The .HasOne StudentAddress>(s=> s.Address) method soeecifies that the Student entity includes one StudentAddress
+    reference property using a lamnda expression</p>
+  <p>.WithOne(ad => ad.Student) configures the other end of the relationship, the StudentAddress entity.
+    It specifies that the StudentAddress entity includes a reference navigation property of Student type
+  </p>
+  <p>.HasForeignKey StudentAddress>(ad => ad.AddressOfStudentId) specifies the foreign key property name</p>
+  <p>Now, to reflect this in the database, execute migration commands, add-migration "name" and update-database.
+    The database will include two tables with one-to-one relationship as shown below
+  </p>
+  <p>You can start configuring with the StudentAddress entity in the same way, as below</p>
+  <pre>
+        {{text4}}
+      </pre>
+  <br>
+</div>

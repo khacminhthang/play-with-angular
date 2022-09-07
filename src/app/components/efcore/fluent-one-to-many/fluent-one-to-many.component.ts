@@ -127,39 +127,17 @@ export class FluentOneToManyComponent implements OnInit {
     .HasForeignKey(s => s.CurrentGradeId);
       `;
     this.text4 = `
-    public class Student
-    {
-        public int Id { get; set; }
-        public string Name { get; set; }
-        
-        public Grade Grade { get; set; }
-    }
-    
-    public class Grade
-    {
-        public int GradeID { get; set; }
-        public string GradeName { get; set; }
-        
-        public ICollection<Student> Students { get; set; }
-    }
+    modelBuilder.Entity<Grade>()
+    .HasMany<Student>(g => g.Students)
+    .WithOne(s => s.Grade)
+    .HasForeignKey(s => s.CurrentGradeId);
       `;
     this.text5 = `
-    public class Student
-    {
-        public int Id { get; set; }
-        public string Name { get; set; }
-    
-        public int GradeId { get; set; }
-        public Grade Grade { get; set; }
-    }
-    
-    public class Grade
-    {
-        public int GradeId { get; set; }
-        public string GradeName { get; set; }
-    
-        public ICollection<Student> Students { get; set; }
-    }
+    modelBuilder.Entity<Grade>()
+    .HasMany<Student>(g => g.Students)
+    .WithOne(s => s.Grade)
+    .HasForeignKey(s => s.CurrentGradeId)
+    .OnDelete(DeleteBehavior.Cascade);
       `;
     this.text6 = `
     public class Student

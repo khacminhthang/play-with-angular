@@ -1,1 +1,66 @@
-<p>fluent-many-to-many works!</p>
+<div>
+  <h1 style="font-size: 3rem;">Configure Many-to-Many Relationships in Entity Framework Core</h1>
+  <br>
+  <p>Here you will learn how to configure many-to-many relationships between two entities using Fluent API in Entity
+    Framework Core.
+  </p>
+  <p>Let's implement a many-to-many relationship between the following Student and Course entities, where one student
+    can enroll for many courses and, in the same way, one course can be joined by many students</p>
+  <pre>
+          {{text1}}
+        </pre>
+  <p>The many-to-many relationship in the database is represented by a joining table which includes the foreign keys of
+    both tables. Also, these foreign keys are composite primary keys</p>
+  <br>
+
+  <!-- Convention   -->
+  <span style="font-size: 2rem;" class="pb-0">Convention
+  </span>
+  <div class="border-b1"></div>
+  <p>There are no default conventions avaiable in Entity Framework Core which automatically configure a many-to-many
+    relationship. You must configure it using Flunet API
+  </p>
+  <br>
+
+  <!-- Fluent API   -->
+  <span style="font-size: 2rem;" class="pb-0">Fluent API
+  </span>
+  <div class="border-b1"></div>
+  <p>The steps for configuring many-to-many relationships would the following
+  </p>
+  <p>1. Define a new joining rntity class which includes the foreign key property and the reference navigation property
+    for each entity.</p>
+  <p>2. Define one-to-many relationship between other two entities and the joining entity, by including a collection
+    navigation property in entities at both sides (Student and Course, in this case)</p>
+  <p>3. Configure both the foreign keys in the joining entity as a composite key using Fluent API</p>
+  <p>So, first of all, define the joining entity StudentCourse, as shown below</p>
+  <pre>
+    {{text2}}
+  </pre>
+  <p>The above joining entity StudentCourse includes reference navigation properties Student and Course and their
+    foreign key properties StudentId and CourseId respectively (foreign key properties follow the convention)</p>
+  <p>Now, we also need configure two seoarate one-to-many relationships between Student -> StudentCourse and Course ->
+    StudentCourse entities. We can do it by just following the convention for one-to0many relationships, as shown below
+  </p>
+  <pre>
+    {{text3}}
+  </pre>
+  <p>Also you can see above, the Student and Course entities now include a collection navigation property of
+    StudentCourse type. The StudentCourse entity already includes the foreign key property and navigation property for
+    both, Student and Course. This makes it a fully defined one-to-many relationship between Student and StudentCourse
+    and Course and StudentCourse.</p>
+  <p>Now, the foreign keys must be the composite primary key in the joining table. This can only be configured using
+    Fluent API, as below</p>
+  <pre>
+      {{text4}}
+    </pre>
+  <p>In the above code, modelBuilder.Entity StudentCourse>()HasKey(sc => new sc.StudentId, sc.CourseId})
+    configures StudentId and CourseId as the composite key.
+  </p>
+  <p>This is how you can configure many-to-many relationships if entities follow the convention, then you can configure
+    it using Fluent API, as shown below</p>
+  <pre>
+      {{text5}}
+    </pre>
+  <br>
+</div>

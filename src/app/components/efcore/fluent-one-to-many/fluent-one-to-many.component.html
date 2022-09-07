@@ -31,26 +31,29 @@
     property.</p>
   <p>The .HasForeignKey int>(s=> s.CurrentGradeId) specifies the name of the foreign key property CurrentGradeId. This
     is optional. Use it only when you have the foreign key Id property in the dependent class</p>
+  <p>Alternatively, you can start configuring the relationship with the Grade entity instead of the Student entity, as
+    shown below</p>
+  <pre>
+      {{text4}}
+    </pre>
   <br>
 
-  <!-- Fluent API Configurations -->
-  <span style="font-size: 2rem;" class="pb-0">Fluent API Configurations
+  <!-- Configure Cascade Delete using Fluent API -->
+  <span style="font-size: 2rem;" class="pb-0">Configure Cascade Delete using Fluent API
   </span>
   <div class="border-b1"></div>
-  <p>Override the OnModeCreating method and use a parameter modelBuilder of type ModelBuilder to configure domain
-    classes, as shown below</p>
-
-
-  <br>
-  <p>In the above example, the ModelBuilder Fluent API instance is used to configure a property by calling multiple
-    methods in chain. It configures the StudentId property of the Student entity; It configures the name using
-    HasCloumnName, the default value using HasDefaultValue and nullability using IsRequired method in a single statement
-    instead of multiple statements. This increases the readability and also takes less time to write compare to multiple
-    statements, as shown below</p>
+  <p>Cascade delete automatically deletes the child row when the related parent row is deleted. For example, if a Grade
+    is deleted, then all the Students in that grade should also be deleted from the database automatically</p>
+  <p>Use the OnDelete method to donfigure the cascade delete between Student and Grade entities, as shown below</p>
   <pre>
-        {{text2}}
-      </pre>
-
-  <strong>Note:</strong>
-  <p>Fluent API configurations have higher precedence than data annotation attributes</p>
+    {{text4}}
+  </pre>
+  <p>The OnDelete() method cascade delete behaviour uses the DeleteBehavior parameter. you can specify any of the
+    following DeleteBehavior values, based on your requirement</p>
+  <ul>
+    <li>Cascade: Dependent entities will be deleted when the principal entity is deleted</li>
+    <li>ClientSetNull: The values of foreign key properties in the dependent entities will be set null</li>
+    <li>Restrict: Prevents Cascade delete</li>
+    <li>SetNull: The values of foreign key propertis in the dependent entities will be set to null</li>
+  </ul>
 </div>
