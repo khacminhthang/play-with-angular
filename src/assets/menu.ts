@@ -290,6 +290,11 @@ export const menuEFCore = [
     "icon": "inventory_2",
     "routerLink": "fluent-many-to-many"
   },
+  {
+    "text": "Insert Data in Disconnect Scecnario",
+    "icon": "inventory_2",
+    "routerLink": "insert-data-disconnected"
+  },
 ];
 
 export const menuCSharp = [

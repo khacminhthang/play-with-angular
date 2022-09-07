@@ -9,6 +9,7 @@ import { FluentApiComponent } from './fluent-api/fluent-api.component';
 import { FluentManyToManyComponent } from './fluent-many-to-many/fluent-many-to-many.component';
 import { FluentOneToManyComponent } from './fluent-one-to-many/fluent-one-to-many.component';
 import { FluentOneToOneComponent } from './fluent-one-to-one/fluent-one-to-one.component';
+import { InsertDataDisconnectedComponent } from './insert-data-disconnected/insert-data-disconnected.component';
 import { InstallComponent } from './install/install.component';
 import { IntroComponent } from './intro/intro.component';
 import { OneToManyConventionsComponent } from './one-to-many-conventions/one-to-many-conventions.component';
@@ -76,6 +77,10 @@ const efcoreRoutes: Routes = [
       {
         path: 'fluent-many-to-many',
         component: FluentManyToManyComponent
+      },
+      {
+        path: 'insert-data-disconnected',
+        component: InsertDataDisconnectedComponent
       },
     ]
   }]

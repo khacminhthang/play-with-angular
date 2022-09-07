@@ -21,6 +21,7 @@ import { FluentApiComponent } from './fluent-api/fluent-api.component';
 import { FluentOneToManyComponent } from './fluent-one-to-many/fluent-one-to-many.component';
 import { FluentOneToOneComponent } from './fluent-one-to-one/fluent-one-to-one.component';
 import { FluentManyToManyComponent } from './fluent-many-to-many/fluent-many-to-many.component';
+import { InsertDataDisconnectedComponent } from './insert-data-disconnected/insert-data-disconnected.component';
 
 @NgModule({
   declarations: [
@@ -37,7 +38,8 @@ import { FluentManyToManyComponent } from './fluent-many-to-many/fluent-many-to-
     FluentApiComponent,
     FluentOneToManyComponent,
     FluentOneToOneComponent,
-    FluentManyToManyComponent
+    FluentManyToManyComponent,
+    InsertDataDisconnectedComponent
   ],
   imports: [
     CommonModule,
