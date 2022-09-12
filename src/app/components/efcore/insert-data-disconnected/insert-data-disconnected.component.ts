@@ -7,7 +7,6 @@ import { Component, OnInit } from '@angular/core';
 })
 export class InsertDataDisconnectedComponent implements OnInit {
 
-
   text1: any;
   text2: any;
   text3: any;
@@ -83,104 +82,150 @@ export class InsertDataDisconnectedComponent implements OnInit {
       complete: () => console.log('complete'),
     };
     this.text1 = `
-    public class Student
+    //Disconnected entity
+    var std = new Student(){ Name = "Bill" };
+    
+    using (var context = new SchoolContext())
     {
-        public int Id { get; set; }
-        public string Name { get; set; }
-    
-        public int CurrentGradeId { get; set; }
-        public Grade Grade { get; set; }
-    }
-    
-    public class Grade
-    {
-        public int GradeId { get; set; }
-        public string GradeName { get; set; }
-        public string Section { get; set; }
-    
-        public ICollection<Student> Students { get; set; }
+        //1. Attach an entity to context with Added EntityState
+        context.Add<Student>(std);
+        
+        //or the followings are also valid
+        // context.Students.Add(std);
+        // context.Entry<Student>(std).State = EntityState.Added;
+        // context.Attach<Student>(std);
+                      
+        //2. Calling SaveChanges to insert a new record into Students table
+        context.SaveChanges();
     }
     `;
     this.text2 = `
-    public class SchoolContext : DbContext
-    {
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            optionsBuilder.UseSqlServer("Server=.\\SQLEXPRESS;Database=EFCore-SchoolDB;Trusted_Connection=True");
-        }
-    
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            modelBuilder.Entity<Student>()
-                .HasOne<Grade>(s => s.Grade)
-                .WithMany(g => g.Students)
-                .HasForeignKey(s => s.CurrentGradeId);
-        }
-    
-        public DbSet<Grade> Grades { get; set; }
-        public DbSet<Student> Students { get; set; }
-    }
+    exec sp_executesql N'SET NOCOUNT ON;
+    INSERT INTO [Students] ([Name])
+    VALUES (@p0);
+    SELECT [StudentId]
+    FROM [Students]
+    WHERE @@ROWCOUNT = 1 AND [StudentId] = scope_identity();',N'@p0 nvarchar(4000), 
+    @p1 nvarchar(4000) ',@p0=N'Bill'
+    go
     `;
     this.text3 = `
-    modelBuilder.Entity<Student>()
-    .HasOne<Grade>(s => s.Grade)
-    .WithMany(g => g.Students)
-    .HasForeignKey(s => s.CurrentGradeId);
+    var stdAddress = new StudentAddress()
+    {
+        City = "SFO",
+        State = "CA",
+        Country = "USA"
+    };
+    
+    var std = new Student()
+    {
+        Name = "Steve",
+        Address = stdAddress
+    };
+    using (var context = new SchoolContext())
+    {
+        // Attach an entity to DbContext with Added state
+        context.Add<Student>(std);
+    
+        // Calling SaveChanges to insert a new record into Students table
+        context.SaveChanges();
+    }
       `;
     this.text4 = `
-    modelBuilder.Entity<Grade>()
-    .HasMany<Student>(g => g.Students)
-    .WithOne(s => s.Grade)
-    .HasForeignKey(s => s.CurrentGradeId);
+    exec sp_executesql N'SET NOCOUNT ON;
+    INSERT INTO [Students] ([Name])
+    VALUES (@p0);
+    SELECT [StudentId]
+    FROM [Students]
+    WHERE @@ROWCOUNT = 1 AND [StudentId] = scope_identity();',N'@p0 nvarchar(4000), 
+    @p1 nvarchar(4000) ',@p0=N'Steve'
+    go
+    
+    exec sp_executesql N'SET NOCOUNT ON;
+    INSERT INTO [StudentAddresses] ([Address], [City], [Country], [State], [StudentId])
+    VALUES (@p5, @p6, @p7, @p8, @p9);
+    SELECT [StudentAddressId]
+    FROM [StudentAddresses]
+    WHERE @@ROWCOUNT = 1 AND [StudentAddressId] = scope_identity();
+    ',N'@p5 nvarchar(4000),@p6 nvarchar(4000),@p7 nvarchar(4000),@p8 nvarchar(4000),
+    @p9 int',@p5=NULL,@p6=N'SFO',@p7=N'USA',@p8=N'CA',@p9=1
+    Go
       `;
     this.text5 = `
-    modelBuilder.Entity<Grade>()
-    .HasMany<Student>(g => g.Students)
-    .WithOne(s => s.Grade)
-    .HasForeignKey(s => s.CurrentGradeId)
-    .OnDelete(DeleteBehavior.Cascade);
+    var studentList = new List<Student>() {
+      new Student(){ Name = "Bill" },
+      new Student(){ Name = "Steve" }
+  };
+  
+  using (var context = new SchoolContext())
+  {
+      context.AddRange(studentList);
+      context.SaveChanges();
+  }
       `;
     this.text6 = `
-    public class Student
-    {
-        public int Id { get; set; }
-        public string Name { get; set; }
+    var std1 = new Student(){ Name = "Bill" };
+
+    var std2 = new Student(){ Name = "Steve" };
     
-        public int? GradeId { get; set; } 
-        public Grade Grade { get; set; }
+    var computer = new Course() { CourseName = "Computer Science" };
+    
+    var entityList = new List<Object>() {
+        std1,
+        std2,
+        computer
+    };
+    
+    using (var context = new SchoolContext())
+    {                
+        context.AddRange(entityList);
+    
+        // or 
+        // context.AddRange(std1, std2, computer);
+    
+        context.SaveChanges();
     }
       `;
     this.text7 = `
-    var context = new SchoolContext();
-
-    var studentWithGrade = context.Students.Where(s => s.FirstName == "Bill")
-                            .Include(s => s.Grade)
-                            .Include(s => s.StudentCourses)
-                            .FirstOrDefault();
+    exec sp_executesql N'SET NOCOUNT ON;
+    INSERT INTO [Courses] ([CourseName], [Description])
+    VALUES (@p0, @p1);
+    SELECT [CourseId]
+    FROM [Courses]
+    WHERE @@ROWCOUNT = 1 AND [CourseId] = scope_identity();
+    
+    DECLARE @inserted1 TABLE ([StudentId] int, [_Position] [int]);
+    MERGE [Students] USING (
+    VALUES (@p2, 0),
+    (@p3, 1)) AS i ([Name], _Position) ON 1=0
+    WHEN NOT MATCHED THEN
+    INSERT ([Name])
+    VALUES (i.[Name])
+    OUTPUT INSERTED.[StudentId], i._Position
+    INTO @inserted1;
+    
+    SELECT [t].[StudentId] FROM [Students] t
+    INNER JOIN @inserted1 i ON ([t].[StudentId] = [i].[StudentId])
+    ORDER BY [i].[_Position];
+    ',N'@p0 nvarchar(4000),@p1 nvarchar(4000),@p2 nvarchar(4000),@p3 nvarchar(4000)',
+    @p0=N'Computer Science',@p1=NULL,@p2=N'Steve',@p3=N'Bill'
+    go
       `;
     this.text8 = `
-    SELECT TOP(1) [s].[StudentId], [s].[DoB], [s].[FirstName], [s].[GradeId], [s].[LastName], 
-    [s].[MiddleName], [s.Grade].[GradeId], [s.Grade].[GradeName], [s.Grade].[Section]
-FROM [Students] AS [s]
-LEFT JOIN [Grades] AS [s.Grade] ON [s].[GradeId] = [s.Grade].[GradeId]
-WHERE [s].[FirstName] = N'Bill'
-ORDER BY [s].[StudentId]
-Go
-
-SELECT [s.StudentCourses].[StudentId], [s.StudentCourses].[CourseId]
-FROM [StudentCourses] AS [s.StudentCourses]
-INNER JOIN (
-SELECT DISTINCT [t].*
-FROM (
-    SELECT TOP(1) [s0].[StudentId]
-    FROM [Students] AS [s0]
-    LEFT JOIN [Grades] AS [s.Grade0] ON [s0].[GradeId] = [s.Grade0].[GradeId]
-    WHERE [s0].[FirstName] = N'Bill'
-    ORDER BY [s0].[StudentId]
-) AS [t]
-) AS [t0] ON [s.StudentCourses].[StudentId] = [t0].[StudentId]
-ORDER BY [t0].[StudentId]
-Go
+    var std = new Student()
+    {
+        Name = "Bill"
+    };
+    
+    using (var context = new SchoolContext())
+    {
+        context.Students.Add(std);
+    
+        // or
+        // context.Students.Attach(std);
+    
+        context.SaveChanges();
+    }
       `;
     this.text9 = `
     var context = new SchoolContext();

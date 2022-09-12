@@ -1,59 +1,183 @@
 <div>
   <h1 style="font-size: 3rem;">Configure One-to-Many Relationships using Fluent API in Entity Framework Core</h1>
   <br>
-  <p>You learn about the Conventions for the One-to-Many Relationship. Generally, you don't need to configure
-    one-to-many relationships because EF Core includes enough conventions which will automatically configure them.
-    However, you can use Fluent API to configure the one-to-many relationships if you decide to have all the EF
-    configurations in Fluent API for easy maintenance.
+  <p>You learned abot hơ to save data in the connected scenario. Here, you will learn about saving data in the
+    disconnected scenario.
   </p>
-  <p>Entity Framework Core made it easy to configure relationships using Fluent API. Consider the following Student and
-    Grade classes where the Grade entity includes many Student entities</p>
+  <p>Saving data in the disconnected scenario is a little bit different than in the connected scenario, In the
+    disconnected scenario, the DbContext is not aware of disconnected entities because entities were added or modified
+    out of the scope of the current DbContext instance. So, you need to attach the disconnected entities to a context
+    with appropriate EntityState in order to perform CUD operations to the database.</p>
+  <p>The following firure illustrates the CUD operarions in disconnected scenario</p>
+  <p>As per the above figure, disconnected entities(entities which are not being tracked by the DbContext) need to be
+    attached to the DbContext with an appropriate EntityState. For example, Added state for new entitie, Modified state
+    for the editef entities and Deleted state for the deleted entities, which will result in an INSERT, UPDATE or DELETE
+    command in the database when the SaveChanges() method is called.</p>
+  <p>The following steps must be performed in order to insert, update or delete records into the DB table using Entity
+    Framework Core in disconnected scenario:</p>
+  <p>1. Attach an entity to DbContext with an approprite entityState e.g Added, Modified, or Deleted</p>
+  <p>2. Call SaveChanges() method</p>
+  <p>The following example demonstrates inserting a new record into the database using the above steps:</p>
   <pre>
         {{text1}}
       </pre>
-  <p>Configure the one-to-many relationships for the above entities using Fluent API by overriding the OnModelCrating
-    method in the context class, as shown below</p>
+  <p>In the above example, std is a disconnected instance of the Student entity. The context.Add Student>() method
+    attaches a Student entity to a context with an Added state. The SaveChanges() method builds and executes the
+    following INSERT statement</p>
   <pre>
         {{text2}}
       </pre>
-  <p>In the example above, the following code snippet configures the one-to-many relationships</p>
+  <p>EF Core provides multiple ways to add entities with Added state. In the above example, context.Students.Add(std);,
+    context.Entry Student>(std).State = EntityState.Added; and context.Attach Student>(std); will result in same INSERT
+    statement as above.</p>
+  <p>Entity Framework Core provides the following DbContext and DbSet methods which attach disconnected entities with
+    Added EntityState, which in turn will execute INSERT statements in the database</p>
+  <table>
+    <thead>
+      <th>DbContext Methods</th>
+      <th>DbSet Methods</th>
+      <th>Description</th>
+    </thead>
+    <tbody>
+      <tr>
+        <td>DbContext.Attach</td>
+        <td>DbSet.Attach</td>
+        <td>Attach an entity to DbContext. Set Unchanged state for an entity whose Key property has a value and Added
+          state for an entity whose Key property is empty or the default value of data type.</td>
+      </tr>
+      <tr>
+        <td>DbContext.Add</td>
+        <td>DbSet.Add</td>
+        <td>Attach an entity to DbContext with Added state.</td>
+      </tr>
+      <tr>
+        <td>DbContext.AddRange</td>
+        <td>DbSet.AddRange</td>
+        <td>Attach a collection of entities to DbContext with Added state.</td>
+      </tr>
+      <tr>
+        <td>DbContext.Entry</td>
+        <td></td>
+        <td>Gets an EntityEntry for the specified entity which provides access to change tracking information and
+          operations.</td>
+      </tr>
+      <tr>
+        <td>DbContext.AddAsync</td>
+        <td>DbSet.AddAsync</td>
+        <td>Asynchronous method for attaching an entity to DbContext with Added state and start tracking it if not. Data
+          will be inserted into the database when SaveChangesAsync() is called.</td>
+      </tr>
+      <tr>
+        <td>DbContext.AddRangeAsync</td>
+        <td>DbSet.AddRangeAsync</td>
+        <td>Asynchronous method for attaching multiple entities to DbContext with Added state in one go and start
+          tracking them if not. Data will be inserted into the database when SaveChangesAsync() is called.</td>
+      </tr>
+    </tbody>
+  </table>
+  <strong>Note:</strong>
+  <p>The above DbContext methods are introduced in EF Core (they were not available in EF 6 or prior). Both DbContext
+    and DbSet methods perform the same operation. Which one you use depends on your coding pattern and preference.</p>
+  <br>
+
+  <!-- Insert Multiple Records -->
+  <span style="font-size: 2rem;" class="pb-0">Insert Multiple Records
+  </span>
+  <div class="border-b1"></div>
+  <p>Use the DbContext.AddRange or DbSet.AddRange method to add multiple entities in one go. You don't need to call
+    DbContext.Add method multiple times.</p>
+  <table>
+    <thead>
+      <th>AddRange Methods</th>
+      <th>Description</th>
+    </thead>
+    <tbody>
+      <tr>
+        <td>void AddRange(IEnumerable Object> entities)</td>
+        <td>Adds a list of same or different types of entities to the DbContext with Added state.</td>
+      </tr>
+      <tr>
+        <td>void AddRange(param object[] entities)</td>
+        <td>Adds an array of same or different types of entities to the DbContext with Added state.</td>
+      </tr>
+      <tr>
+        <td>void AddRangeAsync(IEnumerable Object>, CancellationToken)</td>
+        <td>Asynchronous method to add a list of same or different types of entities to the DbContext with Added state.
+        </td>
+      </tr>
+    </tbody>
+  </table>
   <pre>
       {{text3}}
     </pre>
-  <p>Now, to reflect this in the database, execute migration commands, add-migration "name" and update-database. The
-    database will include two tables with One-to-Many relationships as shown below</p>
-  <p>Let's understand the above code step by step</p>
-  <p>First, we need to start configuring with one entity class, either Student or Grade. So, modelBuilder.Entity
-    Student>() start with the Student entity</p>
-  <p>Then, .HasOne Grade>(s=>s.Grade) specifies that the Student entity includes a Grade type property named Grade.</p>
-  <p>Now, we need to configure the other end the relationship, the Grade entity. The .WithMany(g => g.Students)
-    specifies that the Grade entity class includes many Student entities. Here, WithMany infers collection navigation
-    property.</p>
-  <p>The .HasForeignKey int>(s=> s.CurrentGradeId) specifies the name of the foreign key property CurrentGradeId. This
-    is optional. Use it only when you have the foreign key Id property in the dependent class</p>
-  <p>Alternatively, you can start configuring the relationship with the Grade entity instead of the Student entity, as
-    shown below</p>
+  <p>In the example above, context.Add Student>(std) adds an instance of Student entity. EF Core API reaches the
+    StudentAddress instance through the reference navigation property of Student and marks EntityState of both the
+    entities to Added, which will build and execute the following two INSERT commands on SaveChanges().</p>
   <pre>
         {{text4}}
       </pre>
   <br>
 
-  <!-- Configure Cascade Delete using Fluent API -->
-  <span style="font-size: 2rem;" class="pb-0">Configure Cascade Delete using Fluent API
+
+  <!-- Insert Multiple Records -->
+  <span style="font-size: 2rem;" class="pb-0">Insert Multiple Records
   </span>
   <div class="border-b1"></div>
-  <p>Cascade delete automatically deletes the child row when the related parent row is deleted. For example, if a Grade
-    is deleted, then all the Students in that grade should also be deleted from the database automatically</p>
-  <p>Use the OnDelete method to donfigure the cascade delete between Student and Grade entities, as shown below</p>
+  <p>Use the DbContext.AddRange or DbSet.AddRange method to add multiple entities in one go. You don't need to call
+    DbContext.Add method multiple times.</p>
+
+  <table>
+    <thead>
+      <th>AddRange Methods</th>
+      <th>Description</th>
+    </thead>
+    <tbody>
+      <tr>
+        <td>void AddRange(IEnumerable Object> entities)</td>
+        <td>Adds a list of same or different types of entities to the DbContext with Added state.</td>
+      </tr>
+      <tr>
+        <td>void AddRange(param object[] entities)</td>
+        <td>Adds an array of same or different types of entities to the DbContext with Added state.</td>
+      </tr>
+      <tr>
+        <td>void AddRangeAsync(IEnumerable Object>, CancellationToken)</td>
+        <td>Asynchronous method to add a list of same or different types of entities to the DbContext with Added state.
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <p>The following example demonstrates adding a list of Student entity objects using AddRange.</p>
   <pre>
-      {{text4}}
+      {{text5}}
     </pre>
-  <p>The OnDelete() method cascade delete behaviour uses the DeleteBehavior parameter. you can specify any of the
-    following DeleteBehavior values, based on your requirement</p>
-  <ul>
-    <li>Cascade: Dependent entities will be deleted when the principal entity is deleted</li>
-    <li>ClientSetNull: The values of foreign key properties in the dependent entities will be set null</li>
-    <li>Restrict: Prevents Cascade delete</li>
-    <li>SetNull: The values of foreign key propertis in the dependent entities will be set to null</li>
-  </ul>
+  <p>The above example will insert two new records in the Students table.</p>
+  <p>You can also add a list of different types of entities, as shown below.</p>
+  <pre>
+        {{text6}}
+      </pre>
+  <p>In the above example, entityList is a type of List Object>. So, it can contain any type of entities. The AddRange()
+    method adds all the specified entities to a context and SaveChanges() will build and execute INSERT statements for
+    all in one go.</p>
+  <p>EF Core improves the performance by executing INSERT statements for all the above entities in a single database
+    round trip. The above example will execute the following statements in the database.</p>
+  <pre>
+      {{text7}}
+    </pre>
+  <br>
+
+  <!-- Insert Data Using DbSet -->
+  <span style="font-size: 2rem;" class="pb-0">Insert Data Using DbSet
+  </span>
+  <div class="border-b1"></div>
+  <p>As mentioned before, you can use DbSet to save an instance of an entity which will be translated into
+    INSERT/UPDATE/DELETE command in the database, in the same way as EF 6.x.</p>
+  <p>Use the DbSet TEntity>.Add() method to attach an entity with Added state or the DbSet TEntity>.AddRange() method to
+    attach a collection of entities with Added state, as shown below.</p>
+  <pre>
+        {{text8}}
+      </pre>
+  <p>In the above example, the type of context.Students is DbSet Student> type. So, we can add the Student entity only.
+    The context.Students.Add(std) attaches the Student entity to the context with the Added state, which will result
+    in the INSERT statement when the SaveChanges() method is called.</p>
 </div>
