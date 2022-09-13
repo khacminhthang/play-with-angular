@@ -1,0 +1,91 @@
+<div>
+  <h1 style="font-size: 3rem;">ChangeTracker in Entity Framework Core </h1>
+  <br>
+  <p>The DbContext in Entity Framework Core includes the ChangeTracker class in
+    Microsoft.EntityFrameWorkCore.ChangeTracker namespace which is responesible of tracking the state of each entity
+    retrived using the same DbContext instance. It is not intended to use it directly in your application code because
+    it may change in future versions. However, you can use some methods for tracking purpose.
+  </p>
+  <p>The ChangeTracker class in Entity Framework Core starts tracking of all the entities as soon as it is retrieved
+    using DbContext, until they go out of its scope. EF keeps track of all the changes applied to all the entities and
+    thier property, so that it can build and execute appropriate DML statements to the underlying data source</p>
+  <p>
+    An entity at any point of time has one of the following states which are represented by the enum
+    Microsoft.EntityFrameworkCore.EntityState in EF Core.
+  </p>
+  <ul>
+    <li>Added</li>
+    <li>Modified</li>
+    <li>Deleted</li>
+    <li>Unchange</li>
+    <li>Detached</li>
+  </ul>
+  <p>Let's see how the EntityState is changed automatically based on the action performed on the entity.</p>
+  <br>
+
+  <!-- Unchanged State -->
+  <span style="font-size: 2rem;" class="pb-0">Unchanged State
+  </span>
+  <div class="border-b1"></div>
+  <p>First, all the entities retrieved using direct SQL query or LINQ-to-Entities queries will have the Unchanged state
+  </p>
+  <pre>
+        {{text1}}
+      </pre>
+  <p>output: Entity: Student, State: Unchanged</p>
+  <br>
+
+  <!-- Added State -->
+  <span style="font-size: 2rem;" class="pb-0">Added State
+  </span>
+  <div class="border-b1"></div>
+  <p>All the new entities without key property value, added in the DbContext using the Add() or Update() method will be
+    marked as Added.
+  </p>
+  <pre>
+        {{text2}}
+      </pre>
+  <p>Entity: Student, State: Added</p>
+  <br>
+
+  <!-- Modified State -->
+  <span style="font-size: 2rem;" class="pb-0">Modified State
+  </span>
+  <div class="border-b1"></div>
+  <p>If the value of any property of an entity is changed in the scope of the DbContext, then it will be marked as
+    Modified state.
+  </p>
+  <pre>
+          {{text3}}
+        </pre>
+  <p>Entity: Student, State: Modified</p>
+  <br>
+
+  <!-- Deleted State -->
+  <span style="font-size: 2rem;" class="pb-0">Deleted State
+  </span>
+  <div class="border-b1"></div>
+  <p>If any entity is removed from the DbContext using the DbContext.Remove or DbSet.Remove method, then it will be
+    marked as Deleted.
+  </p>
+  <pre>
+            {{text4}}
+          </pre>
+  <p>Entity: Student, State: Deleted</p>
+  <br>
+
+  <!-- Detached State -->
+  <span style="font-size: 2rem;" class="pb-0">Detached State
+  </span>
+  <div class="border-b1"></div>
+  <p>All the entities which were created or retrieved out of the scope of the current DbContext instance, will have the
+    Detached state. They are also called disconnected entities and are not being tracked by an existing DbContext
+    instance.
+  </p>
+  <pre>
+            {{text5}}
+          </pre>
+  <p>Detached</p>
+  <br>
+
+</div>

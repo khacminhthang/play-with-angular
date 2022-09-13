@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { MainShellComponent } from 'src/app/layout/fragments/main-shell/main-shell.component';
+import { ChangeTrackerComponent } from './change-tracker/change-tracker.component';
 import { ConfigurationsComponent } from './configurations/configurations.component';
 import { ConventionsComponent } from './conventions/conventions.component';
 import { DbContextComponent } from './db-context/db-context.component';
@@ -81,6 +82,10 @@ const efcoreRoutes: Routes = [
       {
         path: 'insert-data-disconnected',
         component: InsertDataDisconnectedComponent
+      },
+      {
+        path: 'change-tracker',
+        component: ChangeTrackerComponent
       },
     ]
   }]

@@ -295,6 +295,11 @@ export const menuEFCore = [
     "icon": "inventory_2",
     "routerLink": "insert-data-disconnected"
   },
+  {
+    "text": "ChangeTracker in EF Core",
+    "icon": "inventory_2",
+    "routerLink": "change-tracker"
+  },
 ];
 
 export const menuCSharp = [

@@ -22,6 +22,7 @@ import { FluentOneToManyComponent } from './fluent-one-to-many/fluent-one-to-man
 import { FluentOneToOneComponent } from './fluent-one-to-one/fluent-one-to-one.component';
 import { FluentManyToManyComponent } from './fluent-many-to-many/fluent-many-to-many.component';
 import { InsertDataDisconnectedComponent } from './insert-data-disconnected/insert-data-disconnected.component';
+import { ChangeTrackerComponent } from './change-tracker/change-tracker.component';
 
 @NgModule({
   declarations: [
@@ -39,7 +40,8 @@ import { InsertDataDisconnectedComponent } from './insert-data-disconnected/inse
     FluentOneToManyComponent,
     FluentOneToOneComponent,
     FluentManyToManyComponent,
-    InsertDataDisconnectedComponent
+    InsertDataDisconnectedComponent,
+    ChangeTrackerComponent
   ],
   imports: [
     CommonModule,
