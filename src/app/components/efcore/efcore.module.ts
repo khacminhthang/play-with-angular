@@ -23,6 +23,7 @@ import { FluentOneToOneComponent } from './fluent-one-to-one/fluent-one-to-one.c
 import { FluentManyToManyComponent } from './fluent-many-to-many/fluent-many-to-many.component';
 import { InsertDataDisconnectedComponent } from './insert-data-disconnected/insert-data-disconnected.component';
 import { ChangeTrackerComponent } from './change-tracker/change-tracker.component';
+import { ShadowPropertyComponent } from './shadow-property/shadow-property.component';
 
 @NgModule({
   declarations: [
@@ -41,7 +42,8 @@ import { ChangeTrackerComponent } from './change-tracker/change-tracker.componen
     FluentOneToOneComponent,
     FluentManyToManyComponent,
     InsertDataDisconnectedComponent,
-    ChangeTrackerComponent
+    ChangeTrackerComponent,
+    ShadowPropertyComponent
   ],
   imports: [
     CommonModule,

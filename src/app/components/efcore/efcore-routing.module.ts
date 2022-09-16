@@ -17,6 +17,7 @@ import { OneToManyConventionsComponent } from './one-to-many-conventions/one-to-
 import { OneToOneConventionsComponent } from './one-to-one-conventions/one-to-one-conventions.component';
 import { QueryingComponent } from './querying/querying.component';
 import { SavingDataComponent } from './saving-data/saving-data.component';
+import { ShadowPropertyComponent } from './shadow-property/shadow-property.component';
 
 const efcoreRoutes: Routes = [
   {
@@ -86,6 +87,10 @@ const efcoreRoutes: Routes = [
       {
         path: 'change-tracker',
         component: ChangeTrackerComponent
+      },
+      {
+        path: 'shadow-property',
+        component: ShadowPropertyComponent
       },
     ]
   }]

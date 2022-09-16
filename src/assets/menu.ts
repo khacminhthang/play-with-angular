@@ -300,6 +300,11 @@ export const menuEFCore = [
     "icon": "inventory_2",
     "routerLink": "change-tracker"
   },
+  {
+    "text": "Shadow Property",
+    "icon": "inventory_2",
+    "routerLink": "shadow-property"
+  },
 ];
 
 export const menuCSharp = [
